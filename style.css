@@ -120,3 +120,10 @@ footer {
 .social-logo:hover {
     transform: scale(1.1);
 }
+
+.about {
+    width: 370px;
+    height: 500px;
+    border-radius: 40px;
+    margin-bottom: 20px;
+}
