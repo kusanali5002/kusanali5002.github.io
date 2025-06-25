@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activities</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.png" type="image/png">
+</head>
+
+<body>
+    <header class="header">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="TK The Kusanali Logo" class="desktop-logo-img">
+            <img src="tk_logo.png" alt="TK" class="mobile-logo-img mobile-logo-tk">
+            <img src="the_kusanali_logo.png" alt="THE KUSANALI" class="mobile-logo-img mobile-logo-thekusanali">
+        </a>
+        <nav class="navbar">
+            <ul>
+                <li><a href="activities.html">ACTIVITIES</a></li>
+                <li><a href="#" onclick="showComingSoonAlert(event)">PROBLEMS</a></li>
+                <li><a href="nahida.html">NAHIDA</a></li>
+                <li><a href="about.html">ABOUT ME</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+            </ul>
+        </nav>
+        <div class="menu-toggle" id="mobile-menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+        <a href="index.html" class="home-icon">
+            <img src="home-icon.png" alt="Home">
+        </a>
+    </header>
+
+    <div id="mobileOverlayNav" class="mobile-nav-overlay">
+        <div class="mobile-nav-content">
+            <h3 class="mobile-nav-title">Navigation</h3>
+            <div class="mobile-nav-grid">
+                <a href="activities.html" class="mobile-nav-button">Activities</a>
+                <a href="#" onclick="showComingSoonAlert(event)" class="mobile-nav-button">Problems</a>
+                <a href="nahida.html" class="mobile-nav-button">Nahida</a>
+                <a href="about.html" class="mobile-nav-button">About Me</a>
+                <a href="contact.html" class="mobile-nav-button">Contact</a>
+                <a href="index.html" class="mobile-nav-button mobile-nav-home-button">Home</a>
+            </div>
+            <hr class="separator">
+            <button class="close-overlay-button">Close</button>
+        </div>
+    </div>
+
+    <main class="content-wrapper">
+        <div class="search-bar-container">
+            <input type="text" class="search-bar" placeholder="Write something to search...">
+        </div>
+
+        <div class="card-list">
+            <a href="spiralabyss5.6b.html" class="card">
+                <h2>Spiral Abyss version 5.6B</h2>
+                <p class="description">A new Spiral Abyss has been coming bring new challenges as monsters' HP have
+                    increased significantly. And the nightmare is waiting you in 12-3-2 ...</p>
+                <p class="hashtags">#spiralabyss #genshinimpact</p>
+                <p class="date">06/22/2025</p>
+            </a>
+            <a href="activity2.html" class="card">
+                <h2>How did Dun enjoys his national-defense training course</h2>
+                <p class="description">The Kusanali, a lazy boy just finished his semeter had to take a 42-day course in
+                    a strange place and people. What did he do to overcome it?.</p>
+                <p class="hashtags">#dailylife</p>
+                <p class="date">08/22/2024</p>
+            </a>
+            <a href="#" onclick="showComingSoonAlert(event)" class=" card">
+                <h2>Dun's work in social media</h2>
+                <p class="description">Lately, Dun seems to be working really hard on creating content for YouTube and
+                    TikTok. I wonder what he's planning?.</p>
+                <p class="hashtags">#social #challenge</p>
+                <p class="date">06/21/2025</p>
+            </a>
+            <a href="hok.html" class="card">
+                <h2>Dun's difficulty journey to achieve rank Grandmaster in Honor of Kings (HOK)</h2>
+                <p class="description">How did he fight with players from other regions, especiallyfrom China and
+                    Malaysia...</p>
+                <p class="hashtags">#hok #moba</p>
+                <p class="date">08/14/2024</p>
+            </a>
+        </div>
+
+        <div class="pagination">
+            <a href="#" onclick="showComingSoonAlert(event)">Prev</a>
+            <a href="#" class="current-page">1</a>
+            <a href="#" onclick="showComingSoonAlert(event)">2</a>
+            <span>...</span>
+            <a href="#" onclick="showComingSoonAlert(event)">9</a>
+            <a href="#" onclick="showComingSoonAlert(event)">10</a>
+            <a href="#" onclick="showComingSoonAlert(event)">Next</a>
+        </div>
+    </main>
+    <div id="mobileUnderConstruction" class="mobile-under-construction">
+        <div class="message-content">
+            <h1>Under Construction</h1>
+            <p>We are currently updating the interface for mobile devices.</p>
+            <p>Sorry for the inconvenience!</p>
+        </div>
+    </div>
+    <footer class="footer">
+        © 2025 KUSANALI
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

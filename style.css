@@ -1,0 +1,1654 @@
+@font-face {
+    font-family: 'GenshinFont';
+    src: url('HYWenHei Extended.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Biến CSS (Variables) */
+:root {
+    --primary-green: #388E3C;
+    --light-green: #66BB6A;
+    --text-color: #FFFFFF;
+    --dark-text-color: #EEEEEE;
+    --border-color: #B2FF59;
+    --background-gradient-start: #000600;
+    --background-gradient-end: #0f2d12;
+}
+
+/* Reset CSS & Font chung */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'GenshinFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* Thêm smooth scroll cho toàn bộ trang */
+    scroll-behavior: smooth;
+}
+
+body {
+    background: linear-gradient(180deg, var(--background-gradient-start) 0%, var(--background-gradient-end) 100%);
+    min-height: 100vh;
+    color: var(--text-color);
+    position: relative;
+    overflow-x: hidden;
+    /* Ngăn cuộn ngang toàn bộ trang */
+}
+
+/* Header */
+.header {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    transition: all 0.3s ease-in-out;
+}
+
+.header.scrolled {
+    padding: 5px 50px;
+    width: 100%;
+    left: 0;
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.header .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--text-color);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Logo cho Desktop - mặc định hiển thị */
+.header .logo .desktop-logo-img {
+    display: block;
+    height: 50px;
+    margin-right: 10px;
+}
+
+/* Logo cho Mobile - mặc định ẩn */
+.header .logo .mobile-logo-img {
+    display: none;
+}
+
+.header.scrolled .logo {
+    /* Logo desktop vẫn ẩn khi cuộn trên desktop */
+    opacity: 0;
+    pointer-events: none;
+}
+
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+}
+
+.navbar ul li {
+    margin: 0 20px;
+    position: relative;
+}
+
+.navbar ul li a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 18px;
+    padding: 5px 0;
+    transition: color 0.3s ease;
+}
+
+.navbar ul li a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--border-color);
+    transition: width 0.3s ease;
+}
+
+.navbar ul li a:hover::after,
+.navbar ul li a.active::after,
+.navbar ul li a.active-on-detail-page::after {
+    width: 100%;
+}
+
+/* Style cho nút Back (khi ở trang chi tiết) - vẫn giữ nguyên trên desktop */
+.navbar ul li a.back-button,
+.navbar ul li a.active-on-detail-page {
+    color: var(--border-color);
+    font-weight: bold;
+}
+
+.navbar ul li a.back-button:hover::after,
+.navbar ul li a.active-on-detail-page:hover::after {
+    background-color: var(--light-green);
+}
+
+
+.home-icon {
+    margin-left: 20px;
+    text-decoration: none;
+    font-size: 24px;
+    color: var(--text-color);
+}
+
+.home-icon img {
+    height: 30px;
+    vertical-align: middle;
+}
+
+/* Hamburger menu icon (Desktop: hidden, Mobile: shown) */
+.menu-toggle {
+    display: none;
+    /* Hidden on desktop */
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+    z-index: 1100;
+}
+
+.menu-toggle .bar {
+    width: 100%;
+    height: 3px;
+    background-color: var(--text-color);
+    border-radius: 2px;
+    transition: all 0.3s ease-in-out;
+}
+
+
+/* Main Content Wrapper */
+.content-wrapper {
+    padding-top: 100px;
+    min-height: calc(100vh - 80px);
+    padding-bottom: 50px;
+}
+
+/* Container cho nội dung chính của các trang (Nahida, About Me, Contact, Detail Pages) */
+.main-content-container {
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(3px);
+    border-radius: 15px;
+    padding: 40px;
+    margin: 30px auto;
+    width: 90%;
+    max-width: 1200px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Search Bar (Activities & Problems) */
+.search-bar-container {
+    width: 80%;
+    max-width: 800px;
+    margin: 30px auto 50px auto;
+    text-align: center;
+}
+
+.search-bar {
+    width: 100%;
+    padding: 15px 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 30px;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: var(--text-color);
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.search-bar::placeholder {
+    color: var(--dark-text-color);
+}
+
+.search-bar:focus {
+    border-color: var(--light-green);
+}
+
+/* Card List Styles (Activities & Problems) */
+.card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 80%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding-bottom: 50px;
+}
+
+.card {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4);
+}
+
+.card h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: var(--border-color);
+}
+
+.card .description {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--dark-text-color);
+    margin-bottom: 10px;
+}
+
+.card .hashtags {
+    font-size: 14px;
+    color: var(--light-green);
+    margin-bottom: 5px;
+}
+
+.card .date {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    gap: 15px;
+}
+
+.pagination a {
+    text-decoration: none;
+    color: var(--text-color);
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 10px 18px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border: 1px solid var(--light-green);
+}
+
+.pagination a:hover {
+    background-color: var(--light-green);
+    transform: translateY(-2px);
+}
+
+.pagination a.current-page {
+    background-color: var(--border-color);
+    color: #333;
+    font-weight: bold;
+    border-color: var(--border-color);
+}
+
+/* Page Specific Styles */
+
+/* Home Page */
+.home-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+    gap: 50px;
+    flex-wrap: wrap;
+    flex-direction: row-reverse;
+}
+
+.home-text {
+    max-width: 600px;
+    text-align: left;
+}
+
+.home-text h1 {
+    font-size: 4em;
+    margin-bottom: 20px;
+    line-height: 1.1;
+    color: var(--border-color);
+}
+
+.home-text p {
+    font-size: 1.2em;
+    line-height: 1.8;
+    color: var(--dark-text-color);
+}
+
+.home-image {
+    /* Thêm display flex và justify-content để căn giữa ảnh */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 400px;
+    /* Vẫn giữ max-width cho desktop */
+}
+
+.home-image img {
+    width: 100%;
+    /* Đảm bảo ảnh chiếm hết chiều rộng container */
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    display: block;
+}
+
+/* Nahida Page & Activity/Problem Detail Page */
+.nahida-content,
+.activity-detail-page-content {
+    display: flex;
+    gap: 40px;
+    width: 85%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 0;
+}
+
+.nahida-main-text,
+.activity-main-text {
+    flex: 3;
+}
+
+.nahida-main-text h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: var(--border-color);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 10px;
+}
+
+.nahida-main-text p {
+    font-size: 1.1em;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    color: var(--dark-text-color);
+}
+
+.nahida-main-text .section-content {
+    margin-left: 20px;
+    padding-left: 20px;
+    border-left: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.nahida-main-text h3 {
+    font-size: 1.8em;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    color: var(--light-green);
+}
+
+.table-of-contents {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: sticky;
+    top: 120px;
+    align-self: flex-start;
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
+}
+
+.table-of-contents h3 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    color: var(--border-color);
+}
+
+.table-of-contents ul {
+    list-style: none;
+}
+
+.table-of-contents ul li {
+    margin-bottom: 10px;
+}
+
+.table-of-contents ul li a {
+    color: var(--dark-text-color);
+    text-decoration: none;
+    font-size: 1.05em;
+    transition: color 0.3s ease;
+    display: block;
+    padding: 5px 0;
+}
+
+.table-of-contents ul li a:hover {
+    color: var(--light-green);
+    transform: translateX(5px);
+}
+
+.table-of-contents ul ul {
+    margin-left: 20px;
+    margin-top: 5px;
+    border-left: 1px dashed rgba(255, 255, 255, 0.3);
+    padding-left: 10px;
+}
+
+/* Activity/Problem Detail Page specific text styles */
+.activity-main-text h1 {
+    font-size: 2.8em;
+    margin-bottom: 20px;
+    color: var(--border-color);
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.activity-main-text .post-meta {
+    font-size: 0.9em;
+    color: var(--light-green);
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.activity-main-text h2 {
+    font-size: 2em;
+    margin-top: 35px;
+    margin-bottom: 15px;
+    color: var(--border-color);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 5px;
+}
+
+.activity-main-text h3 {
+    font-size: 1.6em;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    color: var(--light-green);
+}
+
+.activity-main-text p,
+.activity-main-text ul,
+.activity-main-text ol {
+    font-size: 1.1em;
+    line-height: 1.7;
+    color: var(--dark-text-color);
+    margin-bottom: 20px;
+}
+
+.activity-main-text ul,
+.activity-main-text ol {
+    margin-left: 25px;
+    padding-left: 10px;
+}
+
+/* About Me Page */
+.about-me-section {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 50px;
+    gap: 50px;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.about-me-image {
+    max-width: 400px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    /* Thêm display flex để căn giữa ảnh bên trong */
+    justify-content: center;
+    align-items: center;
+}
+
+.about-me-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.about-me-text {
+    max-width: 600px;
+    text-align: left;
+}
+
+.about-me-text h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: var(--border-color);
+}
+
+.about-me-text p {
+    font-size: 1.1em;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    color: var(--dark-text-color);
+}
+
+/* Specific h3, h4, ul for About Me */
+.about-me-text h3 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: var(--light-green);
+}
+
+.about-me-text h4 {
+    font-size: 1.4em;
+    margin-bottom: 20px;
+    color: var(--light-green);
+}
+
+.about-me-text ul {
+    font-size: 1.1em;
+    margin-bottom: 20px;
+    margin-left: 40px;
+    color: #FFFFFF;
+}
+
+
+/* Contact Page */
+.contact-section {
+    width: 70%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 50px 0;
+}
+
+.contact-section h2 {
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    text-align: center;
+    color: #308729;
+}
+
+.social-media-list {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.social-media-item {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.social-media-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4);
+}
+
+.social-media-item h3 {
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: var(--light-green);
+}
+
+.social-media-item p {
+    font-size: 1.1em;
+    color: var(--dark-text-color);
+    line-height: 1.6;
+}
+
+.social-media-item a {
+    color: var(--border-color);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.social-media-item a:hover {
+    color: var(--text-color);
+}
+
+/* Footer */
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+    color: var(--dark-text-color);
+    text-align: center;
+    padding: 15px 0;
+    font-size: 14px;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.footer.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Images in content (full width images) */
+.content-image-full {
+    width: 100%;
+    max-width: 800px;
+    display: block;
+    margin: 40px auto;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.content-image-full img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.content-image-full figcaption {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9em;
+    padding: 10px 15px;
+    text-align: center;
+}
+
+/* Video Container */
+.video-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    /* 16:9 aspect ratio */
+    height: 0;
+    margin: 40px auto;
+    max-width: 800px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Strong tag style */
+strong {
+    font-weight: normal;
+    color: var(--light-green);
+}
+
+/* Welcome Message Banner */
+.welcome-message-banner {
+    width: 100%;
+    text-align: center;
+    padding: 100px 0 50px 0;
+    z-index: 999;
+    position: relative;
+}
+
+.welcome-message-banner h1 {
+    font-size: 4em;
+    color: var(--border-color);
+    text-shadow: 0 0 15px rgba(178, 255, 89, 0.6);
+    margin-bottom: 10px;
+}
+
+.welcome-message-banner p {
+    font-size: 1.2em;
+    color: var(--light-green);
+}
+
+/* Tables (General styles for data tables) */
+.table-container {
+    overflow-x: hidden;
+    /* Mặc định ẩn cuộn ngang trên desktop */
+    margin-top: 20px;
+    margin-bottom: 30px;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    -webkit-overflow-scrolling: touch;
+}
+
+.data-table,
+.ascension-summary {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--dark-text-color);
+    font-family: 'GenshinFont', sans-serif;
+}
+
+.data-table th,
+.data-table td,
+.ascension-summary th,
+.ascension-summary td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    white-space: nowrap;
+    /* Mặc định không xuống dòng trên desktop */
+}
+
+.data-table th,
+.ascension-summary th {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: var(--border-color);
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.data-table tbody tr:nth-child(even),
+.ascension-summary tbody tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.data-table tbody tr:hover,
+.ascension-summary tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.ascension-cost-row td {
+    background-color: rgba(0, 0, 0, 0.5);
+    text-align: center;
+    border-bottom: 2px solid var(--light-green);
+    padding: 15px 10px;
+}
+
+.ascension-cost-title {
+    font-weight: bold;
+    color: var(--border-color);
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
+
+.cost-items {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.cost-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--text-color);
+    font-size: 0.9em;
+    min-width: 70px;
+}
+
+.cost-item img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+
+/* Coming Soon Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+    pointer-events: none;
+}
+
+.modal-content {
+    background-color: rgba(30, 30, 30, 0.9);
+    margin: auto;
+    padding: 40px;
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    position: relative;
+    transform: scale(0.9);
+    transition: transform 0.3s ease-out;
+}
+
+.modal-content h2 {
+    font-size: 2.2em;
+    color: var(--border-color);
+    margin-bottom: 20px;
+}
+
+.modal-content p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: var(--dark-text-color);
+    margin-bottom: 15px;
+}
+
+.close-button {
+    color: var(--light-green);
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.modal.show {
+    opacity: 1;
+    pointer-events: auto;
+    display: flex;
+}
+
+.modal.show .modal-content {
+    transform: scale(1);
+}
+
+/* Ẩn hoàn toàn lớp phủ "Under Construction" trên desktop */
+.mobile-under-construction {
+    display: none !important;
+}
+
+/* Mobile Navigation Overlay */
+.mobile-nav-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, var(--background-gradient-start) 0%, var(--background-gradient-end) 100%);
+    z-index: 1050;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.mobile-nav-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.mobile-nav-content {
+    background-color: rgba(0, 0, 0, 0.4);
+    /* background từ mẫu */
+    border: 1px solid var(--light-green);
+    /* border từ mẫu */
+    border-radius: 15px;
+    padding: 30px;
+    /* Padding tổng thể */
+    width: 85%;
+    /* Chiều rộng theo mẫu */
+    max-width: 450px;
+    /* Max width hợp lý */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    display: flex;
+    /* Dùng flex cho content */
+    flex-direction: column;
+    /* Xếp các phần tử theo cột */
+    align-items: center;
+    /* Căn giữa theo chiều ngang */
+    gap: 20px;
+    /* Khoảng cách giữa các phần tử chính */
+}
+
+.mobile-nav-title {
+    font-size: 2em;
+    color: var(--text-color);
+    /* Màu chữ trắng theo mẫu */
+    margin-bottom: 20px;
+    /* Khoảng cách dưới */
+    font-weight: normal;
+    /* Font bình thường theo mẫu */
+    font-family: 'GenshinFont', sans-serif;
+    /* Đảm bảo font GenshinFont */
+    text-align: center;
+    /* Căn giữa tiêu đề Navigation */
+}
+
+.mobile-nav-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    width: 100%;
+    /* Chiếm toàn bộ chiều rộng của mobile-nav-content */
+}
+
+.mobile-nav-button {
+    background-color: var(--primary-green);
+    /* Màu nền nút */
+    color: var(--text-color);
+    /* Màu chữ trắng */
+    text-decoration: none;
+    padding: 15px 10px;
+    /* Padding nút */
+    border-radius: 5px;
+    /* Bo góc nút */
+    font-size: 1.1em;
+    /* Kích thước chữ nút */
+    display: flex;
+    align-items: center;
+    /* Căn giữa icon và text */
+    justify-content: center;
+    /* Căn giữa theo chiều ngang */
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    border: none;
+    /* Bỏ border mặc định */
+    cursor: pointer;
+    font-family: 'GenshinFont', sans-serif;
+    /* Đảm bảo font GenshinFont */
+    width: 100%;
+    /* Quan trọng: Đảm bảo nút chiếm hết chiều rộng cột */
+}
+
+/* Ẩn icon trên các nút Navigation trong overlay (nếu có, để khớp mẫu) */
+.mobile-nav-button .icon {
+    display: none;
+}
+
+.mobile-nav-button:hover {
+    background-color: var(--light-green);
+    transform: translateY(-2px);
+}
+
+.mobile-nav-home-button {
+    grid-column: span 2;
+    /* Nút Home chiếm toàn bộ chiều rộng trên grid 2 cột */
+    margin-top: 5px;
+    /* Khoảng cách với hàng trên theo mẫu */
+}
+
+/* Đường gạch ngang theo mẫu */
+.mobile-nav-overlay .separator {
+    width: 90%;
+    /* Chiều rộng đường kẻ */
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.3);
+    /* Màu đường kẻ */
+    margin: 25px 0;
+    /* Khoảng cách trên dưới */
+}
+
+.close-overlay-button {
+    background-color: var(--primary-green);
+    /* Màu nền nút Close */
+    color: var(--text-color);
+    /* Màu chữ trắng */
+    border: none;
+    /* Bỏ border */
+    cursor: pointer;
+    padding: 15px 25px;
+    /* Padding nút Close */
+    border-radius: 5px;
+    /* Bo góc nút Close */
+    font-size: 1.1em;
+    /* Kích thước chữ nút Close */
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    width: auto;
+    /* Chiều rộng tự động */
+    font-family: 'GenshinFont', sans-serif;
+    /* Đảm bảo font GenshinFont */
+}
+
+.close-overlay-button:hover {
+    background-color: var(--light-green);
+    transform: translateY(-2px);
+}
+
+
+/* Media Queries cho Tablet (1200px) */
+@media (max-width: 1200px) {
+    .main-content-container {
+        padding: 35px;
+        width: 92%;
+    }
+
+    .nahida-content,
+    .activity-detail-page-content {
+        gap: 30px;
+    }
+
+    .about-me-section {
+        gap: 30px;
+    }
+
+    /* Đảm bảo hình ảnh home và about me không tràn trên tablet */
+    .home-image img,
+    .about-me-image img {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+/* Media Queries cho Mobile (992px trở xuống) */
+@media (max-width: 992px) {
+
+    /* HIỂN THỊ LẠI NỘI DUNG CHÍNH TRÊN MOBILE */
+    main {
+        display: block;
+        padding-top: 70px;
+        /* Điều chỉnh padding-top cho phù hợp với header mobile */
+    }
+
+    /* ẨN DESKTOP HEADER ELEMENTS */
+    .navbar {
+        display: none;
+        /* Ẩn navbar desktop */
+    }
+
+    .home-icon {
+        display: none;
+        /* Ẩn Home icon desktop */
+    }
+
+    .header .logo .desktop-logo-img {
+        display: none;
+        /* Ẩn logo desktop */
+    }
+
+    .header.scrolled .logo {
+        /* Ngăn chặn logo mobile bị ẩn khi cuộn */
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* HIỂN THỊ MOBILE HEADER ELEMENTS */
+    .header {
+        padding: 10px 20px;
+        /* Giảm padding header */
+        justify-content: space-between;
+        /* Giữ justify-content để căn logo và hamburger */
+    }
+
+    .header.scrolled {
+        padding: 5px 20px;
+    }
+
+    /* Căn giữa logo The Kusanali mobile */
+    .header .logo {
+        margin-left: auto;
+        /* Đẩy logo sang phải */
+        margin-right: auto;
+        /* Đẩy logo sang trái */
+        width: auto;
+        /* Đảm bảo chiều rộng tự động */
+        flex-grow: 1;
+        /* Cho phép giãn ra để chiếm không gian */
+        justify-content: center;
+        /* Căn giữa nội dung logo (hai ảnh) */
+    }
+
+    .header .logo .mobile-logo-img {
+        display: inline-block;
+        /* Hiển thị logo mobile */
+        height: 30px;
+        /* Kích thước phù hợp cho mobile */
+        margin-right: 5px;
+        vertical-align: middle;
+    }
+
+    .header .logo img.mobile-logo-tk {
+        height: 30px;
+        /* Kích thước TK */
+    }
+
+    .header .logo img.mobile-logo-thekusanali {
+        height: 18px;
+        /* Kích thước chữ THE KUSANALI */
+        margin-right: 0;
+        /* Loại bỏ margin thừa nếu có */
+    }
+
+
+    /* Hamburger menu */
+    .menu-toggle {
+        display: flex;
+        /* Hiển thị hamburger menu */
+        position: absolute;
+        /* Đặt tuyệt đối để không ảnh hưởng layout */
+        right: 20px;
+        /* Cố định vị trí bên phải */
+        top: 50%;
+        /* Căn giữa theo chiều dọc */
+        transform: translateY(-50%);
+        /* Dịch lên 50% chiều cao của nó */
+    }
+
+    /* NỘI DUNG CHÍNH (MAIN CONTENT) TRÊN MOBILE */
+    .content-wrapper {
+        padding-top: 70px;
+        /* Điều chỉnh để không bị che bởi header */
+        padding-bottom: 70px;
+        /* Đủ không gian cho footer mobile */
+    }
+
+    .main-content-container {
+        padding: 15px;
+        /* Giảm padding tổng thể và fix lỗi sát lề */
+        width: 95%;
+        /* Tăng chiều rộng để tận dụng không gian */
+        margin: 20px auto;
+        /* Giảm margin */
+    }
+
+    /* Home Page */
+    .home-section {
+        flex-direction: column;
+        /* Text và ảnh chồng lên nhau */
+        text-align: center;
+        gap: 30px;
+        padding: 20px;
+        /* Giảm padding */
+    }
+
+    .home-image {
+        order: -1;
+        /* Đẩy ảnh lên trước text */
+        max-width: 100%;
+        /* Đảm bảo ảnh chiếm hết chiều rộng khả dụng */
+    }
+
+    .home-text h1 {
+        font-size: 2.5em;
+        /* Giảm kích thước font */
+    }
+
+    .home-image img {
+        max-width: 90%;
+        /* Đảm bảo ảnh vừa màn hình */
+        height: auto;
+    }
+
+    /* About Me Page */
+    .about-me-section {
+        flex-direction: column;
+        text-align: center;
+        gap: 30px;
+        padding: 20px;
+    }
+
+    .about-me-image {
+        order: -1;
+        max-width: 100%;
+        /* Đảm bảo ảnh chiếm hết chiều rộng khả dụng */
+    }
+
+    .about-me-image img {
+        max-width: 90%;
+        /* Đảm bảo ảnh vừa màn hình */
+        height: auto;
+    }
+
+    .about-me-text h2 {
+        font-size: 2em;
+    }
+
+    .about-me-text h3 {
+        font-size: 1.5em;
+    }
+
+    .about-me-text h4 {
+        font-size: 1.2em;
+    }
+
+    .about-me-text ul {
+        margin-left: 20px;
+        /* Điều chỉnh lại indent cho list */
+        text-align: left;
+        /* Đảm bảo list căn trái */
+    }
+
+    /* Nahida Page & Activity/Problem Detail Page */
+    .nahida-content,
+    .activity-detail-page-content {
+        flex-direction: column;
+        /* Chuyển sang bố cục một cột: text ở trên, TOC ở dưới */
+        width: 100%;
+        /* Chiếm toàn bộ chiều rộng container */
+        gap: 20px;
+        /* Giảm khoảng cách giữa các phần */
+        padding: 0;
+    }
+
+    .nahida-main-text,
+    .activity-main-text {
+        flex: auto;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* FIX: Tiêu đề và nội dung không bị sát lề */
+    .activity-main-text h1,
+    .activity-main-text h2,
+    .activity-main-text h3,
+    .activity-main-text p,
+    .activity-main-text ul,
+    .activity-main-text ol {
+        padding-left: 10px;
+        /* Thêm padding ngang cho nội dung chính */
+        padding-right: 10px;
+        text-align: left;
+        /* Đảm bảo căn trái */
+    }
+
+    .activity-main-text h1 {
+        font-size: 2em;
+        /* Giảm kích thước tiêu đề chính */
+        text-align: center;
+        /* Căn giữa tiêu đề chính */
+    }
+
+
+    .activity-main-text h2 {
+        font-size: 1.6em;
+        /* Giảm kích thước sub-heading */
+    }
+
+    .activity-main-text h3 {
+        font-size: 1.3em;
+        /* Giảm kích thước sub-sub-heading */
+    }
+
+    .activity-main-text p,
+    .activity-main-text ul,
+    .activity-main-text ol {
+        font-size: 1em;
+        /* Giảm kích thước đoạn văn */
+        margin-bottom: 15px;
+    }
+
+    .activity-main-text ul,
+    .activity-main-text ol {
+        margin-left: 15px;
+        /* Điều chỉnh margin cho list */
+    }
+
+    .table-of-contents {
+        position: static;
+        /* Bỏ sticky */
+        max-height: none;
+        overflow-y: visible;
+        width: 100%;
+        margin-top: 0;
+        padding: 15px;
+        /* Giảm padding */
+        text-align: left;
+        /* Căn trái TOC */
+    }
+
+    .table-of-contents h3 {
+        margin-bottom: 10px;
+        font-size: 1.3em;
+        text-align: center;
+        /* Căn giữa tiêu đề TOC */
+    }
+
+    .table-of-contents ul {
+        display: block;
+        /* Hiển thị lại dạng list dọc */
+        flex-wrap: nowrap;
+        /* Bỏ flex-wrap */
+        justify-content: flex-start;
+        /* Căn trái list items */
+        gap: 0;
+    }
+
+    .table-of-contents ul li {
+        margin-bottom: 5px;
+        /* Khoảng cách giữa các mục TOC */
+    }
+
+    .table-of-contents ul li a {
+        font-size: 0.9em;
+        /* Giảm font size cho mục TOC */
+        padding: 3px 5px;
+        /* Giảm padding nút TOC */
+        border: none;
+        /* Bỏ border */
+        background-color: transparent;
+        /* Bỏ background */
+        display: inline;
+        /* Hiển thị inline để có thể xuống dòng */
+    }
+
+    .table-of-contents ul li a:hover {
+        background-color: transparent;
+        /* Bỏ background hover */
+    }
+
+    .table-of-contents ul ul {
+        display: block;
+        /* Hiển thị sub-list trở lại */
+        margin-left: 15px;
+        /* Indent sub-list */
+        margin-top: 3px;
+        padding-left: 8px;
+    }
+
+    /* Search Bar */
+    .search-bar-container {
+        width: 90%;
+        margin: 20px auto 30px auto;
+    }
+
+    .search-bar {
+        padding: 12px 15px;
+        font-size: 15px;
+    }
+
+    /* Card List (Activities & Problems) */
+    .card-list {
+        width: 90%;
+        gap: 15px;
+        /* Giảm khoảng cách giữa các thẻ */
+    }
+
+    .card {
+        padding: 20px;
+        /* Giảm padding thẻ */
+    }
+
+    .card h2 {
+        font-size: 22px;
+        /* Giảm kích thước tiêu đề thẻ */
+    }
+
+    .card .description {
+        font-size: 15px;
+    }
+
+    /* Contact Section */
+    .contact-section {
+        width: 90%;
+        padding: 30px 0;
+    }
+
+    .social-media-item {
+        padding: 18px;
+    }
+
+    .social-media-item h3 {
+        font-size: 1.6em;
+    }
+
+    /* Responsive Tables - Sửa để không cuộn ngang (ưu tiên) hoặc cuộn ngang khi cần */
+    .table-container {
+        overflow-x: auto;
+        /* Cho phép cuộn ngang TỰ ĐỘNG nếu bảng quá rộng */
+    }
+
+    .data-table,
+    .ascension-summary {
+        font-size: 0.8em;
+        /* Giảm font size cho nội dung bảng để cố gắng fit */
+    }
+
+    .data-table th,
+    .data-table td,
+    .ascension-summary th,
+    .ascension-summary td {
+        padding: 5px 8px;
+        /* Giảm padding cho ô bảng */
+        white-space: normal;
+        /* Cho phép xuống dòng */
+        vertical-align: top;
+        /* Căn trên cho nội dung khi xuống dòng */
+    }
+
+    /* Cụ thể cho bảng Nahida Ascension */
+    .ascension-summary .cost-items,
+    .ascension-cost-row .cost-items {
+        gap: 5px;
+        /* Giảm khoảng cách giữa các item chi phí */
+    }
+
+    .ascension-summary .cost-item,
+    .ascension-cost-row .cost-item {
+        min-width: 45px;
+    }
+
+    .ascension-summary .cost-item img,
+    .ascension-cost-row .cost-item img {
+        width: 25px;
+        height: 25px;
+    }
+
+    .ascension-summary .cost-item span,
+    .ascension-cost-row .cost-item span {
+        font-size: 0.65em;
+    }
+
+    /* Footer - Đảm bảo hiển thị và căn giữa */
+    .footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 10px 0;
+        z-index: 1000;
+        /* Đảm bảo nằm trên các nội dung khác */
+        display: block;
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* Ẩn lớp phủ "Under Construction" trên mobile sau khi responsive */
+    .mobile-under-construction {
+        display: none !important;
+    }
+}
+
+/* Các kích thước màn hình nhỏ hơn (ví dụ: iPhone SE, Galaxy S5) */
+@media (max-width: 768px) {
+    .header {
+        padding: 8px 15px;
+    }
+
+    .header.scrolled {
+        padding: 3px 15px;
+    }
+
+    .header .logo .mobile-logo-img {
+        height: 28px;
+    }
+
+    .header .logo img.mobile-logo-thekusanali {
+        height: 16px;
+    }
+
+    .menu-toggle {
+        width: 28px;
+        height: 22px;
+    }
+
+    .menu-toggle .bar {
+        height: 2px;
+    }
+
+    .main-content-container {
+        padding: 15px;
+        margin: 15px auto;
+    }
+
+    .home-text h1 {
+        font-size: 2em;
+    }
+
+    .home-text p {
+        font-size: 1em;
+    }
+
+    .about-me-text p {
+        font-size: 1em;
+    }
+
+    .activity-main-text h1 {
+        font-size: 1.8em;
+    }
+
+    .activity-main-text h2 {
+        font-size: 1.4em;
+    }
+
+    .activity-main-text h3 {
+        font-size: 1.1em;
+    }
+
+    .activity-main-text p,
+    .activity-main-text ul,
+    .activity-main-text ol {
+        font-size: 0.95em;
+    }
+
+    .table-of-contents h3 {
+        font-size: 1.2em;
+    }
+
+    .table-of-contents ul li a {
+        font-size: 0.85em;
+    }
+
+    .card h2 {
+        font-size: 20px;
+    }
+
+    .card .description {
+        font-size: 14px;
+    }
+
+    .search-bar {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+
+    /* Responsive Tables for very small screens */
+    .data-table,
+    .ascension-summary {
+        font-size: 0.75em;
+        /* Nhỏ hơn nữa cho màn hình rất nhỏ */
+    }
+
+    .data-table th,
+    .data-table td,
+    .ascension-summary th,
+    .ascension-summary td {
+        padding: 4px 6px;
+        /* Giảm padding hơn nữa */
+    }
+
+    .ascension-summary .cost-item,
+    .ascension-cost-row .cost-item {
+        min-width: 45px;
+    }
+
+    .ascension-summary .cost-item img,
+    .ascension-cost-row .cost-item img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .ascension-summary .cost-item span,
+    .ascension-cost-row .cost-item span {
+        font-size: 0.65em;
+    }
+}
+
+@media (max-width: 576px) {
+    .header .logo .mobile-logo-img {
+        height: 25px;
+    }
+
+    .header .logo img.mobile-logo-thekusanali {
+        height: 14px;
+    }
+
+    .home-text h1 {
+        font-size: 1.8em;
+    }
+
+    .home-text p {
+        font-size: 0.9em;
+    }
+
+    .activity-main-text h1 {
+        font-size: 1.6em;
+    }
+
+    .activity-main-text h2 {
+        font-size: 1.3em;
+    }
+
+    .activity-main-text h3 {
+        font-size: 1em;
+    }
+
+    .activity-main-text p,
+    .activity-main-text ul,
+    .activity-main-text ol {
+        font-size: 0.9em;
+    }
+
+    .mobile-nav-grid {
+        grid-template-columns: 1fr;
+        /* Một cột trên màn hình siêu nhỏ */
+        gap: 10px;
+    }
+
+    .mobile-nav-home-button {
+        grid-column: span 1;
+        /* Điều chỉnh lại span cho 1 cột */
+    }
+
+    .card h2 {
+        font-size: 18px;
+    }
+
+    .card .description {
+        font-size: 13px;
+    }
+
+    .pagination a {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+}
