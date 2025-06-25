@@ -6,7 +6,7 @@
     font-display: swap;
 }
 
-/* Biến CSS (Variables) */
+
 :root {
     --primary-green: #388E3C;
     --light-green: #66BB6A;
@@ -23,7 +23,6 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'GenshinFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    /* Thêm smooth scroll cho toàn bộ trang */
     scroll-behavior: smooth;
 }
 
@@ -33,10 +32,8 @@ body {
     color: var(--text-color);
     position: relative;
     overflow-x: hidden;
-    /* Ngăn cuộn ngang toàn bộ trang */
 }
 
-/* Header */
 .header {
     width: 100%;
     position: fixed;
@@ -71,20 +68,19 @@ body {
     transition: opacity 0.3s ease-in-out;
 }
 
-/* Logo cho Desktop - mặc định hiển thị */
 .header .logo .desktop-logo-img {
     display: block;
     height: 50px;
     margin-right: 10px;
 }
 
-/* Logo cho Mobile - mặc định ẩn */
+
 .header .logo .mobile-logo-img {
     display: none;
 }
 
 .header.scrolled .logo {
-    /* Logo desktop vẫn ẩn khi cuộn trên desktop */
+  
     opacity: 0;
     pointer-events: none;
 }
@@ -125,7 +121,7 @@ body {
     width: 100%;
 }
 
-/* Style cho nút Back (khi ở trang chi tiết) - vẫn giữ nguyên trên desktop */
+
 .navbar ul li a.back-button,
 .navbar ul li a.active-on-detail-page {
     color: var(--border-color);
@@ -150,10 +146,10 @@ body {
     vertical-align: middle;
 }
 
-/* Hamburger menu icon (Desktop: hidden, Mobile: shown) */
+
 .menu-toggle {
     display: none;
-    /* Hidden on desktop */
+   
     flex-direction: column;
     justify-content: space-around;
     width: 30px;
@@ -171,14 +167,14 @@ body {
 }
 
 
-/* Main Content Wrapper */
+
 .content-wrapper {
     padding-top: 100px;
     min-height: calc(100vh - 80px);
     padding-bottom: 50px;
 }
 
-/* Container cho nội dung chính của các trang (Nahida, About Me, Contact, Detail Pages) */
+
 .main-content-container {
     background: rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(3px);
@@ -191,7 +187,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Search Bar (Activities & Problems) */
+
 .search-bar-container {
     width: 80%;
     max-width: 800px;
@@ -219,7 +215,7 @@ body {
     border-color: var(--light-green);
 }
 
-/* Card List Styles (Activities & Problems) */
+
 .card-list {
     display: flex;
     flex-direction: column;
@@ -271,7 +267,7 @@ body {
     color: rgba(255, 255, 255, 0.6);
 }
 
-/* Pagination */
+
 .pagination {
     display: flex;
     justify-content: center;
@@ -302,9 +298,7 @@ body {
     border-color: var(--border-color);
 }
 
-/* Page Specific Styles */
 
-/* Home Page */
 .home-section {
     display: flex;
     justify-content: center;
@@ -334,17 +328,17 @@ body {
 }
 
 .home-image {
-    /* Thêm display flex và justify-content để căn giữa ảnh */
+   
     display: flex;
     justify-content: center;
     align-items: center;
     max-width: 400px;
-    /* Vẫn giữ max-width cho desktop */
+   
 }
 
 .home-image img {
     width: 100%;
-    /* Đảm bảo ảnh chiếm hết chiều rộng container */
+
     height: auto;
     border-radius: 20px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
@@ -352,7 +346,7 @@ body {
     display: block;
 }
 
-/* Nahida Page & Activity/Problem Detail Page */
+
 .nahida-content,
 .activity-detail-page-content {
     display: flex;
@@ -445,7 +439,7 @@ body {
     padding-left: 10px;
 }
 
-/* Activity/Problem Detail Page specific text styles */
+
 .activity-main-text h1 {
     font-size: 2.8em;
     margin-bottom: 20px;
@@ -493,7 +487,7 @@ body {
     padding-left: 10px;
 }
 
-/* About Me Page */
+
 .about-me-section {
     display: flex;
     justify-content: center;
@@ -511,7 +505,7 @@ body {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
     border: 2px solid rgba(255, 255, 255, 0.3);
     display: flex;
-    /* Thêm display flex để căn giữa ảnh bên trong */
+  
     justify-content: center;
     align-items: center;
 }
@@ -540,7 +534,7 @@ body {
     color: var(--dark-text-color);
 }
 
-/* Specific h3, h4, ul for About Me */
+
 .about-me-text h3 {
     font-size: 2em;
     margin-bottom: 20px;
@@ -561,7 +555,7 @@ body {
 }
 
 
-/* Contact Page */
+
 .contact-section {
     width: 70%;
     max-width: 800px;
@@ -619,7 +613,7 @@ body {
     color: var(--text-color);
 }
 
-/* Footer */
+
 .footer {
     position: fixed;
     bottom: 0;
@@ -640,7 +634,7 @@ body {
     pointer-events: auto;
 }
 
-/* Images in content (full width images) */
+
 .content-image-full {
     width: 100%;
     max-width: 800px;
@@ -666,7 +660,7 @@ body {
     text-align: center;
 }
 
-/* Video Container */
+
 .video-container {
     position: relative;
     width: 100%;
@@ -689,13 +683,13 @@ body {
     border: none;
 }
 
-/* Strong tag style */
+
 strong {
     font-weight: normal;
     color: var(--light-green);
 }
 
-/* Welcome Message Banner */
+
 .welcome-message-banner {
     width: 100%;
     text-align: center;
@@ -716,10 +710,10 @@ strong {
     color: var(--light-green);
 }
 
-/* Tables (General styles for data tables) */
+
 .table-container {
     overflow-x: hidden;
-    /* Mặc định ẩn cuộn ngang trên desktop */
+    
     margin-top: 20px;
     margin-bottom: 30px;
     background-color: rgba(0, 0, 0, 0.4);
@@ -745,7 +739,7 @@ strong {
     text-align: left;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     white-space: nowrap;
-    /* Mặc định không xuống dòng trên desktop */
+ 
 }
 
 .data-table th,
@@ -805,7 +799,7 @@ strong {
 }
 
 
-/* Coming Soon Modal */
+
 .modal {
     display: none;
     position: fixed;
@@ -879,12 +873,12 @@ strong {
     transform: scale(1);
 }
 
-/* Ẩn hoàn toàn lớp phủ "Under Construction" trên desktop */
+
 .mobile-under-construction {
     display: none !important;
 }
 
-/* Mobile Navigation Overlay */
+
 .mobile-nav-overlay {
     position: fixed;
     top: 0;
@@ -908,40 +902,40 @@ strong {
 
 .mobile-nav-content {
     background-color: rgba(0, 0, 0, 0.4);
-    /* background từ mẫu */
+    
     border: 1px solid var(--light-green);
-    /* border từ mẫu */
+    
     border-radius: 15px;
     padding: 30px;
-    /* Padding tổng thể */
+    
     width: 85%;
-    /* Chiều rộng theo mẫu */
+  
     max-width: 450px;
-    /* Max width hợp lý */
+   
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
     text-align: center;
     display: flex;
-    /* Dùng flex cho content */
+    
     flex-direction: column;
-    /* Xếp các phần tử theo cột */
+  
     align-items: center;
-    /* Căn giữa theo chiều ngang */
+   
     gap: 20px;
-    /* Khoảng cách giữa các phần tử chính */
+    
 }
 
 .mobile-nav-title {
     font-size: 2em;
     color: var(--text-color);
-    /* Màu chữ trắng theo mẫu */
+  
     margin-bottom: 20px;
-    /* Khoảng cách dưới */
+    
     font-weight: normal;
-    /* Font bình thường theo mẫu */
+    
     font-family: 'GenshinFont', sans-serif;
-    /* Đảm bảo font GenshinFont */
+  
     text-align: center;
-    /* Căn giữa tiêu đề Navigation */
+   
 }
 
 .mobile-nav-grid {
@@ -949,37 +943,37 @@ strong {
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
     width: 100%;
-    /* Chiếm toàn bộ chiều rộng của mobile-nav-content */
+    
 }
 
 .mobile-nav-button {
     background-color: var(--primary-green);
-    /* Màu nền nút */
+  
     color: var(--text-color);
-    /* Màu chữ trắng */
+    
     text-decoration: none;
     padding: 15px 10px;
-    /* Padding nút */
+    
     border-radius: 5px;
-    /* Bo góc nút */
+  
     font-size: 1.1em;
-    /* Kích thước chữ nút */
+    
     display: flex;
     align-items: center;
-    /* Căn giữa icon và text */
+   
     justify-content: center;
-    /* Căn giữa theo chiều ngang */
+  
     transition: background-color 0.2s ease, transform 0.2s ease;
     border: none;
-    /* Bỏ border mặc định */
+   
     cursor: pointer;
     font-family: 'GenshinFont', sans-serif;
-    /* Đảm bảo font GenshinFont */
+  
     width: 100%;
-    /* Quan trọng: Đảm bảo nút chiếm hết chiều rộng cột */
+  
 }
 
-/* Ẩn icon trên các nút Navigation trong overlay (nếu có, để khớp mẫu) */
+
 .mobile-nav-button .icon {
     display: none;
 }
@@ -991,41 +985,41 @@ strong {
 
 .mobile-nav-home-button {
     grid-column: span 2;
-    /* Nút Home chiếm toàn bộ chiều rộng trên grid 2 cột */
+  
     margin-top: 5px;
-    /* Khoảng cách với hàng trên theo mẫu */
+   
 }
 
-/* Đường gạch ngang theo mẫu */
+
 .mobile-nav-overlay .separator {
     width: 90%;
-    /* Chiều rộng đường kẻ */
+  
     height: 1px;
     background-color: rgba(255, 255, 255, 0.3);
-    /* Màu đường kẻ */
+   
     margin: 25px 0;
-    /* Khoảng cách trên dưới */
+  
 }
 
 .close-overlay-button {
     background-color: var(--primary-green);
-    /* Màu nền nút Close */
+ 
     color: var(--text-color);
-    /* Màu chữ trắng */
+  
     border: none;
-    /* Bỏ border */
+   
     cursor: pointer;
     padding: 15px 25px;
-    /* Padding nút Close */
+  
     border-radius: 5px;
-    /* Bo góc nút Close */
+   
     font-size: 1.1em;
-    /* Kích thước chữ nút Close */
+   
     transition: background-color 0.2s ease, transform 0.2s ease;
     width: auto;
-    /* Chiều rộng tự động */
+   
     font-family: 'GenshinFont', sans-serif;
-    /* Đảm bảo font GenshinFont */
+   
 }
 
 .close-overlay-button:hover {
@@ -1034,7 +1028,6 @@ strong {
 }
 
 
-/* Media Queries cho Tablet (1200px) */
 @media (max-width: 1200px) {
     .main-content-container {
         padding: 35px;
@@ -1050,7 +1043,7 @@ strong {
         gap: 30px;
     }
 
-    /* Đảm bảo hình ảnh home và about me không tràn trên tablet */
+  
     .home-image img,
     .about-me-image img {
         max-width: 100%;
@@ -1058,146 +1051,146 @@ strong {
     }
 }
 
-/* Media Queries cho Mobile (992px trở xuống) */
+
 @media (max-width: 992px) {
 
-    /* HIỂN THỊ LẠI NỘI DUNG CHÍNH TRÊN MOBILE */
+   
     main {
         display: block;
         padding-top: 70px;
-        /* Điều chỉnh padding-top cho phù hợp với header mobile */
+        
     }
 
-    /* ẨN DESKTOP HEADER ELEMENTS */
+  
     .navbar {
         display: none;
-        /* Ẩn navbar desktop */
+       
     }
 
     .home-icon {
         display: none;
-        /* Ẩn Home icon desktop */
+       
     }
 
     .header .logo .desktop-logo-img {
         display: none;
-        /* Ẩn logo desktop */
+      
     }
 
     .header.scrolled .logo {
-        /* Ngăn chặn logo mobile bị ẩn khi cuộn */
+        
         opacity: 1;
         pointer-events: auto;
     }
 
-    /* HIỂN THỊ MOBILE HEADER ELEMENTS */
+    
     .header {
         padding: 10px 20px;
-        /* Giảm padding header */
+       
         justify-content: space-between;
-        /* Giữ justify-content để căn logo và hamburger */
+        
     }
 
     .header.scrolled {
         padding: 5px 20px;
     }
 
-    /* Căn giữa logo The Kusanali mobile */
+  
     .header .logo {
         margin-left: auto;
-        /* Đẩy logo sang phải */
+        
         margin-right: auto;
-        /* Đẩy logo sang trái */
+       
         width: auto;
-        /* Đảm bảo chiều rộng tự động */
+        
         flex-grow: 1;
-        /* Cho phép giãn ra để chiếm không gian */
+       
         justify-content: center;
-        /* Căn giữa nội dung logo (hai ảnh) */
+     
     }
 
     .header .logo .mobile-logo-img {
         display: inline-block;
-        /* Hiển thị logo mobile */
+        
         height: 30px;
-        /* Kích thước phù hợp cho mobile */
+       
         margin-right: 5px;
         vertical-align: middle;
     }
 
     .header .logo img.mobile-logo-tk {
         height: 30px;
-        /* Kích thước TK */
+        
     }
 
     .header .logo img.mobile-logo-thekusanali {
         height: 18px;
-        /* Kích thước chữ THE KUSANALI */
+       
         margin-right: 0;
-        /* Loại bỏ margin thừa nếu có */
+       
     }
 
 
-    /* Hamburger menu */
+   
     .menu-toggle {
         display: flex;
-        /* Hiển thị hamburger menu */
+        
         position: absolute;
-        /* Đặt tuyệt đối để không ảnh hưởng layout */
+       
         right: 20px;
-        /* Cố định vị trí bên phải */
+     
         top: 50%;
-        /* Căn giữa theo chiều dọc */
+       
         transform: translateY(-50%);
-        /* Dịch lên 50% chiều cao của nó */
+       
     }
 
-    /* NỘI DUNG CHÍNH (MAIN CONTENT) TRÊN MOBILE */
+    
     .content-wrapper {
         padding-top: 70px;
-        /* Điều chỉnh để không bị che bởi header */
+       
         padding-bottom: 70px;
-        /* Đủ không gian cho footer mobile */
+       
     }
 
     .main-content-container {
         padding: 15px;
-        /* Giảm padding tổng thể và fix lỗi sát lề */
+      
         width: 95%;
-        /* Tăng chiều rộng để tận dụng không gian */
+       
         margin: 20px auto;
-        /* Giảm margin */
+        
     }
 
-    /* Home Page */
+    
     .home-section {
         flex-direction: column;
-        /* Text và ảnh chồng lên nhau */
+       
         text-align: center;
         gap: 30px;
         padding: 20px;
-        /* Giảm padding */
+       
     }
 
     .home-image {
         order: -1;
-        /* Đẩy ảnh lên trước text */
+    
         max-width: 100%;
-        /* Đảm bảo ảnh chiếm hết chiều rộng khả dụng */
+      
     }
 
     .home-text h1 {
         font-size: 2.5em;
-        /* Giảm kích thước font */
+        
     }
 
     .home-image img {
         max-width: 90%;
-        /* Đảm bảo ảnh vừa màn hình */
+        
         height: auto;
     }
 
-    /* About Me Page */
+   /
     .about-me-section {
         flex-direction: column;
         text-align: center;
@@ -1208,12 +1201,12 @@ strong {
     .about-me-image {
         order: -1;
         max-width: 100%;
-        /* Đảm bảo ảnh chiếm hết chiều rộng khả dụng */
+       
     }
 
     .about-me-image img {
         max-width: 90%;
-        /* Đảm bảo ảnh vừa màn hình */
+     
         height: auto;
     }
 
@@ -1231,20 +1224,20 @@ strong {
 
     .about-me-text ul {
         margin-left: 20px;
-        /* Điều chỉnh lại indent cho list */
+       
         text-align: left;
-        /* Đảm bảo list căn trái */
+        
     }
 
-    /* Nahida Page & Activity/Problem Detail Page */
+    /
     .nahida-content,
     .activity-detail-page-content {
         flex-direction: column;
-        /* Chuyển sang bố cục một cột: text ở trên, TOC ở dưới */
+      
         width: 100%;
-        /* Chiếm toàn bộ chiều rộng container */
+       
         gap: 20px;
-        /* Giảm khoảng cách giữa các phần */
+     
         padding: 0;
     }
 
@@ -1256,7 +1249,7 @@ strong {
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    /* FIX: Tiêu đề và nội dung không bị sát lề */
+   
     .activity-main-text h1,
     .activity-main-text h2,
     .activity-main-text h3,
@@ -1264,107 +1257,107 @@ strong {
     .activity-main-text ul,
     .activity-main-text ol {
         padding-left: 10px;
-        /* Thêm padding ngang cho nội dung chính */
+       
         padding-right: 10px;
         text-align: left;
-        /* Đảm bảo căn trái */
+       
     }
 
     .activity-main-text h1 {
         font-size: 2em;
-        /* Giảm kích thước tiêu đề chính */
+      
         text-align: center;
-        /* Căn giữa tiêu đề chính */
+        
     }
 
 
     .activity-main-text h2 {
         font-size: 1.6em;
-        /* Giảm kích thước sub-heading */
+        
     }
 
     .activity-main-text h3 {
         font-size: 1.3em;
-        /* Giảm kích thước sub-sub-heading */
+       
     }
 
     .activity-main-text p,
     .activity-main-text ul,
     .activity-main-text ol {
         font-size: 1em;
-        /* Giảm kích thước đoạn văn */
+      
         margin-bottom: 15px;
     }
 
     .activity-main-text ul,
     .activity-main-text ol {
         margin-left: 15px;
-        /* Điều chỉnh margin cho list */
+        
     }
 
     .table-of-contents {
         position: static;
-        /* Bỏ sticky */
+    
         max-height: none;
         overflow-y: visible;
         width: 100%;
         margin-top: 0;
         padding: 15px;
-        /* Giảm padding */
+     
         text-align: left;
-        /* Căn trái TOC */
+      
     }
 
     .table-of-contents h3 {
         margin-bottom: 10px;
         font-size: 1.3em;
         text-align: center;
-        /* Căn giữa tiêu đề TOC */
+        
     }
 
     .table-of-contents ul {
         display: block;
-        /* Hiển thị lại dạng list dọc */
+     
         flex-wrap: nowrap;
-        /* Bỏ flex-wrap */
+        
         justify-content: flex-start;
-        /* Căn trái list items */
+      
         gap: 0;
     }
 
     .table-of-contents ul li {
         margin-bottom: 5px;
-        /* Khoảng cách giữa các mục TOC */
+      
     }
 
     .table-of-contents ul li a {
         font-size: 0.9em;
-        /* Giảm font size cho mục TOC */
+        
         padding: 3px 5px;
-        /* Giảm padding nút TOC */
+        
         border: none;
-        /* Bỏ border */
+        
         background-color: transparent;
-        /* Bỏ background */
+      
         display: inline;
-        /* Hiển thị inline để có thể xuống dòng */
+       
     }
 
     .table-of-contents ul li a:hover {
         background-color: transparent;
-        /* Bỏ background hover */
+       
     }
 
     .table-of-contents ul ul {
         display: block;
-        /* Hiển thị sub-list trở lại */
+     
         margin-left: 15px;
-        /* Indent sub-list */
+      
         margin-top: 3px;
         padding-left: 8px;
     }
 
-    /* Search Bar */
+    
     .search-bar-container {
         width: 90%;
         margin: 20px auto 30px auto;
@@ -1375,28 +1368,28 @@ strong {
         font-size: 15px;
     }
 
-    /* Card List (Activities & Problems) */
+ 
     .card-list {
         width: 90%;
         gap: 15px;
-        /* Giảm khoảng cách giữa các thẻ */
+        
     }
 
     .card {
         padding: 20px;
-        /* Giảm padding thẻ */
+      
     }
 
     .card h2 {
         font-size: 22px;
-        /* Giảm kích thước tiêu đề thẻ */
+       
     }
 
     .card .description {
         font-size: 15px;
     }
 
-    /* Contact Section */
+   
     .contact-section {
         width: 90%;
         padding: 30px 0;
@@ -1410,16 +1403,16 @@ strong {
         font-size: 1.6em;
     }
 
-    /* Responsive Tables - Sửa để không cuộn ngang (ưu tiên) hoặc cuộn ngang khi cần */
+    
     .table-container {
         overflow-x: auto;
-        /* Cho phép cuộn ngang TỰ ĐỘNG nếu bảng quá rộng */
+       
     }
 
     .data-table,
     .ascension-summary {
         font-size: 0.8em;
-        /* Giảm font size cho nội dung bảng để cố gắng fit */
+        
     }
 
     .data-table th,
@@ -1427,18 +1420,18 @@ strong {
     .ascension-summary th,
     .ascension-summary td {
         padding: 5px 8px;
-        /* Giảm padding cho ô bảng */
+      
         white-space: normal;
-        /* Cho phép xuống dòng */
+        
         vertical-align: top;
-        /* Căn trên cho nội dung khi xuống dòng */
+        
     }
 
-    /* Cụ thể cho bảng Nahida Ascension */
+   
     .ascension-summary .cost-items,
     .ascension-cost-row .cost-items {
         gap: 5px;
-        /* Giảm khoảng cách giữa các item chi phí */
+        
     }
 
     .ascension-summary .cost-item,
@@ -1457,7 +1450,7 @@ strong {
         font-size: 0.65em;
     }
 
-    /* Footer - Đảm bảo hiển thị và căn giữa */
+   
     .footer {
         position: fixed;
         bottom: 0;
@@ -1466,19 +1459,19 @@ strong {
         background-color: rgba(0, 0, 0, 0.7);
         padding: 10px 0;
         z-index: 1000;
-        /* Đảm bảo nằm trên các nội dung khác */
+      
         display: block;
         opacity: 1;
         pointer-events: auto;
     }
 
-    /* Ẩn lớp phủ "Under Construction" trên mobile sau khi responsive */
+   
     .mobile-under-construction {
         display: none !important;
     }
 }
 
-/* Các kích thước màn hình nhỏ hơn (ví dụ: iPhone SE, Galaxy S5) */
+
 @media (max-width: 768px) {
     .header {
         padding: 8px 15px;
@@ -1561,11 +1554,11 @@ strong {
         font-size: 14px;
     }
 
-    /* Responsive Tables for very small screens */
+    
     .data-table,
     .ascension-summary {
         font-size: 0.75em;
-        /* Nhỏ hơn nữa cho màn hình rất nhỏ */
+      
     }
 
     .data-table th,
@@ -1573,7 +1566,7 @@ strong {
     .ascension-summary th,
     .ascension-summary td {
         padding: 4px 6px;
-        /* Giảm padding hơn nữa */
+      
     }
 
     .ascension-summary .cost-item,
@@ -1630,13 +1623,13 @@ strong {
 
     .mobile-nav-grid {
         grid-template-columns: 1fr;
-        /* Một cột trên màn hình siêu nhỏ */
+      
         gap: 10px;
     }
 
     .mobile-nav-home-button {
         grid-column: span 1;
-        /* Điều chỉnh lại span cho 1 cột */
+      
     }
 
     .card h2 {
