@@ -1,8 +1,12 @@
 
+
+
 function showComingSoonAlert(event) {
-    event.preventDefault(); 
-    alert("Coming soon!"); 
+    event.preventDefault();
+    alert("Coming soon!");
 }
+
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const header = document.querySelector('.header');
@@ -11,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const footer = document.querySelector('.footer');
     let scrollTimeout;
 
-    // Header scroll animation
+
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
             header.classList.add('scrolled');
@@ -22,9 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const scrollPosition = window.scrollY + window.innerHeight;
         const bodyHeight = document.body.offsetHeight;
 
-       
-        if (window.innerWidth > 992) { p
-            if (scrollPosition >= bodyHeight - 50) { 
+
+        if (window.innerWidth > 992) {
+            if (scrollPosition >= bodyHeight - 50) {
                 footer.classList.add('visible');
             } else {
                 clearTimeout(scrollTimeout);
@@ -34,10 +38,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }, 100);
             }
-        } else { 
+        } else {
             footer.classList.add('visible');
         }
     });
+
 
     if (currentPath === 'activities.html' || currentPath === 'problems.html') {
         const searchBar = document.querySelector('.search-bar');
@@ -69,11 +74,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+
     const comingSoonModal = document.getElementById('comingSoonModal');
     const closeComingSoonButton = document.querySelector('#comingSoonModal .close-button');
 
     if (comingSoonModal) {
-        if (window.innerWidth > 992) { 
+        if (window.innerWidth > 992) {
+
+
             if (closeComingSoonButton) {
                 closeComingSoonButton.onclick = function () {
                     comingSoonModal.classList.remove('show');
@@ -86,11 +94,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         } else {
-            // Trên mobile, đảm bảo modal này bị ẩn nếu tồn tại (CSS cũng xử lý)
+
             comingSoonModal.style.display = 'none';
         }
     }
-  
+
+
+
     const mobileMenuToggle = document.getElementById('mobile-menu');
     const mobileOverlayNav = document.getElementById('mobileOverlayNav');
     const closeOverlayButton = document.querySelector('.mobile-nav-overlay .close-overlay-button');
@@ -98,23 +108,26 @@ document.addEventListener('DOMContentLoaded', () => {
     if (mobileMenuToggle && mobileOverlayNav && closeOverlayButton) {
         mobileMenuToggle.addEventListener('click', () => {
             mobileOverlayNav.classList.add('open');
-            document.body.style.overflow = 'hidden'; 
+            document.body.style.overflow = 'hidden';
         });
 
         closeOverlayButton.addEventListener('click', () => {
             mobileOverlayNav.classList.remove('open');
-            document.body.style.overflow = 'auto'; 
+            document.body.style.overflow = 'auto';
         });
+
 
         const mobileNavButtons = mobileOverlayNav.querySelectorAll('.mobile-nav-button');
         mobileNavButtons.forEach(button => {
             button.addEventListener('click', () => {
+
                 if (!button.classList.contains('close-overlay-button')) {
                     mobileOverlayNav.classList.remove('open');
                     document.body.style.overflow = 'auto';
                 }
             });
         });
+
 
         mobileOverlayNav.addEventListener('click', (event) => {
             if (event.target === mobileOverlayNav) {
@@ -127,18 +140,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const tableOfContents = document.querySelector('.table-of-contents');
     if (tableOfContents) {
         tableOfContents.addEventListener('click', function (event) {
-            if (event.target.tagName === 'A' && event.target.getAttribute('href').startsWith('#')) {
-                event.preventDefault(); 
 
-                const targetId = event.target.getAttribute('href').substring(1); 
+            if (event.target.tagName === 'A' && event.target.getAttribute('href').startsWith('#')) {
+                event.preventDefault();
+                const targetId = event.target.getAttribute('href').substring(1);
                 const targetElement = document.getElementById(targetId);
 
                 if (targetElement) {
-                  
+
                     targetElement.scrollIntoView({
                         behavior: 'smooth',
-                        block: 'start' 
+                        block: 'start'
                     });
+
                 }
             }
         });
