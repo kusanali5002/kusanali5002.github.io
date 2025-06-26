@@ -15,6 +15,7 @@
     --border-color: #B2FF59;
     --background-gradient-start: #000600;
     --background-gradient-end: #0f2d12;
+    --card-background: rgba(0, 0, 0, 0.4);
 }
 
 
@@ -396,6 +397,20 @@ body {
     color: var(--light-green);
 }
 
+
+.nahida-main-text h1,
+.nahida-main-text h2,
+.nahida-main-text h3,
+.nahida-main-text h4,
+.activity-main-text h1,
+.activity-main-text h2,
+.activity-main-text h3,
+.activity-main-text h4 {
+    scroll-margin-top: 100px;
+    
+}
+
+
 .table-of-contents {
     flex: 1;
     background: rgba(0, 0, 0, 0.4);
@@ -717,6 +732,7 @@ strong {
 }
 
 
+
 .table-container {
     overflow-x: hidden;
     
@@ -803,8 +819,6 @@ strong {
     border-radius: 5px;
     background-color: rgba(255, 255, 255, 0.1);
 }
-
-
 
 .modal {
     display: none;
@@ -963,7 +977,6 @@ strong {
     border-radius: 5px;
     
     font-size: 1.1em;
-    
     display: flex;
     align-items: center;
     
@@ -1013,7 +1026,6 @@ strong {
     color: var(--text-color);
     
     border: none;
-    
     cursor: pointer;
     padding: 15px 25px;
     
@@ -1138,26 +1150,26 @@ strong {
     }
 
 
-
+    
     .menu-toggle {
         display: flex;
-
+        
         position: absolute;
-
+        
         right: 20px;
-
+        
         top: 50%;
-
+        
         transform: translateY(-50%);
-
+        
     }
 
-
+    
     .content-wrapper {
         padding-top: 70px;
-
+        
         padding-bottom: 70px;
-
+        
     }
 
     .main-content-container {
@@ -1411,6 +1423,7 @@ strong {
     }
 
     
+    
     .table-container {
         overflow-x: auto;
         
@@ -1516,6 +1529,17 @@ strong {
         font-size: 1em;
     }
 
+    .activity-main-text h1,
+    .activity-main-text h2,
+    .activity-main-text h3,
+    .activity-main-text p,
+    .activity-main-text ul,
+    .activity-main-text ol {
+        padding-left: 5px;
+        
+        padding-right: 5px;
+    }
+
     .activity-main-text h1 {
         font-size: 1.8em;
     }
@@ -1540,6 +1564,44 @@ strong {
 
     .table-of-contents ul li a {
         font-size: 0.85em;
+    }
+
+    .quick-jump-links {
+        gap: 5px;
+        
+        padding: 8px 0;
+        
+    }
+
+    .quick-jump-button {
+        font-size: 0.8em;
+        
+        padding: 6px 10px;
+        
+    }
+
+    .talent-icon {
+        width: 30px;
+        
+        height: 30px;
+        margin-right: 10px;
+    }
+
+    .talent-name {
+        font-size: 1.2em;
+        
+    }
+
+    .talent-type {
+        font-size: 0.8em;
+        
+    }
+
+    .talent-card p,
+    .talent-card ul {
+        font-size: 0.9em;
+        
+        padding: 0 5px;
     }
 
     .card h2 {
