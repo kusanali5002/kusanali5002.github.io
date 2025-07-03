@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'GenshinFont';
-    src: url('HYWenHei Extended.ttf') format('truetype');
+    src: url('HYWenHei Extended.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -25,7 +25,7 @@
     box-sizing: border-box;
     font-family: 'GenshinFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     scroll-behavior: smooth;
-    
+
 }
 
 body {
@@ -34,7 +34,7 @@ body {
     color: var(--text-color);
     position: relative;
     overflow-x: hidden;
-    
+
 }
 
 
@@ -85,7 +85,7 @@ body {
 }
 
 .header.scrolled .logo {
-    
+
     opacity: 0;
     pointer-events: none;
 }
@@ -154,7 +154,7 @@ body {
 
 .menu-toggle {
     display: none;
-    
+
     flex-direction: column;
     justify-content: space-around;
     width: 30px;
@@ -335,17 +335,17 @@ body {
 }
 
 .home-image {
-    
+
     display: flex;
     justify-content: center;
     align-items: center;
     max-width: 400px;
-    
+
 }
 
 .home-image img {
     width: 100%;
-    
+
     height: auto;
     border-radius: 20px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
@@ -407,7 +407,7 @@ body {
 .activity-main-text h3,
 .activity-main-text h4 {
     scroll-margin-top: 100px;
-    
+
 }
 
 
@@ -526,7 +526,7 @@ body {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
     border: 2px solid rgba(255, 255, 255, 0.3);
     display: flex;
-    
+
     justify-content: center;
     align-items: center;
 }
@@ -686,7 +686,7 @@ body {
     position: relative;
     width: 100%;
     padding-bottom: 56.25%;
-    
+
     height: 0;
     margin: 40px auto;
     max-width: 800px;
@@ -735,7 +735,7 @@ strong {
 
 .table-container {
     overflow-x: hidden;
-    
+
     margin-top: 20px;
     margin-bottom: 30px;
     background-color: rgba(0, 0, 0, 0.4);
@@ -761,7 +761,7 @@ strong {
     text-align: left;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     white-space: nowrap;
-    
+
 }
 
 .data-table th,
@@ -922,40 +922,40 @@ strong {
 
 .mobile-nav-content {
     background-color: rgba(0, 0, 0, 0.4);
-    
+
     border: 1px solid var(--light-green);
-    
+
     border-radius: 15px;
     padding: 30px;
-    
+
     width: 85%;
-    
+
     max-width: 450px;
-    
+
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
     text-align: center;
     display: flex;
-    
+
     flex-direction: column;
-    
+
     align-items: center;
-    
+
     gap: 20px;
-    
+
 }
 
 .mobile-nav-title {
     font-size: 2em;
     color: var(--text-color);
-    
+
     margin-bottom: 20px;
-    
+
     font-weight: normal;
-    
+
     font-family: 'GenshinFont', sans-serif;
-    
+
     text-align: center;
-    
+
 }
 
 .mobile-nav-grid {
@@ -963,33 +963,33 @@ strong {
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
     width: 100%;
-    
+
 }
 
 .mobile-nav-button {
     background-color: var(--primary-green);
-    
+
     color: var(--text-color);
-    
+
     text-decoration: none;
     padding: 15px 10px;
-    
+
     border-radius: 5px;
-    
+
     font-size: 1.1em;
     display: flex;
     align-items: center;
-    
+
     justify-content: center;
-    
+
     transition: background-color 0.2s ease, transform 0.2s ease;
     border: none;
-    
+
     cursor: pointer;
     font-family: 'GenshinFont', sans-serif;
-    
+
     width: 100%;
-    
+
 }
 
 
@@ -1004,40 +1004,40 @@ strong {
 
 .mobile-nav-home-button {
     grid-column: span 2;
-    
+
     margin-top: 5px;
-    
+
 }
 
 
 .mobile-nav-overlay .separator {
     width: 90%;
-    
+
     height: 1px;
     background-color: rgba(255, 255, 255, 0.3);
-    
+
     margin: 25px 0;
-    
+
 }
 
 .close-overlay-button {
     background-color: var(--primary-green);
-    
+
     color: var(--text-color);
-    
+
     border: none;
     cursor: pointer;
     padding: 15px 25px;
-    
+
     border-radius: 5px;
-    
+
     font-size: 1.1em;
-    
+
     transition: background-color 0.2s ease, transform 0.2s ease;
     width: auto;
-    
+
     font-family: 'GenshinFont', sans-serif;
-    
+
 }
 
 .close-overlay-button:hover {
@@ -1062,7 +1062,7 @@ strong {
         gap: 30px;
     }
 
-    
+
     .home-image img,
     .about-me-image img {
         max-width: 100%;
@@ -1073,143 +1073,143 @@ strong {
 
 @media (max-width: 992px) {
 
-    
+
     main {
         display: block;
         padding-top: 70px;
-        
+
     }
 
-    
+
     .navbar {
         display: none;
-        
+
     }
 
     .home-icon {
         display: none;
-        
+
     }
 
     .header .logo .desktop-logo-img {
         display: none;
-        
+
     }
 
     .header.scrolled .logo {
-        
+
         opacity: 1;
         pointer-events: auto;
     }
 
-    
+
     .header {
         padding: 10px 20px;
-        
+
         justify-content: space-between;
-        
+
     }
 
     .header.scrolled {
         padding: 5px 20px;
     }
 
-    
+
     .header .logo {
         margin-left: auto;
-        
+
         margin-right: auto;
-        
+
         width: auto;
-        
+
         flex-grow: 1;
-        
+
         justify-content: center;
-        
+
     }
 
     .header .logo .mobile-logo-img {
         display: inline-block;
-        
+
         height: 30px;
-        
+
         margin-right: 5px;
         vertical-align: middle;
     }
 
     .header .logo img.mobile-logo-tk {
         height: 30px;
-        
+
     }
 
     .header .logo img.mobile-logo-thekusanali {
         height: 18px;
-        
+
         margin-right: 0;
-        
+
     }
 
 
-    
+
     .menu-toggle {
         display: flex;
-        
+
         position: absolute;
-        
+
         right: 20px;
-        
+
         top: 50%;
-        
+
         transform: translateY(-50%);
-        
+
     }
 
-    
+
     .content-wrapper {
         padding-top: 70px;
-        
+
         padding-bottom: 70px;
-        
+
     }
 
     .main-content-container {
         padding: 15px;
-        
+
         width: 95%;
-        
+
         margin: 20px auto;
-        
+
     }
 
-    
+
     .home-section {
         flex-direction: column;
-        
+
         text-align: center;
         gap: 30px;
         padding: 20px;
-        
+
     }
 
     .home-image {
         order: -1;
-        
+
         max-width: 100%;
-        
+
     }
 
     .home-text h1 {
         font-size: 2.5em;
-        
+
     }
 
     .home-image img {
         max-width: 90%;
-        
+
         height: auto;
     }
 
-    
+
     .about-me-section {
         flex-direction: column;
         text-align: center;
@@ -1220,12 +1220,12 @@ strong {
     .about-me-image {
         order: -1;
         max-width: 100%;
-        
+
     }
 
     .about-me-image img {
         max-width: 90%;
-        
+
         height: auto;
     }
 
@@ -1243,20 +1243,20 @@ strong {
 
     .about-me-text ul {
         margin-left: 20px;
-        
+
         text-align: left;
-        
+
     }
 
-    
+
     .nahida-content,
     .activity-detail-page-content {
         flex-direction: column;
-        
+
         width: 100%;
-        
+
         gap: 20px;
-        
+
         padding: 0;
     }
 
@@ -1268,7 +1268,7 @@ strong {
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    
+
     .activity-main-text h1,
     .activity-main-text h2,
     .activity-main-text h3,
@@ -1276,107 +1276,107 @@ strong {
     .activity-main-text ul,
     .activity-main-text ol {
         padding-left: 10px;
-        
+
         padding-right: 10px;
         text-align: left;
-        
+
     }
 
     .activity-main-text h1 {
         font-size: 2em;
-        
+
         text-align: center;
-        
+
     }
 
 
     .activity-main-text h2 {
         font-size: 1.6em;
-        
+
     }
 
     .activity-main-text h3 {
         font-size: 1.3em;
-        
+
     }
 
     .activity-main-text p,
     .activity-main-text ul,
     .activity-main-text ol {
         font-size: 1em;
-        
+
         margin-bottom: 15px;
     }
 
     .activity-main-text ul,
     .activity-main-text ol {
         margin-left: 15px;
-        
+
     }
 
     .table-of-contents {
         position: static;
-        
+
         max-height: none;
         overflow-y: visible;
         width: 100%;
         margin-top: 0;
         padding: 15px;
-        
+
         text-align: left;
-        
+
     }
 
     .table-of-contents h3 {
         margin-bottom: 10px;
         font-size: 1.3em;
         text-align: center;
-        
+
     }
 
     .table-of-contents ul {
         display: block;
-        
+
         flex-wrap: nowrap;
-        
+
         justify-content: flex-start;
-        
+
         gap: 0;
     }
 
     .table-of-contents ul li {
         margin-bottom: 5px;
-        
+
     }
 
     .table-of-contents ul li a {
         font-size: 0.9em;
-        
+
         padding: 3px 5px;
-        
+
         border: none;
-        
+
         background-color: transparent;
-        
+
         display: inline;
-        
+
     }
 
     .table-of-contents ul li a:hover {
         background-color: transparent;
-        
+
     }
 
     .table-of-contents ul ul {
         display: block;
-        
+
         margin-left: 15px;
-        
+
         margin-top: 3px;
         padding-left: 8px;
     }
 
-    
+
     .search-bar-container {
         width: 90%;
         margin: 20px auto 30px auto;
@@ -1387,28 +1387,28 @@ strong {
         font-size: 15px;
     }
 
-    
+
     .card-list {
         width: 90%;
         gap: 15px;
-        
+
     }
 
     .card {
         padding: 20px;
-        
+
     }
 
     .card h2 {
         font-size: 22px;
-        
+
     }
 
     .card .description {
         font-size: 15px;
     }
 
-    
+
     .contact-section {
         width: 90%;
         padding: 30px 0;
@@ -1422,17 +1422,17 @@ strong {
         font-size: 1.6em;
     }
 
-    
-    
+
+
     .table-container {
         overflow-x: auto;
-        
+
     }
 
     .data-table,
     .ascension-summary {
         font-size: 0.8em;
-        
+
     }
 
     .data-table th,
@@ -1440,14 +1440,14 @@ strong {
     .ascension-summary th,
     .ascension-summary td {
         padding: 5px 8px;
-        
+
         white-space: normal;
-        
+
         vertical-align: top;
-        
+
     }
 
-    
+
     .ascension-summary .cost-items,
     .ascension-cost-row .cost-item {
         min-width: 45px;
@@ -1464,7 +1464,7 @@ strong {
         font-size: 0.65em;
     }
 
-    
+
     .footer {
         position: fixed;
         bottom: 0;
@@ -1473,13 +1473,13 @@ strong {
         background-color: rgba(0, 0, 0, 0.7);
         padding: 10px 0;
         z-index: 1000;
-        
+
         display: block;
         opacity: 1;
         pointer-events: auto;
     }
 
-    
+
     .mobile-under-construction {
         display: none !important;
     }
@@ -1536,7 +1536,7 @@ strong {
     .activity-main-text ul,
     .activity-main-text ol {
         padding-left: 5px;
-        
+
         padding-right: 5px;
     }
 
@@ -1568,39 +1568,39 @@ strong {
 
     .quick-jump-links {
         gap: 5px;
-        
+
         padding: 8px 0;
-        
+
     }
 
     .quick-jump-button {
         font-size: 0.8em;
-        
+
         padding: 6px 10px;
-        
+
     }
 
     .talent-icon {
         width: 30px;
-        
+
         height: 30px;
         margin-right: 10px;
     }
 
     .talent-name {
         font-size: 1.2em;
-        
+
     }
 
     .talent-type {
         font-size: 0.8em;
-        
+
     }
 
     .talent-card p,
     .talent-card ul {
         font-size: 0.9em;
-        
+
         padding: 0 5px;
     }
 
@@ -1617,11 +1617,11 @@ strong {
         font-size: 14px;
     }
 
-    
+
     .data-table,
     .ascension-summary {
         font-size: 0.75em;
-        
+
     }
 
     .data-table th,
@@ -1629,7 +1629,7 @@ strong {
     .ascension-summary th,
     .ascension-summary td {
         padding: 4px 6px;
-        
+
     }
 
     .ascension-summary .cost-item,
@@ -1686,13 +1686,13 @@ strong {
 
     .mobile-nav-grid {
         grid-template-columns: 1fr;
-        
+
         gap: 10px;
     }
 
     .mobile-nav-home-button {
         grid-column: span 1;
-        
+
     }
 
     .card h2 {
