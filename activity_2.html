@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activities</title>
+    <link rel="preload" href="HYWenHei Extended.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="images/favicon.png" type="image/png">
+</head>
+
+<body>
+    <header class="header">
+        <a href="index.html" class="logo">
+            <img src="images/logo.png" alt="TK The Kusanali Logo" class="desktop-logo-img">
+            <img src="images/tk_logo.png" alt="TK" class="mobile-logo-img mobile-logo-tk">
+            <img src="images/the_kusanali_logo.png" alt="THE KUSANALI" class="mobile-logo-img mobile-logo-thekusanali">
+        </a>
+        <nav class="navbar">
+            <ul>
+                <li><a href="activities.html">ACTIVITIES</a></li>
+                <li><a href="#" onclick="showComingSoonAlert(event)">PROBLEMS</a></li>
+                <li><a href="nahida.html">NAHIDA</a></li>
+                <li><a href="about.html">ABOUT ME</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+            </ul>
+        </nav>
+        <div class="menu-toggle" id="mobile-menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+        <a href="index.html" class="home-icon">
+            <img src="images/home-icon.png" alt="Home">
+        </a>
+    </header>
+
+    <div id="mobileOverlayNav" class="mobile-nav-overlay">
+        <div class="mobile-nav-content">
+            <h3 class="mobile-nav-title">Navigation</h3>
+            <div class="mobile-nav-grid">
+                <a href="activities.html" class="mobile-nav-button">Activities</a>
+                <a href="#" onclick="showComingSoonAlert(event)" class="mobile-nav-button">Problems</a>
+                <a href="nahida.html" class="mobile-nav-button">Nahida</a>
+                <a href="about.html" class="mobile-nav-button">About Me</a>
+                <a href="contact.html" class="mobile-nav-button">Contact</a>
+                <a href="index.html" class="mobile-nav-button mobile-nav-home-button">Home</a>
+            </div>
+            <hr class="separator">
+            <button class="close-overlay-button">Close</button>
+        </div>
+    </div>
+
+    <main class="content-wrapper">
+        <div class="search-bar-container">
+            <input type="text" class="search-bar" placeholder="Write something to search...">
+        </div>
+
+        <div class="card-list">
+            <a href="posts/apl2025.html" class="card">
+                <h2>Anena of Valor Premier League - New hope for AOG region</h2>
+                <p class="description">Teams from the AOG region have been performing quite poorly in recent
+                    international tournaments. As a result, expectations for them in this APL tournament were fairly
+                    low. However, a few surprising results have already taken place...</p>
+                <p class="hashtags">#aov #apl</p>
+                <p class="date">07/11/2025</p>
+            </a>
+            <a href="#" onclick="showComingSoonAlert(event)" class=" card">
+                <h2>Dun's new friends from UET</h2>
+                <p class="description">Dun met a friend from UET through the VNU Genshin Box group, and from there, he
+                    got to know even more friends from different universities...</p>
+                <p class="hashtags">#dailylife</p>
+                <p class="date">07/07/2025</p>
+            </a>
+            <a href="#" onclick="showComingSoonAlert(event)" class=" card">
+                <h2>First cosplay experience</h2>
+                <p class="description">Dun had been wanting to try cosplay for quite a while, but for various reasons,
+                    he didn't get the chance until March. It looks like he really enjoyed it...</p>
+                <p class="hashtags">#dailylife</p>
+                <p class="date">07/12/2025</p>
+            </a>
+            <a href="#" onclick="showComingSoonAlert(event)" class=" card">
+                <h2>Flowborn (Tanker) tutorial</h2>
+                <p class="description">Flowborn is the newest hero in Honor of Kings, with a unique ability to take on
+                    multiple roles. Just two days ago, the tanky/fighter version of Flowborn was also released in the
+                    game. Let's follow Dun and learn how to master Flowborn like a pro...</p>
+                <p class="hashtags">#hok #moba</p>
+                <p class="date">07/12/2025</p>
+            </a>
+
+        </div>
+
+        <div class="pagination">
+            <a href="#" onclick="showComingSoonAlert(event)">Prev</a>
+            <a href="activities.html">1</a>
+            <a href="#" class="current-page">2</a>
+            <span>...</span>
+            <a href="#" onclick="showComingSoonAlert(event)">9</a>
+            <a href="#" onclick="showComingSoonAlert(event)">10</a>
+            <a href="#" onclick="showComingSoonAlert(event)">Next</a>
+        </div>
+    </main>
+    <div id="mobileUnderConstruction" class="mobile-under-construction">
+        <div class="message-content">
+            <h1>Under Construction</h1>
+            <p>We are currently updating the interface for mobile devices.</p>
+            <p>Sorry for the inconvenience!</p>
+        </div>
+    </div>
+    <footer class="footer">
+        © 2025 KUSANALI
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

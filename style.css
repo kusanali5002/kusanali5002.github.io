@@ -1,11 +1,10 @@
 @font-face {
     font-family: 'GenshinFont';
-    src: url('HYWenHei Extended.woff2') format('woff2');
+    src: url('HYWenHei\ Extended.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
 }
-
 
 :root {
     --primary-green: #388E3C;
@@ -25,7 +24,6 @@
     box-sizing: border-box;
     font-family: 'GenshinFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     scroll-behavior: smooth;
-
 }
 
 body {
@@ -34,9 +32,7 @@ body {
     color: var(--text-color);
     position: relative;
     overflow-x: hidden;
-
 }
-
 
 .header {
     width: 100%;
@@ -154,7 +150,6 @@ body {
 
 .menu-toggle {
     display: none;
-
     flex-direction: column;
     justify-content: space-around;
     width: 30px;
@@ -172,13 +167,11 @@ body {
 }
 
 
-
 .content-wrapper {
     padding-top: 100px;
     min-height: calc(100vh - 80px);
     padding-bottom: 50px;
 }
-
 
 .main-content-container {
     background: rgba(0, 0, 0, 0.2);
@@ -191,7 +184,6 @@ body {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
-
 
 .search-bar-container {
     width: 80%;
@@ -219,7 +211,6 @@ body {
 .search-bar:focus {
     border-color: var(--light-green);
 }
-
 
 .card-list {
     display: flex;
@@ -272,7 +263,6 @@ body {
     color: rgba(255, 255, 255, 0.6);
 }
 
-
 .pagination {
     display: flex;
     justify-content: center;
@@ -291,7 +281,13 @@ body {
     border: 1px solid var(--light-green);
 }
 
-.pagination a:hover {
+.pagination a.disabled-link {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.pagination a:hover:not(.disabled-link) {
     background-color: var(--light-green);
     transform: translateY(-2px);
 }
@@ -303,7 +299,20 @@ body {
     border-color: var(--border-color);
 }
 
-
+.no-results-message {
+    text-align: center;
+    font-size: 1.2em;
+    color: var(--light-green);
+    margin-top: 50px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 80%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
 
 
 .home-section {
@@ -335,24 +344,20 @@ body {
 }
 
 .home-image {
-
     display: flex;
     justify-content: center;
     align-items: center;
     max-width: 400px;
-
 }
 
 .home-image img {
     width: 100%;
-
     height: auto;
     border-radius: 20px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
     border: 2px solid rgba(255, 255, 255, 0.3);
     display: block;
 }
-
 
 .nahida-content,
 .activity-detail-page-content {
@@ -397,7 +402,6 @@ body {
     color: var(--light-green);
 }
 
-
 .nahida-main-text h1,
 .nahida-main-text h2,
 .nahida-main-text h3,
@@ -407,7 +411,6 @@ body {
 .activity-main-text h3,
 .activity-main-text h4 {
     scroll-margin-top: 100px;
-
 }
 
 
@@ -460,7 +463,6 @@ body {
     padding-left: 10px;
 }
 
-
 .activity-main-text h1 {
     font-size: 2.8em;
     margin-bottom: 20px;
@@ -508,7 +510,6 @@ body {
     padding-left: 10px;
 }
 
-
 .about-me-section {
     display: flex;
     justify-content: center;
@@ -526,7 +527,6 @@ body {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
     border: 2px solid rgba(255, 255, 255, 0.3);
     display: flex;
-
     justify-content: center;
     align-items: center;
 }
@@ -555,7 +555,6 @@ body {
     color: var(--dark-text-color);
 }
 
-
 .about-me-text h3 {
     font-size: 2em;
     margin-bottom: 20px;
@@ -574,7 +573,6 @@ body {
     margin-left: 40px;
     color: #FFFFFF;
 }
-
 
 
 .contact-section {
@@ -634,7 +632,6 @@ body {
     color: var(--text-color);
 }
 
-
 .footer {
     position: fixed;
     bottom: 0;
@@ -654,7 +651,6 @@ body {
     opacity: 1;
     pointer-events: auto;
 }
-
 
 .content-image-full {
     width: 100%;
@@ -681,12 +677,10 @@ body {
     text-align: center;
 }
 
-
 .video-container {
     position: relative;
     width: 100%;
     padding-bottom: 56.25%;
-
     height: 0;
     margin: 40px auto;
     max-width: 800px;
@@ -710,7 +704,6 @@ strong {
     color: var(--light-green);
 }
 
-
 .welcome-message-banner {
     width: 100%;
     text-align: center;
@@ -730,8 +723,6 @@ strong {
     font-size: 1.2em;
     color: var(--light-green);
 }
-
-
 
 .table-container {
     overflow-x: hidden;
@@ -761,7 +752,6 @@ strong {
     text-align: left;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     white-space: nowrap;
-
 }
 
 .data-table th,
@@ -818,6 +808,115 @@ strong {
     margin-bottom: 5px;
     border-radius: 5px;
     background-color: rgba(255, 255, 255, 0.1);
+}
+
+
+.talent-display-section {
+
+    background: var(--card-background);
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 30px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+
+    flex-direction: column;
+    gap: 20px;
+
+}
+
+.talent-card {
+    background-color: rgba(0, 0, 0, 0.3);
+
+    border-radius: 10px;
+    padding: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.talent-tab-nav {
+    display: none;
+}
+
+.talent-icon-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.talent-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 15px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+}
+
+.talent-header-text {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.talent-name {
+    font-size: 1.4em;
+    color: var(--border-color);
+    font-weight: bold;
+}
+
+.talent-type {
+    font-size: 0.9em;
+    color: var(--light-green);
+}
+
+
+.talent-card p {
+    line-height: 1.7;
+    font-size: 1em;
+    color: var(--dark-text-color);
+    margin-bottom: 10px;
+
+    padding: 0 5px;
+
+}
+
+.talent-card ul {
+    margin-left: 20px;
+    margin-bottom: 10px;
+    font-size: 1em;
+}
+
+
+.talent-tab-content .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.talent-data-table {
+    width: 100%;
+    white-space: nowrap;
+    min-width: 600px;
+}
+
+.talent-data-table th,
+.talent-data-table td {
+    text-align: center;
+    padding: 8px 5px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.9em;
+}
+
+.talent-data-table thead tr:first-child th {
+    border-bottom: none;
+}
+
+.talent-data-table thead tr:last-child th {
+    font-size: 0.8em;
+    font-weight: normal;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .modal {
@@ -893,11 +992,9 @@ strong {
     transform: scale(1);
 }
 
-
 .mobile-under-construction {
     display: none !important;
 }
-
 
 .mobile-nav-overlay {
     position: fixed;
@@ -922,40 +1019,26 @@ strong {
 
 .mobile-nav-content {
     background-color: rgba(0, 0, 0, 0.4);
-
     border: 1px solid var(--light-green);
-
     border-radius: 15px;
     padding: 30px;
-
     width: 85%;
-
     max-width: 450px;
-
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
     text-align: center;
     display: flex;
-
     flex-direction: column;
-
     align-items: center;
-
     gap: 20px;
-
 }
 
 .mobile-nav-title {
     font-size: 2em;
     color: var(--text-color);
-
     margin-bottom: 20px;
-
     font-weight: normal;
-
     font-family: 'GenshinFont', sans-serif;
-
     text-align: center;
-
 }
 
 .mobile-nav-grid {
@@ -963,35 +1046,24 @@ strong {
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
     width: 100%;
-
 }
 
 .mobile-nav-button {
     background-color: var(--primary-green);
-
     color: var(--text-color);
-
     text-decoration: none;
     padding: 15px 10px;
-
     border-radius: 5px;
-
     font-size: 1.1em;
     display: flex;
     align-items: center;
-
     justify-content: center;
-
     transition: background-color 0.2s ease, transform 0.2s ease;
     border: none;
-
     cursor: pointer;
     font-family: 'GenshinFont', sans-serif;
-
     width: 100%;
-
 }
-
 
 .mobile-nav-button .icon {
     display: none;
@@ -1004,48 +1076,33 @@ strong {
 
 .mobile-nav-home-button {
     grid-column: span 2;
-
     margin-top: 5px;
-
 }
-
 
 .mobile-nav-overlay .separator {
     width: 90%;
-
     height: 1px;
     background-color: rgba(255, 255, 255, 0.3);
-
     margin: 25px 0;
-
 }
 
 .close-overlay-button {
     background-color: var(--primary-green);
-
     color: var(--text-color);
-
     border: none;
     cursor: pointer;
     padding: 15px 25px;
-
     border-radius: 5px;
-
     font-size: 1.1em;
-
     transition: background-color 0.2s ease, transform 0.2s ease;
     width: auto;
-
     font-family: 'GenshinFont', sans-serif;
-
 }
 
 .close-overlay-button:hover {
     background-color: var(--light-green);
     transform: translateY(-2px);
 }
-
-
 
 @media (max-width: 1200px) {
     .main-content-container {
@@ -1061,7 +1118,6 @@ strong {
     .about-me-section {
         gap: 30px;
     }
-
 
     .home-image img,
     .about-me-image img {
@@ -1097,7 +1153,6 @@ strong {
     }
 
     .header.scrolled .logo {
-
         opacity: 1;
         pointer-events: auto;
     }
@@ -1328,10 +1383,10 @@ strong {
     }
 
     .table-of-contents h3 {
-        margin-bottom: 10px;
         font-size: 1.3em;
         text-align: center;
 
+        margin-bottom: 10px;
     }
 
     .table-of-contents ul {
@@ -1421,7 +1476,6 @@ strong {
     .social-media-item h3 {
         font-size: 1.6em;
     }
-
 
 
     .table-container {
