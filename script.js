@@ -58,10 +58,10 @@ const allPostsData = [
         url: "yuk.html"
     },
     {
-        title: "Arena of Valor Premier League 2025 - New hope for AOG region",
+        title: "Arena of Valor Premier League 2025 - AOG fails again",
         description: "Teams from the AOG region have been performing quite poorly in recent international tournaments. As a result, expectations for them in this APL tournament were fairly low. However, a few surprising results have already taken place....",
         hashtags: "#aov #apl",
-        date: "07/11/2025",
+        date: "07/15/2025",
         url: "apl2025>html",
         isComingSoon: true
     },
@@ -90,6 +90,13 @@ const allPostsData = [
         isComingSoon: true
     },
     {
+        title: "Spiral Abyss version 5.7",
+        description: "A fairly chill Spiral Abyss cycle with familiar enemies...",
+        hashtags: "#spiralabyss #genshinimpact",
+        date: "07/17/2025",
+        url: "spiralabyss5.7.html",
+    },
+    {
         title: "Support Dun",
         description: "He's on his way to get my constellation 6, but it seems like Dun is exactly a stupid guy when it comes to rolling on banners. And now... he's almost out of primogems...A small donation might just help him out a lot...",
         hashtags: "#genshinimpact",
@@ -97,6 +104,7 @@ const allPostsData = [
         url: "#",
         isComingSoon: true
     }
+
 ];
 
 

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spiral Abyss version 5.7</title>
+    <link rel="preload" href="../HYWenHei Extended.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="icon" href="../images/favicon.png" type="image/png">
+</head>
+
+<body>
+    <header class="header">
+        <a href="../index.html" class="logo">
+            <img src="../images/logo.png" alt="TK The Kusanali Logo" class="desktop-logo-img">
+            <img src="../images/tk_logo.png" alt="TK" class="mobile-logo-img mobile-logo-tk">
+            <img src="../images/the_kusanali_logo.png" alt="THE KUSANALI"
+                class="mobile-logo-img mobile-logo-thekusanali">
+        </a>
+        <nav class="navbar">
+            <ul>
+                <li><a href="../activities.html" class="active-on-detail-page">BACK</a></li>
+                <li><a href="#" onclick="showComingSoonAlert(event)">PROBLEMS</a></li>
+                <li><a href="../nahida.html">NAHIDA</a></li>
+                <li><a href="../about.html">ABOUT ME</a></li>
+                <li><a href="../contact.html">CONTACT</a></li>
+            </ul>
+        </nav>
+        <div class="menu-toggle" id="mobile-menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+        <a href="../index.html" class="home-icon">
+            <img src="../images/home-icon.png" alt="Home">
+        </a>
+    </header>
+
+    <div id="mobileOverlayNav" class="mobile-nav-overlay">
+        <div class="mobile-nav-content">
+            <h3 class="mobile-nav-title">Navigation</h3>
+            <div class="mobile-nav-grid">
+                <a href="../activities.html" class="mobile-nav-button">Activities</a>
+                <a href="#" onclick="showComingSoonAlert(event)" class="mobile-nav-button">Problems</a>
+                <a href="../nahida.html" class="mobile-nav-button">Nahida</a>
+                <a href="../about.html" class="mobile-nav-button">About Me</a>
+                <a href="../contact.html" class="mobile-nav-button">Contact</a>
+                <a href="../index.html" class="mobile-nav-button mobile-nav-home-button">Home</a>
+            </div>
+            <hr class="separator">
+            <button class="close-overlay-button">Close</button>
+        </div>
+    </div>
+
+    <main class="content-wrapper">
+        <div class="main-content-container">
+            <section class="activity-detail-page-content">
+                <div class="activity-main-text">
+                    <h1 id="top-of-page">Spiral Abyss version 5.7</h1>
+                    <p class="post-meta">#spiralabyss #genshinimpact | Post day : July 17th 2025</p>
+
+                    <h2 id="section1-overview">Overview about current Spiral Abyss</h2>
+                    <p>This Spiral Abyss doesn't feature any particularly new enemies - we'll be facing the usual
+                        familiar ones. However, some of them have significantly more HP and there are a few small tricks
+                        to note onm certain special floors. Overall, this Abyss is fairly easy. Let's take a look at the
+                        buffs of both halves of this season :</p>
+                    <ul>
+                        <li>1st Half - Cryo DMG dealt by all party members will be increased by 75%.</li>
+                        <li>2nd Half - All party members' Nightsoul-aligned DMG will be increased by 75%.</li>
+                    </ul>
+
+                    <figure class="content-image-full">
+                        <img src="../images/5.7abyss.png" alt="Spiral Abyss 5.7 Monsters">
+                        <figcaption>5.7 Spiral Abyss (via Homdgcat).</figcaption>
+                    </figure>
+                    <h2 id="section2-analyze">Analyze</h2>
+                    <h3 id="content2-1">First Half</h3>
+                    <p>In Chamber 1 First Half, we're facing Secret Source Automaton : Overseer Device once again. Just
+                        like in the
+                        previous
+                        season, this is
+                        still a playground for Cryo main DPS characters like Skirk, Wriothesley, or Ayaka, as well as
+                        strong Cryo sub - DPS like Escoffier. Teams built around these characters will benefit greatly
+                        from the First Half buffs.</p>
+                    <p>Melt teams with dual Cryo characters are still performing impressively. Teams that feature a
+                        Hydro DPS alongside Cryo units also remain very solid.</p>
+                    <p>However, if you don't have access to those team comps, I'd recommend trying the Naxingku -
+                        Chongyun setup against Secret Source Automaton : Overseer Device. I didn't recommend this team
+                        last season because the enemy had over 5
+                        million HP - too much for a Hyperbloom setup to reliably carry. But this time, its HP has been
+                        reduced to just 3.6 million, giving Hyperbloom teams a real chance to shine. Other variants like
+                        Nafuku Nayaefu or any other hyperbloom team are still working well too.</p>
+                    <p>The key point to focus on here is how to consistently apply Cryo when Chongyun is your only Cryo
+                        unit. Don't worry - I've got you covered. Check out my video below to see exactly how to make it
+                        work</p>
+                    <div class="video-container">
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/YOUR_YOUTUBE_VIDEO_ID"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                    <p>The team I used in the video is the standard Naxingku lineup. Chongyun's Elemental Skill infuses
+                        normal attacks (from sword, claymore, and polearm users) with Cryo. We take advantage of this to
+                        effectively turn Xingqiu into a Cryo applier.</p>
+                    <p>To do this, we need to swap Nahida off-field and let Xingqiu take the field temporarily. Be
+                        mindful of the cooldowns on Kuki Shinobu and Nahida's skills so you can reapply Electro and
+                        Dendro for
+                        Hyperbloom reactions in time.</p>
+                    <p>Now, why didn't I use Kuki as the on-field unit to apply Cryo instead? The reason is Xingqiu has
+                        faster normal attack animations with less delay compared to Kuki, which allows Cryo to be
+                        applied more efficiently.</p>
+                    <p>There's really nothing to say about Chamber 2. Any standard team can clear it with ease.</p>
+                    <p>In Chamber 3, both Electro and Geo Wayob appear simultaneously at two different corners of the
+                        arena. I recommend quickly unleashing your combos - especially your key Elemental Bursts - and
+                        focus on the
+                        Geo Wayob first instead of the Electro one. During their special skill phase, the Wayobs will
+                        summon a white shield that absorbs damage. If you manage to break the shield before the Wayob
+                        retrieves it, your characters will get a full energy refund. Meanwhile, the Electro Wayob will
+                        move toward you on its own, so once that happens, just focus on finishing them both off.</p>
+                    <h3 id="content2-2">Second Half</h3>
+                    <p>In the second half , if you don't want to switch lineups, Dendro teams are not recommended
+                        because Moutain King : Yumkasaur has high Dendro RES.</p>
+                    <p>The enemy mechanics and spawn patterns in the second half are exactly the same as in previous
+                        encounters, so I won't go into much detail. Just one small note - regarding the Mountain King in
+                        the final chamber. Its HP exceeds 5 million this cycle, so be mindful of the time.</p>
+                    <h2 id="section3-note">Note</h2>
+                    <p>Although I mentioned that strong Cryo applicators have the upper hand in the second half, Citlali
+                        is actually a special case. This is because the Secret Source Automaton: Overseer Device
+                        maintains a fixed 50% elemental resistance and deals massive damage when it comes into contact
+                        with Nightsoul. So be cautious - if you don't have many stable sources of Cryo , you'll
+                        need to carefully balance your damage output and dodging skills to survive.</p>
+
+                    <h2 id="section4-video">Tutorial Video</h2>
+                    <div class="video-container">
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/YOUR_YOUTUBE_VIDEO_ID"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                </div>
+
+                <aside class="table-of-contents">
+                    <h3>Table of contents</h3>
+                    <ul>
+                        <li><a href="#section1-overview">Overview about current Spiral Abyss</a></li>
+                        <li><a href="#section2-analyze">Analyze</a>
+                            <ul>
+                                <li><a href="#content2-1">First Half</a></li>
+                                <li><a href="#content2-2">Second Half</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#section3-note">Note</a></li>
+                        <li><a href="#section4-video">Tutorial Video</a></li>
+                    </ul>
+                </aside>
+            </section>
+        </div>
+    </main>
+    <div id="mobileUnderConstruction" class="mobile-under-construction">
+        <div class="message-content">
+            <h1>Under Construction</h1>
+            <p>We are currently updating the interface for mobile devices.</p>
+            <p>Sorry for the inconvenience!</p>
+        </div>
+    </div>
+    <footer class="footer">
+        © 2025 KUSANALI
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+
+</html>
