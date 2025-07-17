@@ -100,9 +100,7 @@ const allPostsData = [
         title: "Support Dun",
         description: "He's on his way to get my constellation 6, but it seems like Dun is exactly a stupid guy when it comes to rolling on banners. And now... he's almost out of primogems...A small donation might just help him out a lot...",
         hashtags: "#genshinimpact",
-        date: "07/11/2025",
-        url: "#",
-        isComingSoon: true
+        url: "support.html",
     }
 
 ];
