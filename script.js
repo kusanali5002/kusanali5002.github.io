@@ -62,8 +62,7 @@ const allPostsData = [
         description: "Teams from the AOG region have been performing quite poorly in recent international tournaments. As a result, expectations for them in this APL tournament were fairly low. However, a few surprising results have already taken place....",
         hashtags: "#aov #apl",
         date: "07/15/2025",
-        url: "apl2025>html",
-        isComingSoon: true
+        url: "apl2025.html",
     },
     {
         title: "Dun's new friends at UET",
