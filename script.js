@@ -100,6 +100,14 @@ const allPostsData = [
         description: "He's on his way to get my constellation 6, but it seems like Dun is exactly a stupid guy when it comes to rolling on banners. And now... he's almost out of primogems...A small donation might just help him out a lot...",
         hashtags: "#genshinimpact",
         url: "support.html",
+    },
+    {
+        title: "Memory of Chaos | Lupine Moon - Devourer",
+        description: "First HSR guide for endgame content on Dun's blog with expert insights from Atami, an outstanding player of the game.",
+        hashtags: "#hsr #moc",
+        date: "07/25/2025",
+        url: "#",
+        isComingSoon: true
     }
 
 ];
