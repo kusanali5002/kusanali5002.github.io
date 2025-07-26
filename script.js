@@ -106,8 +106,7 @@ const allPostsData = [
         description: "First HSR guide for endgame content on Dun's blog with expert insights from Atami, an outstanding player of the game.",
         hashtags: "#hsr #moc",
         date: "07/25/2025",
-        url: "#",
-        isComingSoon: true
+        url: "moc3.4.html",
     }
 
 ];
