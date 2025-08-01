@@ -26,6 +26,12 @@
     scroll-behavior: smooth;
 }
 
+body * {
+    user-select: text !important;
+    -webkit-user-select: text !important;
+    unicode-bidi: normal !important;
+}
+
 body {
     background: linear-gradient(180deg, var(--background-gradient-start) 0%, var(--background-gradient-end) 100%);
     min-height: 100vh;
