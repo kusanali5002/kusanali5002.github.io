@@ -501,6 +501,13 @@ body {
     color: var(--light-green);
 }
 
+.activity-main-text h4 {
+    font-size: 1.2em;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    color: var(--light-green);
+}
+
 .activity-main-text p,
 .activity-main-text ul,
 .activity-main-text ol {
@@ -508,6 +515,19 @@ body {
     line-height: 1.7;
     color: var(--dark-text-color);
     margin-bottom: 20px;
+}
+
+.activity-main-text ul ul {
+    margin-left: 18px;
+    padding-left: 10px;
+    border-left: 1px;
+}
+
+.activity-main-text ul ul li {
+    font-size: 0.95em;
+
+    color: rgb(255, 2, 2);
+
 }
 
 .activity-main-text ul,
@@ -1333,6 +1353,7 @@ strong {
     .activity-main-text h1,
     .activity-main-text h2,
     .activity-main-text h3,
+    .activity-main-text h4,
     .activity-main-text p,
     .activity-main-text ul,
     .activity-main-text ol {
@@ -1359,6 +1380,10 @@ strong {
     .activity-main-text h3 {
         font-size: 1.3em;
 
+    }
+
+    .activity-main-text-h4 {
+        font-size: 1em;
     }
 
     .activity-main-text p,
@@ -1592,6 +1617,7 @@ strong {
     .activity-main-text h1,
     .activity-main-text h2,
     .activity-main-text h3,
+    .activity-main-text h4,
     .activity-main-text p,
     .activity-main-text ul,
     .activity-main-text ol {
@@ -1610,6 +1636,10 @@ strong {
 
     .activity-main-text h3 {
         font-size: 1.1em;
+    }
+
+    .activity-main-text h4 {
+        font-size: 0.8em;
     }
 
     .activity-main-text p,
@@ -1736,6 +1766,10 @@ strong {
 
     .activity-main-text h3 {
         font-size: 1em;
+    }
+
+    .activity-main-text-h4 {
+        font-size: 0.7em;
     }
 
     .activity-main-text p,

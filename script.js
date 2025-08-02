@@ -107,8 +107,14 @@ const allPostsData = [
         hashtags: "#hsr #moc",
         date: "07/25/2025",
         url: "moc3.4.html",
+    },
+    {
+        title: "Genshin Impact Gacha Rate ",
+        description: "Genshin is a gacha game where you obtain characters and weapons through a gacha system. However, when I played the game, I was too focused on artifact stats rather than the gacha rates for items.",
+        hashtags: "#genshinimpact #gacha",
+        date: "08/02/2025",
+        url: "GIgacharate.html",
     }
-
 ];
 
 
