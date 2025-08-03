@@ -67,7 +67,69 @@
                         analysis on the topic. Let's see how far his research has come!</p>
                     <h2 id="content2-contents">Mathematics of the Genshin character banner</h2>
                     <h3 id="content2-1">Chance of getting any 5-star character</h3>
-                    <p>Coming soon!</p>
+                    <p>Java will be the language Dun uses to create a probability simulation tool. Alright, as we all
+                        know (or maybe don't - like Dun from a few days ago), the base chance of getting a 5-star
+                        character is 0.6%. The Genshin community has discovered something known as the 'soft pity'
+                        system, which starts kicking in from the 74th pull up to the 89th. According to community
+                        findings, the soft pity rate gradually increases from 0.6% at the 74th pull to a guaranteed 100%
+                        on the 90th. We can express this rule using the following piece of code:</p>
+                    <div class="code-container">
+                        <pre><code>dropChanceCharacter.add(0.0);
+for (int x = 0; x &lt; 73; x++) {
+    dropChanceCharacter.add(0.006);
+}
+for (int x = 0; x &lt; 16; x++) {
+    dropChanceCharacter.add((x + 1) * 0.06 + 0.006);
+}
+dropChanceCharacter.add(1.0);
+    </code></pre>
+                    </div>
+                    <p>Alright, now we'll have a small list that simply stores the drop chances. Each time we iterate
+                        over a different value of x, the drop chance will be stored in dropChanceCharacter. The drop
+                        chance at
+                        the
+                        x-th roll/pull is given by <strong
+                            style="color : rgb(255, 0, 0)">dropChanceCharacter(x)</strong>. What we're
+                        going to calculate next is the
+                        probability of obtaining a 5-star character (which could be either the featured banner character
+                        or not).</p>
+                    <p>It's easy to see that to get a 5-star character on the A-th pull/roll, we must not have gotten
+                        any
+                        5-star character from pull 1 to pull/roll A - 1, and then get one on pull/roll A. After picking
+                        up some
+                        probability knowledge from somewhere, Dun said that we need to multiply the probability of
+                        <strong style="color: rgb(255, 0 ,0)">not
+                            getting a 5-star</strong> on the first pull/roll with the probability of not getting one on
+                        the
+                        second pull/roll,
+                        and so on, up to the probability of not getting a 5-star on pull/roll A - 1, and finally
+                        multiply
+                        that with the probability of <strong style="color: rgb(255, 0,0 )">getting a 5 - star</strong>
+                        on pull/roll A.
+                    </p>
+                    <p>Earlier we mentioned that the drop chance at pull x is stored in dropChanceCharacter, so the
+                        probability of not getting a 5 - star character is very easy to calculate : just subtract
+                        dropChanceCharacter(x) from 1 and you're done. And even if we are extremely unlucky, we're
+                        guaranteed to get a 5 - star character on the 90th pull/roll, right? So we need to return a
+                        probability
+                        of 0 once the current pity count exceeds 90, and just give the player a 5 - star character.
+                        Whether the player ends up getting Qiqi or not … well, Dun has no idea</p>
+                    <p>The logic just described above can be represented by the following piece of code:</p>
+                    <div class="code-container">
+                        <pre><code>public static double p(int a, int pity) {
+    if (a + pity > 90) {
+        return 0.0;
+    } else {
+        double prod = 1.0;
+        for (int x = pity; x < a + pity; x++) {
+            prod *= (1 - dropChanceCharacter.get(x));
+        }
+        return dropChanceCharacter.get(a + pity) * prod;
+    }
+}
+    </code></pre>
+                    </div>
+                    <p>Coming soon !</p>
                 </div>
 
                 <aside class="table-of-contents">
