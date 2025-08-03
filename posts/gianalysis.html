@@ -8,6 +8,7 @@
     <title>A statistical analysis of Genshin Impact wishing system</title>
     <link rel="preload" href="../HYWenHei Extended.woff2" as="font" type="font/woff2" crossorigin="anonymous">
     <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../rebecca.min.css">
     <link rel="icon" href="../images/favicon.png" type="image/png">
 </head>
 
@@ -74,7 +75,7 @@
                         findings, the soft pity rate gradually increases from 0.6% at the 74th pull to a guaranteed 100%
                         on the 90th. We can express this rule using the following piece of code:</p>
                     <div class="code-container">
-                        <pre><code>dropChanceCharacter.add(0.0);
+                        <pre><code class="language-java">dropChanceCharacter.add(0.0);
 for (int x = 0; x &lt; 73; x++) {
     dropChanceCharacter.add(0.006);
 }
@@ -116,10 +117,11 @@ dropChanceCharacter.add(1.0);
                         Whether the player ends up getting Qiqi or not … well, Dun has no idea</p>
                     <p>The logic just described above can be represented by the following piece of code:</p>
                     <div class="code-container">
-                        <pre><code>public static double p(int a, int pity) {
+                        <pre><code class="language-java">public static double p(int a, int pity) {
     if (a + pity > 90) {
         return 0.0;
-    } else {
+    } 
+    else {
         double prod = 1.0;
         for (int x = pity; x < a + pity; x++) {
             prod *= (1 - dropChanceCharacter.get(x));
@@ -160,6 +162,8 @@ dropChanceCharacter.add(1.0);
     </footer>
 
     <script src="../script.js"></script>
+    <script src="../highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
 </body>
 
 </html>

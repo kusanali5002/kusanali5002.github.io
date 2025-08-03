@@ -1131,51 +1131,36 @@ strong {
 }
 
 .code-container {
-    /* Các thuộc tính chung */
-    background: rgba(0, 0, 0, 0.4);
+    background: var(--card-background);
+
     border-radius: 15px;
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 20px;
-    margin: 20px 0;
+    padding: 25px;
+
+    margin-top: 30px;
+    margin-bottom: 30px;
+    position: relative;
+
     overflow: auto;
-    /* Xử lý tràn nội dung */
+    -webkit-overflow-scrolling: touch;
+
 }
 
 .code-container pre {
     margin: 0;
     padding: 0;
-    white-space: pre-wrap;
-    /* Ngăn code tràn ra khỏi container */
-    word-wrap: break-word;
+
+    overflow: auto;
+
+    white-space: pre;
+
+    word-wrap: normal;
 }
 
-.code-container code {
-    /* Các thuộc tính văn bản */
-    font-family: 'Consolas', 'Courier New', monospace;
-    /* Font cho code */
-    color: #c5c8c6;
-    /* Màu văn bản mặc định cho code */
-    display: block;
-    /* Đảm bảo code lấp đầy container */
-}
-
-/* Các màu sắc cú pháp (syntax highlighting) */
-/* Cần một thư viện như Prism.js hoặc Highlight.js để áp dụng tự động */
-/* Ví dụ: */
-.code-container code .keyword {
-    color: #89b482;
-    /* Màu xanh lá cây cho từ khóa */
-}
-
-.code-container code .string {
-    color: #b5bd68;
-    /* Màu vàng xanh cho chuỗi */
-}
-
-.code-container code .number {
-    color: #de935f;
-    /* Màu cam cho số */
+.hljs,
+.hljs * {
+    font-family: 'Consolas', 'Courier New', monospace !important;
 }
 
 @media (max-width: 1200px) {
