@@ -114,6 +114,13 @@ const allPostsData = [
         hashtags: "#genshinimpact #gacha",
         date: "08/02/2025",
         url: "GIgacharate.html",
+    },
+    {
+        title: "A statistical analysis of Genshin Impact wishing system",
+        description: "This is a small follow - up research to my previous post about Genshin's gacha system, using some basic mathematical principles.",
+        hashtags: "#genshinimpact #gacha",
+        date: "08/03/2025",
+        url: "gianalysis.html",
     }
 ];
 
@@ -257,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }, 100);
             }
-        } else { // Trên mobile, đảm bảo footer luôn visible
+        } else {
             footer.classList.add('visible');
         }
     });
