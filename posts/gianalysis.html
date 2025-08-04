@@ -131,7 +131,24 @@ dropChanceCharacter.add(1.0);
 }
     </code></pre>
                     </div>
-                    <p>Coming soon !</p>
+                    <p>According to Dun's explanation, p(a) is the probability of getting a 5-star character after a
+                        rolls/pulls, based on the current pity.</p>
+                    <p>The probability of obtaining a 5-star character within a pulls is simply the sum of the
+                        probabilities of getting it from pull 1 to pull a:</p>
+                    <div class="code-container">
+                        \[ p(a) = \sum_{i=1}^{a} p(i) \]
+                    </div>
+                    <p>We can represent this using the following code:</p>
+                    <div class="code-container">
+                        <pre><code class="language-java">public static double calculateCumulativeChance(int a, int pity) {
+        double cumulativeChance = 0.0;
+      // loop from 0 to a
+        for (int x = 0; x <= a; x++) {
+           // stack probabilities
+            cumulativeChance += p(x, pity);
+        }
+        return cumulativeChance;</code></pre>
+                    </div>
                 </div>
 
                 <aside class="table-of-contents">
@@ -162,6 +179,7 @@ dropChanceCharacter.add(1.0);
     </footer>
 
     <script src="../script.js"></script>
+    <script id="MathJax-script" async src="../mathjax/es5/tex-mml-chtml.js"></script>
     <script src="../highlight.min.js"></script>
     <script>hljs.highlightAll();</script>
 </body>

@@ -1163,6 +1163,23 @@ strong {
     font-family: 'Consolas', 'Courier New', monospace !important;
 }
 
+.MathJax_Display {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 15px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 25px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.MathJax_Display * {
+    font-family: 'Consolas', 'Courier New', monospace !important;
+}
+
 @media (max-width: 1200px) {
     .main-content-container {
         padding: 35px;
