@@ -6,6 +6,15 @@ function showComingSoonAlert(event) {
 
 
 const allPostsData = [
+
+    {
+        title: "Sudden announcement",
+        description: "A brief announcement made by the blog's manager, Nahida.",
+        hashtags: "#life",
+        date: "08/05/2025",
+        url: "sudden_announcement.html"
+    },
+
     {
         title: "Spiral Abyss version 5.6B",
         description: "A new Spiral Abyss has been coming bring new challenges as monsters' HP have increased significantly. And the nightmare is waiting you in 12-3-2 ...",

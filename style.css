@@ -1159,6 +1159,7 @@ strong {
 }
 
 .chart-container {
+    font-family: 'Consolas', 'Courier New', monospace !important;
     background: var(--card-background);
     border-radius: 15px;
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
@@ -1212,6 +1213,10 @@ strong {
         width: 92%;
     }
 
+    .chart-container {
+        max-width: 750px;
+    }
+
     .nahida-content,
     .activity-detail-page-content {
         gap: 30px;
@@ -1236,6 +1241,10 @@ strong {
         display: block;
         padding-top: 70px;
 
+    }
+
+    .chart-container {
+        max-width: 650px;
     }
 
 
@@ -1652,6 +1661,12 @@ strong {
         padding: 8px 15px;
     }
 
+    .chart-container {
+        max-width: 100%;
+        width: 90%;
+        aspect-ratio: 1.5 / 1;
+    }
+
     .header.scrolled {
         padding: 3px 15px;
     }
@@ -1822,6 +1837,10 @@ strong {
 
     .header .logo img.mobile-logo-thekusanali {
         height: 14px;
+    }
+
+    .chart-container {
+        aspect-ratio: 1.2 / 1;
     }
 
     .home-text h1 {
