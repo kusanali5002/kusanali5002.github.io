@@ -149,6 +149,10 @@ dropChanceCharacter.add(1.0);
         }
         return cumulativeChance;</code></pre>
                     </div>
+                    <p>We can illustrate the probability of obtaining a 5 - star character with the following chart:</p>
+                    <div class="chart-container">
+                        <canvas id="pullsChart"></canvas>
+                    </div>
                 </div>
 
                 <aside class="table-of-contents">
@@ -182,6 +186,123 @@ dropChanceCharacter.add(1.0);
     <script id="MathJax-script" async src="../mathjax/es5/tex-mml-chtml.js"></script>
     <script src="../highlight.min.js"></script>
     <script>hljs.highlightAll();</script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        const dropChanceCharacter = [];
+        const pityStart = 74;
+        const baseRate = 0.006;
+        const pityIncrease = 0.06;
+
+        for (let i = 0; i < 90; i++) {
+            const pullNumber = i + 1;
+            let rate = 0;
+            if (pullNumber < pityStart) {
+                rate = baseRate;
+            } else if (pullNumber < 90) {
+                rate = baseRate + (pullNumber - (pityStart - 1)) * pityIncrease;
+            } else {
+                rate = 1.0;
+            }
+            dropChanceCharacter.push(rate);
+        }
+
+        function p(a) {
+            if (a < 1 || a > 90) return 0.0;
+
+            let probFailureBefore = 1.0;
+            for (let x = 1; x < a; x++) {
+                probFailureBefore *= (1 - dropChanceCharacter[x - 1]);
+            }
+
+            return dropChanceCharacter[a - 1] * probFailureBefore;
+        }
+
+        const pmfData = [];
+        for (let a = 1; a <= 90; a++) {
+            pmfData.push(p(a));
+        }
+
+        const cumulativeData = [];
+        let cumulativeSum = 0;
+        for (let a = 0; a < pmfData.length; a++) {
+            cumulativeSum += pmfData[a];
+            cumulativeData.push(cumulativeSum);
+        }
+
+        const labels = Array.from({ length: 90 }, (_, i) => i + 1);
+
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Chance to get a 5-star character',
+                data: cumulativeData,
+                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderWidth: 2,
+                tension: 0.4,
+                pointRadius: 2,
+                pointBackgroundColor: 'rgba(54, 162, 235, 1)'
+            }]
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Cumulative distribution function',
+                        color: '#fff',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    legend: {
+                        labels: {
+                            color: '#ddd'
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Roll / pull',
+                            color: '#fff'
+                        },
+                        ticks: {
+                            color: '#aaa'
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Chance',
+                            color: '#fff'
+                        },
+                        ticks: {
+                            color: '#aaa',
+                            callback: function (value) {
+                                return (value * 100).toFixed(1) + '%';
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    }
+                }
+            }
+        };
+
+        const myChart = new Chart(document.getElementById('pullsChart'), config);
+    </script>
 </body>
 
 </html>
