@@ -136,7 +136,7 @@ const allPostsData = [
         description: "This is a simple banner for member of Group game to gacha and have a chance to win a Welkin Moon in Genshin Impact. Sponsored by Duong Triet Hy.",
         hashtags: "#genshinimpact #gacha",
         date: "02/16/2026",
-        url: "gacha.html",
+        url: "#",
         isComimgSoon: true
     }
 ];
@@ -471,6 +471,7 @@ function toggleHistory(show) {
 
 
 updateUI();
+
 
 
 
