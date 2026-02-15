@@ -134,7 +134,7 @@ const allPostsData = [
     {
         title: "Give Away simple UI for Group game",
         description: "This is a simple banner for member of Group game to gacha and have a chance to win a Welkin Moon in Genshin Impact. Sponsored by Duong Triet Hy.",
-        hastag: "#genshinimpact #gacha",
+        hashtag: "#genshinimpact #gacha",
         date: "02/16/2026",
         url: "gacha.html",
     }
@@ -470,3 +470,4 @@ function toggleHistory(show) {
 
 
 updateUI();
+
