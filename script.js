@@ -354,4 +354,111 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-}); 
+});
+
+
+const DB = {
+    limited5: "Welkin Moon",
+    std5: ["Cái nịt vàng nổi"],
+    items4: ["Cái nịt tím"],
+    items3: ["Cái nịt ghẻ"]
+};
+
+let state = JSON.parse(localStorage.getItem('gacha_data')) || {
+    rolls: 90, pity5: 0, pity4: 0, guaranteed: false, history: []
+};
+
+function updateUI() {
+    document.getElementById('rolls-left').innerText = state.rolls;
+    document.getElementById('btn-x1').disabled = state.rolls < 1;
+    document.getElementById('btn-x10').disabled = state.rolls < 10;
+    localStorage.setItem('gacha_data', JSON.stringify(state));
+}
+
+function roll() {
+    if (state.rolls <= 0) return null;
+    state.rolls--;
+    state.pity5++;
+    state.pity4++;
+
+    let rate5 = 0.006;
+    if (state.pity5 > 73) rate5 += 0.06 * (state.pity5 - 73);
+
+    const rand = Math.random();
+    let res;
+
+    if (rand < rate5 || state.pity5 >= 90) {
+        state.pity5 = 0;
+        if (state.guaranteed || Math.random() < 0.5) {
+            res = { name: DB.limited5, rarity: "r5" };
+            state.guaranteed = false;
+        } else {
+            res = { name: DB.std5[Math.floor(Math.random() * DB.std5.length)], rarity: "r5" };
+            state.guaranteed = true;
+        }
+    } else if (rand < 0.051 || state.pity4 >= 10) {
+        state.pity4 = 0;
+        res = { name: DB.items4[Math.floor(Math.random() * DB.items4.length)], rarity: "r4" };
+    } else {
+        res = { name: DB.items3[Math.floor(Math.random() * DB.items3.length)], rarity: "r3" };
+    }
+
+    state.history.unshift({ ...res, time: new Date().toLocaleString() });
+    return res;
+}
+
+function performWish(n) {
+    const resultWindow = document.getElementById('result-window');
+    const resultList = document.getElementById('result-list');
+
+    // delete the old list
+    resultList.innerHTML = '';
+
+    for (let i = 0; i < n; i++) {
+        const res = roll();
+        if (res) {
+            const div = document.createElement('div');
+            div.className = `item-result ${res.rarity}`;
+
+            div.innerHTML = `
+                <div style="font-size: 0.7rem; margin-bottom: 5px;">★ ${res.rarity === 'r5' ? '5' : (res.rarity === 'r4' ? '4' : '3')}</div>
+                <div>${res.name}</div>
+            `;
+            resultList.appendChild(div);
+        }
+    }
+
+    // display the result of gacha
+    resultWindow.style.display = 'flex';
+    updateUI();
+}
+
+// click to close the window showcase
+function closeResult() {
+    const resultWindow = document.getElementById('result-window');
+    resultWindow.style.display = 'none';
+}
+
+function toggleHistory(show) {
+    const modal = document.getElementById('history-modal');
+
+    if (show) {
+        modal.style.display = 'flex';
+        const list = document.getElementById('history-list');
+
+        if (state.history.length === 0) {
+            list.innerHTML = "<p style='text-align:center; color:#999;'>Chưa có dữ liệu cầu nguyện.</p>";
+        } else {
+            list.innerHTML = state.history.map(item => `
+                <div style="border-bottom: 1px solid #ddd; padding: 10px 0; display: flex; justify-content: space-between;">
+                    <span class="${item.rarity}">${item.name}</span>
+                    <span style="color: #888; font-size: 0.85rem;">${item.time}</span>
+                </div>
+            `).join('');
+        }
+    } else {
+        modal.style.display = 'none';
+    }
+}
+
+updateUI();

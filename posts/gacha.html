@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minigame</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+    <div class="gacha-wrapper">
+
+        <div id="orientation-overlay">
+            <div class="warning-content">
+                <div class="phone-icon">🔄</div>
+                <p>Please rotate screen with mobile device to play the minigame !</p>
+            </div>
+        </div>
+
+        <div class="banner-card">
+
+            <div class="info-section">
+                <div class="event-tag">Give Away Wish</div>
+                <h1 class="banner-name">MOMENT OF<br>GIVE AWAY</h1>
+
+                <div class="probability-up">
+                    <p class="prob-text">Probability increased!</p>
+                    <div class="featured-list">
+                        <span class="up-tag">UP!</span>
+                        <span class="char-name">Welkin Moon</span>
+                    </div>
+                </div>
+
+                <div class="description">
+                    Welkin Moon can only be obtained in the specified wish.
+                    <ul><strong style="color: red">The system is
+                            under
+                            testing and
+                            does
+                            not represent the final version.</strong></ul>
+                </div>
+            </div>
+
+            <div class="currency-display">
+                <div class="fate-container">
+                    <img src="../images/intertwined_fate.webp" alt="Fate">
+                    <span id="rolls-left">90</span>
+                </div>
+            </div>
+
+            <div id="gacha-screen" class="gacha-screen">
+            </div>
+
+            <div class="bottom-nav">
+                <div class="nav-left">
+                    <button class="nav-btn" onclick="toggleHistory(true)">History</button>
+                </div>
+
+                <div class="nav-right">
+                    <button id="btn-x1" class="wish-btn" onclick="performWish(1)">
+                        Wish x1
+                        <div class="cost"><img src="../images/intertwined_fate.webp">
+                            x1</div>
+                    </button>
+                    <button id="btn-x10" class="wish-btn" onclick="performWish(10)">
+                        Wish x10
+                        <div class="cost"><img src="../images/intertwined_fate.webp">
+                            x10</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="result-window" class="result-window" onclick="closeResult()">
+            <div id="result-list" class="result-list">
+            </div>
+            <div class="close-hint">Press anywhere to close</div>
+        </div>
+
+    </div>
+
+    <div id="history-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="toggleHistory(false)">&times;</span>
+            <h2 style="border-bottom: 2px solid #38a4da; padding-bottom: 10px;">Prayer Record</h2>
+            <div id="history-list">
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+
+</html>

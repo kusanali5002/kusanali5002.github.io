@@ -1897,3 +1897,333 @@ strong {
         font-size: 13px;
     }
 }
+
+
+:root {
+    --genshin-white: #ece5d8;
+    --genshin-gold: #f3d186;
+    --genshin-blue: #495366;
+}
+
+body {
+    margin: 0;
+    background: #1b1d2a;
+    font-family: 'Tahoma', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.gacha-wrapper {
+    width: 90vw;
+    max-width: 1100px;
+    aspect-ratio: 16 / 9;
+}
+
+.banner-card {
+    width: 100%;
+    height: 100%;
+    background: url('../images/welkin_moon.jpg') no-repeat center center;
+    background-size: cover;
+    border-radius: 10px;
+    position: relative;
+    border: 4px solid #333;
+    overflow: hidden;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+}
+
+/* info banner*/
+.info-section {
+    position: absolute;
+    left: 5%;
+    top: 15%;
+    width: 35%;
+    color: var(--genshin-blue);
+}
+
+.event-tag {
+    background: #38a4da;
+    color: white;
+    display: inline-block;
+    padding: 2px 15px;
+    border-radius: 20px 20px 20px 0;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.banner-name {
+    font-size: 3.5rem;
+    margin: 10px 0;
+    line-height: 1;
+    color: #3b4255;
+    text-shadow: 1px 1px white;
+}
+
+.probability-up {
+    background: rgba(255, 255, 255, 0.7);
+    padding: 10px;
+    border-left: 5px solid #38a4da;
+    margin-top: 20px;
+}
+
+.up-tag {
+    background: #ff7e32;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+/* roll */
+.currency-display {
+    position: absolute;
+    right: 30px;
+    top: 20px;
+    display: flex;
+    gap: 15px;
+}
+
+.fate-container {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 5px 20px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.fate-container img {
+    width: 25px;
+}
+
+/* buttons */
+.bottom-nav {
+    position: absolute;
+    bottom: 30px;
+    width: 90%;
+    left: 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.nav-btn {
+    background: var(--genshin-white);
+    border: none;
+    padding: 8px 30px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.wish-btn {
+    background: var(--genshin-white);
+    border: none;
+    padding: 10px 40px;
+    border-radius: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 15px;
+    box-shadow: 0 4px #c9c0b1;
+}
+
+.wish-btn .cost {
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 4px;
+}
+
+.wish-btn .cost img {
+    width: 14px;
+}
+
+.wish-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* result overlay */
+.gacha-screen {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.item-result {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    border-radius: 5px;
+    animation: zoomIn 0.3s;
+    color: #333;
+}
+
+/* history modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #f5f5f5;
+    color: #333;
+    padding: 25px;
+    border-radius: 12px;
+    width: 80%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #888;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #333;
+}
+
+.r5 {
+    color: #bd6932;
+    font-weight: bold;
+}
+
+
+.result-window {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 999;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+}
+
+.result-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    width: 90%;
+}
+
+.item-result {
+    width: 120px;
+    height: 160px;
+    background: white;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    box-sizing: border-box;
+    animation: resultPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.item-result.r5 {
+    background: linear-gradient(180deg, #f3d186, #bd6932);
+    color: white;
+    box-shadow: 0 0 30px #f3d186;
+}
+
+.item-result.r4 {
+    background: linear-gradient(180deg, #d397f8, #7a32bd);
+    color: white;
+    box-shadow: 0 0 20px #d397f8;
+}
+
+.item-result.r3 {
+    background: linear-gradient(180deg, #89cff0, #325ebd);
+    color: white;
+}
+
+.close-hint {
+    margin-top: 50px;
+    color: #aaa;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    animation: blink 2s infinite;
+}
+
+@keyframes resultPop {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+}
+
+
+#orientation-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #1b1d2a;
+    z-index: 9999;
+    color: white;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+@media screen and (max-width: 1024px) and (orientation: portrait) {
+    .gacha-wrapper #orientation-overlay {
+        display: flex;
+    }
+
+    .gacha-wrapper .banner-card {
+        display: none;
+    }
+}
