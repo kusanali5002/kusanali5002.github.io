@@ -137,6 +137,7 @@ const allPostsData = [
         hashtags: "#genshinimpact #gacha",
         date: "02/16/2026",
         url: "gacha.html",
+        isComimgSoon: true
     }
 ];
 
@@ -470,5 +471,6 @@ function toggleHistory(show) {
 
 
 updateUI();
+
 
 
