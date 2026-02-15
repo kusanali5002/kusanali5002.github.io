@@ -130,6 +130,13 @@ const allPostsData = [
         hashtags: "#genshinimpact #gacha",
         date: "08/03/2025",
         url: "gianalysis.html",
+    },
+    {
+        title: "Give Away simple UI for Group game",
+        description: "This is a simple banner for member of Group game to gacha and have a chance to win a Welkin Moon in Genshin Impact. Sponsored by Duong Triet Hy.",
+        hastag: "#genshinimpact #gacha",
+        date: "02/16/2026",
+        url: "gacha.html",
     }
 ];
 
@@ -460,5 +467,6 @@ function toggleHistory(show) {
         modal.style.display = 'none';
     }
 }
+
 
 updateUI();
