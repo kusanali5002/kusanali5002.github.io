@@ -1908,10 +1908,7 @@ strong {
 body {
     margin: 0;
     background: #1b1d2a;
-    font-family: 'Tahoma', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    font-family: 'Tahoma',
     height: 100vh;
 }
 
@@ -2200,3 +2197,4 @@ body {
         opacity: 0.3;
     }
 }
+
