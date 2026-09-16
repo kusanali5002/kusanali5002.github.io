@@ -1,0 +1,57 @@
+---
+import MediaProjectCard from '../workspace/MediaProjectCard.astro';
+import type { CollectionEntry } from 'astro:content';
+
+export interface Props {
+  projects: CollectionEntry<'workspace'>[];
+}
+
+const { projects } = Astro.props;
+---
+
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-sumeru-200/40 dark:border-white/[0.05]">
+  <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12">
+    <div>
+      <span class="text-xs font-mono font-semibold uppercase tracking-widest text-amber-700 dark:text-nahida-gold mb-2 block">
+        Creative Workspace
+      </span>
+      <h2 class="font-display font-bold text-3xl sm:text-4xl text-sumeru-950 dark:text-white">
+        All Social & Local Works
+      </h2>
+    </div>
+
+    <a
+      href="/workspace/"
+      class="mt-4 sm:mt-0 text-xs font-semibold uppercase tracking-wider text-amber-700 dark:text-nahida-gold hover:underline inline-flex items-center gap-1 group"
+    >
+      <span>Open Workspace ({projects.length})</span>
+      <span class="transform group-hover:translate-x-1 transition-transform">→</span>
+    </a>
+  </div>
+
+  <!-- Editorial Asymmetric Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+    {projects.slice(0, 3).map((proj) => (
+      <div class="reveal-on-scroll">
+        <MediaProjectCard
+          title={proj.data.title}
+          description={proj.data.description}
+          date={proj.data.date}
+          slug={proj.id.replace(/\.md$/, '')}
+          type={proj.data.type}
+          platform={proj.data.platform}
+          url={proj.data.url}
+          thumbnail={proj.data.thumbnail}
+          media={proj.data.media}
+          poster={proj.data.poster}
+          fallbackVideo={proj.data.fallbackVideo}
+          images={proj.data.images}
+          source={proj.data.source}
+          tags={proj.data.tags}
+          featured={false}
+          aspectRatio={proj.data.aspectRatio}
+        />
+      </div>
+    ))}
+  </div>
+</section>

@@ -1,0 +1,276 @@
+---
+---
+<div
+  id="project-lightbox-modal"
+  class="fixed inset-0 z-[100] pointer-events-none opacity-0 transition-opacity duration-300 flex items-center justify-center p-3 sm:p-6 overflow-y-auto"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="modal-project-title"
+>
+  <!-- Darkened Backdrop with Blur -->
+  <div id="modal-backdrop" class="fixed inset-0 bg-black/80 backdrop-blur-md transition-opacity"></div>
+
+  <!-- Modal Dialog Container -->
+  <div
+    id="modal-panel"
+    class="relative z-10 w-full max-w-4xl max-h-[92vh] glass-panel rounded-2xl sm:rounded-3xl overflow-y-auto border border-sumeru-300/30 dark:border-nahida-mint/20 shadow-2xl flex flex-col transform scale-95 transition-all duration-300 bg-white/95 dark:bg-[#0c1611]/95 my-auto"
+  >
+    <!-- Modal Header (Inspired by modern motion portfolios) -->
+    <div class="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-sumeru-200/50 dark:border-white/[0.08] flex items-center justify-between flex-shrink-0">
+      <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
+        <!-- Mac/Dev style window dots -->
+        <div class="flex items-center gap-1.5 flex-shrink-0" aria-hidden="true">
+          <span class="w-2.5 h-2.5 rounded-full bg-sumeru-400 dark:bg-nahida-mint/50"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-amber-400 dark:bg-nahida-gold/60"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 dark:bg-emerald-400"></span>
+        </div>
+        <div class="flex items-center gap-2 min-w-0">
+          <span id="modal-project-badge" class="px-2.5 sm:px-3 py-0.5 rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider bg-sumeru-100 dark:bg-sumeru-900/60 text-sumeru-900 dark:text-nahida-mint border border-sumeru-200/50 dark:border-nahida-mint/30 flex-shrink-0">
+            Media Showcase
+          </span>
+          <span id="modal-project-platform" class="text-[11px] sm:text-xs font-mono text-sumeru-600 dark:text-nahida-mint/70 truncate"></span>
+        </div>
+      </div>
+
+      <button
+        id="modal-close-btn"
+        type="button"
+        class="p-2 sm:p-2.5 rounded-xl text-sumeru-800 dark:text-nahida-light hover:bg-black/10 dark:hover:bg-white/10 transition-colors focus-visible:ring-2 focus-visible:ring-sumeru-500 flex-shrink-0"
+        aria-label="Close modal dialog"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Modal Dynamic Media Viewport -->
+    <div id="modal-media-stage" class="relative w-full p-2 sm:p-4 bg-black flex items-center justify-center overflow-hidden flex-shrink-0">
+      <!-- Injected dynamically via JS: Video, Iframe, or Image with .player-shell -->
+    </div>
+
+    <!-- Modal Body Content -->
+    <div class="p-4 sm:p-6 overflow-y-auto flex-1">
+      <h3 id="modal-project-title" class="font-display font-bold text-lg sm:text-2xl text-sumeru-950 dark:text-white mb-2 leading-snug"></h3>
+      <p id="modal-project-description" class="text-xs sm:text-sm text-sumeru-800/85 dark:text-nahida-light/80 leading-relaxed mb-4"></p>
+
+      <div class="flex flex-wrap items-center justify-between gap-3 pt-3 sm:pt-4 border-t border-sumeru-200/40 dark:border-white/[0.06]">
+        <div class="flex items-center gap-2 text-[11px] sm:text-xs text-sumeru-600 dark:text-nahida-mint/70 font-mono">
+          <span>Created by Dun</span>
+          <span>•</span>
+          <span>The Kusanali Creative Workspace</span>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <a
+            id="modal-external-cta"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-4 py-2 rounded-xl text-xs font-semibold bg-sumeru-600 dark:bg-nahida-mint text-white dark:text-sumeru-950 hover:bg-sumeru-700 dark:hover:bg-white transition-colors shadow-md inline-flex items-center gap-1.5"
+          >
+            <span id="modal-cta-label">Watch directly on TikTok</span>
+            <span>↗</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function setupProjectModal() {
+    const modal = document.getElementById('project-lightbox-modal');
+    const backdrop = document.getElementById('modal-backdrop');
+    const panel = document.getElementById('modal-panel');
+    const closeBtn = document.getElementById('modal-close-btn');
+    const stage = document.getElementById('modal-media-stage');
+    const titleEl = document.getElementById('modal-project-title');
+    const descEl = document.getElementById('modal-project-description');
+    const platformEl = document.getElementById('modal-project-platform');
+    const badgeEl = document.getElementById('modal-project-badge');
+    const externalCta = document.getElementById('modal-external-cta') as HTMLAnchorElement;
+    const ctaLabel = document.getElementById('modal-cta-label');
+
+    if (!modal || !stage || !panel) return;
+
+    function getTikTokVideoId(rawUrl: string): string | null {
+      try {
+        const match = rawUrl.match(/\/video\/(\d+)/);
+        return match ? match[1] : null;
+      } catch {
+        return null;
+      }
+    }
+
+    function openModal(card: HTMLElement) {
+      const type = card.getAttribute('data-media-type') || 'project';
+      const url = card.getAttribute('data-media-url') || '';
+      const poster = card.getAttribute('data-media-poster') || '';
+      const title = card.getAttribute('data-project-title') || '';
+      const desc = card.getAttribute('data-project-desc') || '';
+      const platform = card.getAttribute('data-project-platform') || '';
+      const externalUrl = card.getAttribute('data-external-url') || '';
+      const fallbackVideo = card.getAttribute('data-fallback-video') || '';
+      const aspectRatio = card.getAttribute('data-aspect-ratio') || '16:9';
+      const galleryImages = JSON.parse(card.getAttribute('data-gallery-images') || '[]');
+      const isVertical = aspectRatio === '9:16' || platform.toLowerCase() === 'tiktok';
+
+      if (titleEl) titleEl.textContent = title;
+      if (descEl) descEl.innerHTML = desc;
+      const isLocalWork = type === 'image' || platform.toLowerCase() === 'local work';
+      if (platformEl) platformEl.textContent = isLocalWork ? '@Local Work' : (platform ? `@${platform}` : '');
+      if (badgeEl) badgeEl.textContent = (isLocalWork ? 'LOCAL WORK' : (platform || type)).toUpperCase();
+
+      if (externalCta && ctaLabel) {
+        if (externalUrl || url) {
+          externalCta.href = externalUrl || url;
+          externalCta.classList.remove('hidden');
+          const customCta = card.getAttribute('data-cta-label');
+          const plat = (platform || '').toLowerCase();
+          if (customCta) {
+            ctaLabel.textContent = customCta;
+          } else if (plat === 'tiktok') {
+            ctaLabel.textContent = 'Watch directly on TikTok';
+          } else if (plat === 'youtube') {
+            ctaLabel.textContent = 'Watch directly on YouTube';
+          } else {
+            ctaLabel.textContent = `Watch on ${platform || 'Source'}`;
+          }
+        } else {
+          externalCta.classList.add('hidden');
+        }
+      }
+
+      // Render Stage Content Based on Type (Using Yuuta motion portfolio reference)
+      stage.innerHTML = '';
+
+      const tiktokId = getTikTokVideoId(url) || getTikTokVideoId(externalUrl);
+
+      if (type === 'video' || fallbackVideo) {
+        const shell = document.createElement('div');
+        shell.className = isVertical ? 'player-shell vertical shadow-2xl' : 'player-shell shadow-2xl';
+        const video = document.createElement('video');
+        video.src = fallbackVideo || url;
+        video.poster = poster;
+        video.controls = true;
+        video.autoplay = true;
+        video.playsInline = true;
+        video.className = 'w-full h-full object-contain';
+        shell.appendChild(video);
+        stage.appendChild(shell);
+      } else if (tiktokId || platform.toLowerCase() === 'tiktok') {
+        if (tiktokId) {
+          const shell = document.createElement('div');
+          shell.className = 'player-shell vertical shadow-2xl';
+          const iframe = document.createElement('iframe');
+          iframe.src = `https://www.tiktok.com/player/v1/${tiktokId}?autoplay=1&loop=0&rel=0&music_info=0&description=0&muted=0&volume_control=1`;
+          iframe.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture; fullscreen');
+          iframe.setAttribute('allowfullscreen', 'true');
+          iframe.setAttribute('title', title);
+          iframe.onload = () => {
+            try {
+              const win = iframe.contentWindow;
+              win?.postMessage({ type: 'unMute', value: undefined, 'x-tiktok-player': true }, 'https://www.tiktok.com');
+              win?.postMessage({ type: 'play', value: undefined, 'x-tiktok-player': true }, 'https://www.tiktok.com');
+            } catch {}
+          };
+          shell.appendChild(iframe);
+          stage.appendChild(shell);
+        } else {
+          renderFallbackImage(poster, title, isVertical);
+        }
+      } else if (type === 'social' && platform.toLowerCase() === 'youtube') {
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+        const match = url.match(regExp);
+        const videoId = (match && match[2].length === 11) ? match[2] : null;
+
+        if (videoId) {
+          const shell = document.createElement('div');
+          shell.className = isVertical ? 'player-shell vertical shadow-2xl' : 'player-shell shadow-2xl';
+          const iframe = document.createElement('iframe');
+          iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&playsinline=1&controls=1&loop=1&playlist=${videoId}`;
+          iframe.setAttribute('frameborder', '0');
+          iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+          iframe.setAttribute('allowfullscreen', 'true');
+          iframe.setAttribute('title', title);
+          shell.appendChild(iframe);
+          stage.appendChild(shell);
+        } else {
+          renderFallbackImage(poster, title, isVertical);
+        }
+      } else if (type === 'gallery' && galleryImages.length > 0) {
+        const shell = document.createElement('div');
+        shell.className = 'player-shell shadow-2xl';
+        const img = document.createElement('img');
+        img.src = galleryImages[0];
+        img.alt = title;
+        img.className = 'w-full h-full object-contain';
+        shell.appendChild(img);
+        stage.appendChild(shell);
+      } else {
+        renderFallbackImage(poster, title, isVertical);
+      }
+
+      modal?.classList.remove('pointer-events-none', 'opacity-0');
+      modal?.classList.add('pointer-events-auto', 'opacity-100');
+      panel?.classList.remove('scale-95');
+      panel?.classList.add('scale-100');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function renderFallbackImage(src: string, alt: string, isVertical = false) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'w-full flex items-center justify-center p-1 sm:p-2';
+      const img = document.createElement('img');
+      img.src = src || '/images/Nahida_Icon.webp';
+      img.alt = alt;
+      img.className = isVertical
+        ? 'max-h-[50vh] sm:max-h-[55vh] w-auto max-w-full object-contain rounded-xl shadow-2xl'
+        : 'max-h-[46vh] sm:max-h-[52vh] w-auto max-w-full object-contain rounded-xl shadow-2xl';
+      wrapper.appendChild(img);
+      stage.appendChild(wrapper);
+    }
+
+    function closeModal() {
+      modal?.classList.add('pointer-events-none', 'opacity-0');
+      modal?.classList.remove('pointer-events-auto', 'opacity-100');
+      panel?.classList.add('scale-95');
+      panel?.classList.remove('scale-100');
+      document.body.style.overflow = '';
+      setTimeout(() => {
+        if (stage) stage.innerHTML = '';
+      }, 300);
+    }
+
+    // Use document-level delegation so triggers work reliably across all page navigations without duplicate bindings
+    if (!(window as any).__projectModalInitialized) {
+      (window as any).__projectModalInitialized = true;
+
+      document.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement | null;
+        if (!target) return;
+
+        const trigger = target.closest('.project-card-trigger');
+        if (trigger) {
+          const card = trigger.closest('.workspace-card') as HTMLElement;
+          if (card) openModal(card);
+          return;
+        }
+
+        if (target.closest('#modal-close-btn') || target.closest('#modal-backdrop')) {
+          closeModal();
+        }
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal?.classList.contains('opacity-100')) {
+          closeModal();
+        }
+      });
+    }
+  }
+
+  setupProjectModal();
+</script>

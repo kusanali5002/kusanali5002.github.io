@@ -1,0 +1,98 @@
+---
+---
+<div id="custom-cursor" class="custom-cursor pointer-events-none fixed top-0 left-0 z-50 -translate-x-1/2 -translate-y-1/2 rounded-full hidden md:block transition-transform duration-75 ease-out" aria-hidden="true">
+  <div class="cursor-dot w-2 h-2 rounded-full bg-sumeru-600 dark:bg-nahida-mint opacity-80 transition-transform duration-200"></div>
+  <div class="cursor-ring -top-3 -left-3 w-8 h-8 rounded-full border border-sumeru-500/40 dark:border-nahida-mint/40 absolute transition-all duration-300"></div>
+</div>
+
+<style>
+  @media (hover: none) or (prefers-reduced-motion: reduce) {
+    #custom-cursor {
+      display: none !important;
+    }
+  }
+
+  .custom-cursor.hovering .cursor-ring {
+    transform: scale(1.6);
+    border-color: var(--accent-gold);
+    background-color: rgba(223, 186, 96, 0.08);
+  }
+
+  .custom-cursor.hovering .cursor-dot {
+    transform: scale(0.6);
+    background-color: var(--accent-gold);
+  }
+</style>
+
+<script>
+  function setupCustomCursor() {
+    if (window.matchMedia('(hover: none) or (prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    const cursor = document.getElementById('custom-cursor');
+    if (!cursor || (window as any).__customCursorInitialized) return;
+    (window as any).__customCursorInitialized = true;
+
+    let mouseX = -100;
+    let mouseY = -100;
+    let currentX = -100;
+    let currentY = -100;
+    let isVisible = false;
+    let isMoving = false;
+
+    function animateCursor() {
+      if (!isMoving) return;
+      const dx = mouseX - currentX;
+      const dy = mouseY - currentY;
+
+      if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) {
+        currentX = mouseX;
+        currentY = mouseY;
+        cursor.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+        isMoving = false;
+        return;
+      }
+
+      currentX += dx * 0.22;
+      currentY += dy * 0.22;
+      cursor.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+      requestAnimationFrame(animateCursor);
+    }
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      if (!isVisible) {
+        cursor.style.opacity = '1';
+        isVisible = true;
+      }
+      if (!isMoving) {
+        isMoving = true;
+        requestAnimationFrame(animateCursor);
+      }
+    }, { passive: true });
+
+    window.addEventListener('mouseleave', () => {
+      cursor.style.opacity = '0';
+      isVisible = false;
+      isMoving = false;
+    });
+
+    // Check hover states on clickable elements with delegation
+    const clickables = 'a, button, input, select, textarea, [role="button"], .interactive-card';
+    document.addEventListener('mouseover', (e) => {
+      if ((e.target as HTMLElement)?.closest(clickables)) {
+        cursor.classList.add('hovering');
+      } else {
+        cursor.classList.remove('hovering');
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupCustomCursor);
+  } else {
+    setupCustomCursor();
+  }
+</script>

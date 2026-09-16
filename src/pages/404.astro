@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="404 - Path Lost in the Sanctuary"
+  description="The requested page could not be located within the archives of The Kusanali."
+  section="home"
+>
+  <div class="min-h-[70vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-16 text-center">
+    <div class="max-w-md mx-auto space-y-6">
+      <div class="w-24 h-24 mx-auto rounded-3xl overflow-hidden glass-panel border border-sumeru-300/60 dark:border-nahida-mint/40 p-4">
+        <img src="/images/Nahida_Icon.webp" alt="Nahida" class="w-full h-full object-contain" />
+      </div>
+
+      <div class="space-y-2">
+        <span class="text-xs font-mono uppercase tracking-widest text-sumeru-600 dark:text-nahida-mint">
+          404 ERROR • UNMAPPED REGION
+        </span>
+        <h1 class="font-display font-bold text-3xl sm:text-4xl text-sumeru-950 dark:text-white">
+          Path Lost in the Forest
+        </h1>
+        <p class="text-sm text-sumeru-800/80 dark:text-nahida-light/80 leading-relaxed">
+          The scroll or dream you are looking for has been moved, dissolved into Irminsul, or has not yet been transcribed.
+        </p>
+      </div>
+
+      <div class="pt-4 flex items-center justify-center gap-3">
+        <a
+          href="/"
+          class="px-5 py-2.5 rounded-xl bg-sumeru-600 dark:bg-nahida-mint text-white dark:text-sumeru-950 text-xs font-semibold hover:bg-sumeru-700 dark:hover:bg-white transition-all shadow-md"
+        >
+          Return to Sanctuary (Home)
+        </a>
+        <a
+          href="/activities/"
+          class="px-5 py-2.5 rounded-xl glass-panel border border-sumeru-300/60 dark:border-nahida-mint/30 text-sumeru-900 dark:text-nahida-light text-xs font-semibold hover:border-sumeru-500 dark:hover:border-nahida-mint transition-all"
+        >
+          Browse Activities
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

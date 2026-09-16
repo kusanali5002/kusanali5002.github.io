@@ -1,0 +1,158 @@
+---
+const currentPath = Astro.url.pathname;
+
+const navItems = [
+  { name: 'HOME', href: '/', desc: 'Entrance & Identity' },
+  { name: 'ACTIVITIES', href: '/activities/', desc: 'Articles, Knowledge & Guides' },
+  { name: 'WORKSPACE', href: '/workspace/', desc: 'Creative Media & Experiments' },
+  { name: 'NAHIDA', href: '/nahida/', desc: "Dun's Lover" },
+  { name: 'ABOUT ME', href: '/about/', desc: 'Personal Story & Adult Journey' },
+  { name: 'CONTACT', href: '/contact/', desc: 'Get in touch & Socials' },
+];
+
+function isActive(itemHref: string) {
+  if (itemHref === '/') {
+    return currentPath === '/' || currentPath === '';
+  }
+  return currentPath.startsWith(itemHref);
+}
+---
+
+<div
+  id="mobile-nav-drawer"
+  class="fixed inset-0 z-50 pointer-events-none transition-all duration-300 opacity-0"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Navigation Menu"
+>
+  <!-- Backdrop -->
+  <div
+    id="mobile-nav-backdrop"
+    class="absolute inset-0 bg-black/60 backdrop-blur-md transition-opacity duration-300"
+  ></div>
+
+  <!-- Drawer Panel -->
+  <div
+    id="mobile-nav-panel"
+    class="absolute top-0 right-0 bottom-0 w-full max-w-sm bg-sumeru-50/95 dark:bg-[#0c1611]/95 border-l border-sumeru-200/40 dark:border-nahida-mint/20 p-6 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-out overflow-y-auto"
+  >
+    <div>
+      <!-- Drawer Header -->
+      <div class="flex items-center justify-between pb-6 border-b border-sumeru-200/50 dark:border-nahida-mint/15">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg overflow-hidden border border-sumeru-600/30 dark:border-nahida-mint/40 shadow-sm bg-sumeru-100 dark:bg-sumeru-950">
+            <img src="/favicon.png" alt="The Kusanali" class="w-full h-full object-cover" />
+          </div>
+          <div>
+            <div class="font-display font-semibold text-sm text-sumeru-950 dark:text-nahida-light tracking-wide">
+              THE KUSANALI
+            </div>
+            <div class="text-[10px] text-sumeru-600 dark:text-nahida-mint font-mono">Dun's official webpage</div>
+          </div>
+        </div>
+
+        <button
+          id="mobile-menu-close-btn"
+          type="button"
+          class="p-2 rounded-xl text-sumeru-800 dark:text-nahida-light hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+          aria-label="Close menu"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Nav Links -->
+      <nav class="mt-6 flex flex-col space-y-2" aria-label="Mobile Navigation">
+        {navItems.map((item) => {
+          const active = isActive(item.href);
+          return (
+            <a
+              href={item.href}
+              class:list={[
+                'group flex items-center justify-between p-3.5 rounded-2xl transition-all duration-200',
+                active
+                  ? 'bg-sumeru-600/10 dark:bg-nahida-mint/15 text-sumeru-950 dark:text-nahida-mint border border-sumeru-600/20 dark:border-nahida-mint/30'
+                  : 'hover:bg-black/5 dark:hover:bg-white/5 text-sumeru-800 dark:text-nahida-light/85'
+              ]}
+            >
+              <div>
+                <div class="font-semibold text-sm tracking-wider uppercase">{item.name}</div>
+                <div class="text-xs text-sumeru-600/80 dark:text-nahida-mint/60 mt-0.5">{item.desc}</div>
+              </div>
+              <svg class="w-4 h-4 text-sumeru-400 dark:text-nahida-mint/50 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          );
+        })}
+      </nav>
+    </div>
+
+    <!-- Drawer Footer -->
+    <div class="pt-6 border-t border-sumeru-200/50 dark:border-nahida-mint/15 flex flex-col gap-3">
+      <div class="flex items-center justify-between text-xs text-sumeru-700 dark:text-nahida-mint/70">
+        <span>© 2026 The Kusanali</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openMobileMenu() {
+    const drawer = document.getElementById('mobile-nav-drawer');
+    const panel = document.getElementById('mobile-nav-panel');
+    const openBtn = document.getElementById('mobile-menu-open-btn');
+    if (!drawer || !panel) return;
+
+    drawer.classList.remove('pointer-events-none', 'opacity-0');
+    drawer.classList.add('pointer-events-auto', 'opacity-100');
+    panel.classList.remove('translate-x-full');
+    panel.classList.add('translate-x-0');
+    document.body.style.overflow = 'hidden';
+    openBtn?.setAttribute('aria-expanded', 'true');
+  }
+
+  function closeMobileMenu() {
+    const drawer = document.getElementById('mobile-nav-drawer');
+    const panel = document.getElementById('mobile-nav-panel');
+    const openBtn = document.getElementById('mobile-menu-open-btn');
+    if (!drawer || !panel) return;
+
+    drawer.classList.add('pointer-events-none', 'opacity-0');
+    drawer.classList.remove('pointer-events-auto', 'opacity-100');
+    panel.classList.add('translate-x-full');
+    panel.classList.remove('translate-x-0');
+    document.body.style.overflow = '';
+    openBtn?.setAttribute('aria-expanded', 'false');
+  }
+
+  if (!(window as any).__mobileNavInitialized) {
+    (window as any).__mobileNavInitialized = true;
+
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+
+      if (target.closest('#mobile-menu-open-btn')) {
+        e.preventDefault();
+        openMobileMenu();
+      } else if (
+        target.closest('#mobile-menu-close-btn') ||
+        target.closest('#mobile-nav-backdrop') ||
+        target.closest('#mobile-nav-panel nav a')
+      ) {
+        closeMobileMenu();
+      }
+    });
+
+    window.addEventListener('keydown', (e) => {
+      const drawer = document.getElementById('mobile-nav-drawer');
+      if (e.key === 'Escape' && drawer && !drawer.classList.contains('opacity-0')) {
+        closeMobileMenu();
+      }
+    });
+  }
+</script>

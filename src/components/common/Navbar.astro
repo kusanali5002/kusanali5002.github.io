@@ -1,0 +1,204 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+
+const currentPath = Astro.url.pathname;
+
+const navItems = [
+  { name: 'HOME', href: '/' },
+  { name: 'ACTIVITIES', href: '/activities/' },
+  { name: 'WORKSPACE', href: '/workspace/' },
+  { name: 'NAHIDA', href: '/nahida/' },
+  { name: 'ABOUT ME', href: '/about/' },
+  { name: 'CONTACT', href: '/contact/' },
+];
+
+function isActive(itemHref: string) {
+  if (itemHref === '/') {
+    return currentPath === '/' || currentPath === '';
+  }
+  return currentPath.startsWith(itemHref);
+}
+---
+
+<header
+  id="site-header"
+  transition:persist="site-header"
+  class="site-header fixed top-0 left-0 right-0 z-40 transition-all duration-300 ease-out backdrop-blur-md bg-white/70 dark:bg-[#09110d]/75 border-b border-black/[0.06] dark:border-white/[0.08]"
+>
+  <div
+    id="header-inner"
+    class="header-inner max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 sm:h-24 flex items-center justify-between transition-all duration-300 ease-out"
+  >
+    <!-- Brand Logo (Static dimensions to prevent glitching/layout shift on navigation) -->
+    <a href="/" class="header-brand flex items-center gap-3 group focus-visible:outline-none" aria-label="The Kusanali Home">
+      <div
+        id="header-logo-container"
+        class="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl overflow-hidden border border-sumeru-600/30 dark:border-nahida-mint/40 group-hover:scale-105 transition-transform duration-200 shadow-sm bg-sumeru-100 dark:bg-sumeru-950 flex-shrink-0"
+      >
+        <img src="/favicon.png" alt="The Kusanali" class="w-full h-full object-cover" />
+      </div>
+      <div class="flex flex-col header-brand-text">
+        <span
+          id="header-brand-title"
+          class="font-display font-semibold tracking-wider text-sm sm:text-base text-sumeru-950 dark:text-nahida-light group-hover:text-sumeru-600 dark:group-hover:text-nahida-mint transition-colors leading-tight"
+        >
+          THE KUSANALI
+        </span>
+        <span
+          id="header-brand-subtitle"
+          class="text-[10px] sm:text-[11px] tracking-wide text-sumeru-600/90 dark:text-nahida-mint/80 font-mono leading-tight"
+        >
+          Dun's official webpage
+        </span>
+      </div>
+    </a>
+
+    <!-- Desktop Horizontal Navigation Links -->
+    <nav class="hidden md:flex items-center space-x-1 lg:space-x-2 header-nav transition-all duration-300 ease-out" aria-label="Main Navigation">
+      {navItems.map((item) => {
+        const active = isActive(item.href);
+        return (
+          <a
+            href={item.href}
+            class:list={[
+              'relative px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wider uppercase transition-all duration-200',
+              active
+                ? 'text-sumeru-900 dark:text-nahida-mint font-semibold'
+                : 'text-sumeru-800/80 dark:text-nahida-light/75 hover:text-sumeru-950 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
+            ]}
+          >
+            {item.name}
+            {active && (
+              <span class="nav-active-pill absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-sumeru-600 dark:bg-nahida-mint rounded-full animate-fade-in" />
+            )}
+          </a>
+        );
+      })}
+    </nav>
+
+    <!-- Header Actions (Theme Toggle & Mobile Menu Button) -->
+    <div class="flex items-center gap-2">
+      <ThemeToggle />
+
+      <!-- Mobile Hamburger Button -->
+      <button
+        id="mobile-menu-open-btn"
+        type="button"
+        class="md:hidden p-2 rounded-xl text-sumeru-900 dark:text-nahida-light hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+        aria-label="Open mobile navigation menu"
+        aria-expanded="false"
+        aria-controls="mobile-nav-drawer"
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" y1="6" x2="20" y2="6"></line>
+          <line x1="4" y1="12" x2="20" y2="12"></line>
+          <line x1="4" y1="18" x2="20" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<style>
+  /* Header Scroll-Shrink Transformation */
+  .site-header {
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .site-header.transformed {
+    background-color: rgba(255, 255, 255, 0.88);
+    border-bottom-color: rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+  }
+
+  html.dark .site-header.transformed {
+    background-color: rgba(9, 17, 13, 0.88);
+    border-bottom-color: rgba(255, 255, 255, 0.09);
+    box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.4), 0 2px 8px -1px rgba(0, 0, 0, 0.3);
+  }
+
+  .header-inner {
+    transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .site-header.transformed .header-inner {
+    height: 3.5rem; /* 56px, transformed from h-20 (80px) / h-24 (96px) */
+  }
+
+  @media (min-width: 640px) {
+    .site-header.transformed .header-inner {
+      height: 3.75rem; /* 60px */
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-header,
+    .header-inner {
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  function setupHeaderScroll() {
+    const header = document.getElementById('site-header');
+    if (!header) return;
+
+    function updateHeader() {
+      const scrollY = window.scrollY || document.documentElement.scrollTop;
+      if (scrollY > 15) {
+        header.classList.add('transformed');
+      } else {
+        header.classList.remove('transformed');
+      }
+    }
+
+    window.addEventListener('scroll', updateHeader, { passive: true });
+    updateHeader();
+  }
+
+  function updateActiveNav() {
+    const currentPath = window.location.pathname.replace(/\/$/, '') || '/';
+    const navLinks = document.querySelectorAll('#site-header nav a');
+
+    navLinks.forEach((link) => {
+      const href = (link.getAttribute('href') || '').replace(/\/$/, '') || '/';
+      let isActive = false;
+      if (href === '/') {
+        isActive = currentPath === '/';
+      } else {
+        isActive = currentPath === href || currentPath.startsWith(href + '/');
+      }
+
+      if (isActive) {
+        link.classList.add('text-sumeru-900', 'dark:text-nahida-mint', 'font-semibold');
+        link.classList.remove('text-sumeru-800/80', 'dark:text-nahida-light/75');
+        if (!link.querySelector('.nav-active-pill')) {
+          const pill = document.createElement('span');
+          pill.className = 'nav-active-pill absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-sumeru-600 dark:bg-nahida-mint rounded-full animate-fade-in';
+          link.appendChild(pill);
+        }
+      } else {
+        link.classList.remove('text-sumeru-900', 'dark:text-nahida-mint', 'font-semibold');
+        link.classList.add('text-sumeru-800/80', 'dark:text-nahida-light/75');
+        const pill = link.querySelector('.nav-active-pill');
+        if (pill) pill.remove();
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      setupHeaderScroll();
+      updateActiveNav();
+    });
+  } else {
+    setupHeaderScroll();
+    updateActiveNav();
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    setupHeaderScroll();
+    updateActiveNav();
+  });
+</script>

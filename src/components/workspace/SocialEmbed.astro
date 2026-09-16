@@ -1,0 +1,182 @@
+---
+export interface Props {
+  platform: 'tiktok' | 'youtube' | 'instagram' | 'bilibili' | 'other';
+  url: string;
+  title: string;
+  thumbnail?: string;
+  poster?: string;
+  fallbackVideo?: string;
+}
+
+const { platform, url, title, thumbnail, poster, fallbackVideo } = Astro.props;
+
+// Helper to extract YouTube video ID
+function getYouTubeEmbedUrl(rawUrl: string): string | null {
+  try {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = rawUrl.match(regExp);
+    return (match && match[2].length === 11)
+      ? `https://www.youtube-nocookie.com/embed/${match[2]}?autoplay=1&rel=0`
+      : null;
+  } catch {
+    return null;
+  }
+}
+
+// Helper to extract TikTok video ID
+function getTikTokVideoId(rawUrl: string): string | null {
+  try {
+    const match = rawUrl.match(/\/video\/(\d+)/);
+    return match ? match[1] : null;
+  } catch {
+    return null;
+  }
+}
+
+const youtubeEmbedSrc = platform === 'youtube' ? getYouTubeEmbedUrl(url) : null;
+const tiktokVideoId = platform === 'tiktok' ? getTikTokVideoId(url) : null;
+const previewImage = thumbnail || poster || '/images/Nahida_Icon.webp';
+---
+
+<div class="social-embed-container relative w-full h-full min-h-[260px] rounded-2xl overflow-hidden bg-sumeru-950/20 border border-sumeru-200/50 dark:border-white/[0.08] flex items-center justify-center">
+  {platform === 'youtube' && youtubeEmbedSrc ? (
+    <div class="youtube-player-wrapper w-full h-full relative aspect-video" data-embed-src={youtubeEmbedSrc}>
+      <img
+        src={previewImage}
+        alt={title}
+        class="w-full h-full object-cover"
+        loading="lazy"
+      />
+      <div class="absolute inset-0 bg-black/40 hover:bg-black/20 transition-colors flex items-center justify-center cursor-pointer group play-btn-overlay">
+        <button
+          type="button"
+          class="w-14 h-14 rounded-full bg-sumeru-600 dark:bg-nahida-mint text-white dark:text-sumeru-950 flex items-center justify-center shadow-xl transform group-hover:scale-110 transition-transform"
+          aria-label={`Play YouTube video: ${title}`}
+        >
+          <svg class="w-6 h-6 ml-0.5 fill-current" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  ) : platform === 'tiktok' ? (
+    <div class="tiktok-wrapper w-full h-full relative flex flex-col items-center justify-center p-4 sm:p-6 bg-sumeru-950/30">
+      {fallbackVideo ? (
+        <video
+          src={fallbackVideo}
+          poster={previewImage}
+          controls
+          playsinline
+          preload="metadata"
+          class="w-full h-full max-h-[560px] object-cover rounded-2xl"
+        >
+          Your browser does not support HTML5 video.
+        </video>
+      ) : tiktokVideoId ? (
+        <div class="flex flex-col items-center justify-center w-full my-2">
+          <div class="player-shell vertical rounded-2xl shadow-2xl border border-sumeru-300/40 dark:border-nahida-mint/25 bg-black">
+            <iframe
+              src={`https://www.tiktok.com/player/v1/${tiktokVideoId}?autoplay=0&loop=0&rel=0&music_info=0&description=0&muted=0&volume_control=1`}
+              class="w-full h-full border-0 absolute inset-0"
+              allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+              allowfullscreen
+              title={title}
+            ></iframe>
+          </div>
+          <div class="mt-4 flex items-center gap-3">
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-sumeru-600 dark:bg-nahida-mint text-white dark:text-sumeru-950 font-semibold text-xs hover:bg-sumeru-700 dark:hover:bg-white transition-colors shadow-sm"
+            >
+              <span>Watch directly on TikTok</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      ) : (
+        <div class="relative w-full h-full min-h-[320px] rounded-xl overflow-hidden group">
+          <img
+            src={previewImage}
+            alt={title}
+            class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-6">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-black/60 text-nahida-mint w-max mb-2 backdrop-blur-sm border border-nahida-mint/20">
+              <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+              </svg>
+              <span>TikTok Showcase</span>
+            </span>
+            <p class="text-white font-medium text-sm line-clamp-2 mb-3">{title}</p>
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-white text-sumeru-950 font-semibold text-xs hover:bg-nahida-mint transition-colors shadow-md"
+            >
+              <span>Watch directly on TikTok</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      )}
+    </div>
+  ) : (
+    <div class="fallback-card relative w-full h-full min-h-[280px] flex flex-col justify-end p-6 group">
+      <img
+        src={previewImage}
+        alt={title}
+        class="absolute inset-0 w-full h-full object-cover"
+        loading="lazy"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent"></div>
+      <div class="relative z-10 space-y-2">
+        <span class="inline-block px-2.5 py-0.5 rounded-md text-[11px] font-mono uppercase bg-white/20 text-white backdrop-blur-sm">
+          {platform}
+        </span>
+        <h4 class="font-display font-semibold text-white text-base line-clamp-2">{title}</h4>
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 text-xs font-semibold text-nahida-mint hover:underline pt-1"
+        >
+          <span>Open on {platform}</span>
+          <span>↗</span>
+        </a>
+      </div>
+    </div>
+  )}
+</div>
+
+<script>
+  function setupYouTubePlayers() {
+    const wrappers = document.querySelectorAll('.youtube-player-wrapper');
+    wrappers.forEach(wrapper => {
+      const overlay = wrapper.querySelector('.play-btn-overlay');
+      const src = wrapper.getAttribute('data-embed-src');
+      if (!overlay || !src) return;
+
+      overlay.addEventListener('click', () => {
+        const iframe = document.createElement('iframe');
+        iframe.setAttribute('src', src);
+        iframe.setAttribute('title', 'YouTube video player');
+        iframe.setAttribute('frameborder', '0');
+        iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+        iframe.setAttribute('allowfullscreen', 'true');
+        iframe.className = 'w-full h-full absolute inset-0';
+        wrapper.innerHTML = '';
+        wrapper.appendChild(iframe);
+      });
+    });
+  }
+
+  setupYouTubePlayers();
+  document.addEventListener('astro:after-swap', setupYouTubePlayers);
+</script>

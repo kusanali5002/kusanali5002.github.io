@@ -1,0 +1,24 @@
+# Build and dependency outputs
+node_modules/
+dist/
+.astro/
+
+# Legacy repo backup
+kusanali5002.github.io-main/
+
+# Environment files
+.env
+.env.production
+.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS and Editor metadata
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+

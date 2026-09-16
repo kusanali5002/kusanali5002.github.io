@@ -1,0 +1,1075 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const constellations = [
+  {
+    num: 'C1',
+    name: 'The Seed of Stored Knowledge',
+    icon: '/images/Nahida_Constellation_1.webp',
+    originalImage: '/images/nahida_c1_image.jpeg',
+    desc: 'When the Shrine of Maya is unleashed and the Elemental Types of the party members are being tabulated, the count will add 1 to the number of Pyro, Electro, and Hydro characters respectively.'
+  },
+  {
+    num: 'C2',
+    name: 'The Root of All Fullness',
+    icon: '/images/Nahida_Constellation_2.webp',
+    originalImage: '/images/nahida_c2_image.jpeg',
+    desc: 'Opponents that are marked by Seeds of Skandha applied by Nahida herself will be affected by the following effects:\n• Burning, Bloom, Hyperbloom, and Burgeon Reaction DMG can score CRIT Hits. CRIT Rate and CRIT DMG are fixed at 20% and 100% respectively.\n• Within 8s of being affected by Quicken, Aggravate, Spread, DEF is decreased by 30%.'
+  },
+  {
+    num: 'C3',
+    name: 'The Shoot of Conscious Attainment',
+    icon: '/images/Nahida_Constellation_3.webp',
+    originalImage: '/images/nahida_c3_image.jpeg',
+    desc: 'Increases the Level of All Schemes to Know by 3. Maximum upgrade level is 15.'
+  },
+  {
+    num: 'C4',
+    name: 'The Stem of Manifest Inference',
+    icon: '/images/Nahida_Constellation_4.webp',
+    originalImage: '/images/nahida_c4_image.jpeg',
+    desc: "When 1/2/3/(4 or more) nearby opponents are affected by All Schemes to Know's Seeds of Skandha, Nahida's Elemental Mastery will be increased by 100/120/140/160."
+  },
+  {
+    num: 'C5',
+    name: 'The Leaves of Enlightening Speech',
+    icon: '/images/Nahida_Constellation_5.webp',
+    originalImage: '/images/nahida_c5_image.jpeg',
+    desc: 'Increases the Level of Illusory Heart by 3. Maximum upgrade level is 15.'
+  },
+  {
+    num: 'C6',
+    name: "The Fruit of Reason's Culmination",
+    icon: '/images/Nahida_Constellation_6.webp',
+    originalImage: '/images/nahida_c6_image.jpeg',
+    desc: "When Nahida hits an opponent affected by All Schemes to Know's Seeds of Skandha with Normal or Charged Attacks after unleashing Illusory Heart, she will use Tri-Karma Purification: Karmic Oblivion on this opponent and all connected opponents, dealing Dendro DMG based on 200% of Nahida's ATK and 400% of her Elemental Mastery.\n\nDMG dealt is considered Elemental Skill DMG and can be triggered every 0.2s. This effect lasts up to 10s or until 6 instances are triggered."
+  }
+];
+
+const talents = [
+  {
+    name: 'Akara',
+    type: 'Normal Attack',
+    icon: '/images/Nahida_Talent_Akara.webp',
+    desc: 'Performs up to 4 attacks that deal Dendro DMG to opponents in front of her.\n\n• Charged Attack: Consumes Stamina to deal AoE Dendro DMG to opponents after a short casting time.\n• Plunging Attack: Calling upon the might of Dendro, Nahida plunges towards the ground from mid-air, damaging all opponents in her path and dealing AoE Dendro DMG upon impact.'
+  },
+  {
+    name: 'All Schemes to Know',
+    type: 'Elemental Skill',
+    icon: '/images/Nahida_Talent_All_Schemes_to_Know.webp',
+    desc: 'Sends forth karmic bonds of Dendro that deal AoE Dendro DMG to opponents and mark them with the Seed of Skandha.\n\n• Press: Performs a forward AoE attack, marking opponents in front of her.\n• Hold: Enters Aiming Mode to select opponents within a limited AoE with increased interruption resistance.\n• Tri-Karma Purification: When marked enemies undergo Elemental Reactions or take Dendro Core DMG, triggers Dendro DMG based on ATK + EM.'
+  },
+  {
+    name: 'Illusory Heart',
+    type: 'Elemental Burst',
+    icon: '/images/Nahida_Talent_Illusory_Heart.webp',
+    desc: 'Unleashes the Court of Dreams and creates the Shrine of Maya.\n\nPyro, Electro, and Hydro characters within the Shrine of Maya grant Nahida distinct buffs:\n• Pyro: Increases DMG dealt by Tri-Karma Purification.\n• Electro: Decreases interval between Tri-Karma Purification triggers.\n• Hydro: Increases Shrine of Maya duration.\nIf there are 2 characters of these types, effects scale further.'
+  },
+  {
+    name: 'Compassion Enlightened',
+    type: '1st Ascension Passive',
+    icon: '/images/Nahida_Talent_Compassion_Illuminated.webp',
+    desc: 'When the Shrine of Maya is unleashed, the active character within its field gains 25% of the Elemental Mastery of the party member with the highest EM (up to a maximum of 250 EM).'
+  },
+  {
+    name: 'Awakening Elucidation',
+    type: '4th Ascension Passive',
+    icon: '/images/Nahida_Talent_Awakening_Elucidated.webp',
+    desc: "Each point of Nahida's Elemental Mastery beyond 200 increases the DMG of Tri-Karma Purification by 0.1% and its CRIT Rate by 0.03% (up to a maximum of 80% DMG and 24% CRIT Rate)."
+  },
+  {
+    name: 'On All Things Meditation',
+    type: 'Utility Passive',
+    icon: '/images/Nahida_Talent_On_All_Things_Meditated.webp',
+    desc: 'Nahida can interact with harvestable items within a certain AoE. When interacting with certain plants, Nahida has a chance to produce additional products.'
+  }
+];
+
+const ascensionData = [
+  {
+    phase: '0',
+    levels: [
+      { lvl: '1/20', hp: '806.51', atk: '23.28', def: '49.06', em: '—' },
+      { lvl: '20/20', hp: '2,092.08', atk: '60.38', def: '127.26', em: '—' },
+    ],
+    cost: {
+      mora: '20,000',
+      materials: [
+        { name: 'Nagadus Emerald Sliver', count: 1, icon: '/images/nagadus_emerald_sliver.webp' },
+        { name: 'Kalpalata Lotus', count: 3, icon: '/images/kalpalata-lotus.webp' },
+        { name: 'Fungal Spores', count: 3, icon: '/images/fungal-spores.webp' },
+      ]
+    }
+  },
+  {
+    phase: '1✦',
+    levels: [
+      { lvl: '20/40', hp: '2,783.59', atk: '80.33', def: '169.33', em: '—' },
+      { lvl: '40/40', hp: '4,165.14', atk: '120.20', def: '253.37', em: '—' },
+    ],
+    cost: {
+      mora: '40,000',
+      materials: [
+        { name: 'Quelled Creeper', count: 2, icon: '/images/quelled-creeper.webp' },
+        { name: 'Nagadus Emerald Fragment', count: 3, icon: '/images/nagadus_emerald_fragment.webp' },
+        { name: 'Kalpalata Lotus', count: 10, icon: '/images/kalpalata-lotus.webp' },
+        { name: 'Fungal Spores', count: 15, icon: '/images/fungal-spores.webp' },
+      ]
+    }
+  },
+  {
+    phase: '2✦',
+    levels: [
+      { lvl: '40/50', hp: '4,656.48', atk: '134.38', def: '283.26', em: '28.8' },
+      { lvl: '50/50', hp: '5,357.33', atk: '154.60', def: '325.89', em: '28.8' },
+    ],
+    cost: {
+      mora: '60,000',
+      materials: [
+        { name: 'Quelled Creeper', count: 4, icon: '/images/quelled-creeper.webp' },
+        { name: 'Nagadus Emerald Fragment', count: 6, icon: '/images/nagadus_emerald_fragment.webp' },
+        { name: 'Kalpalata Lotus', count: 20, icon: '/images/kalpalata-lotus.webp' },
+        { name: 'Luminescent Pollen', count: 12, icon: '/images/luminescent-pollen.webp' },
+      ]
+    }
+  },
+  {
+    phase: '3✦',
+    levels: [
+      { lvl: '50/60', hp: '6,012.45', atk: '173.51', def: '365.74', em: '57.6' },
+      { lvl: '60/60', hp: '6,720.56', atk: '193.94', def: '408.82', em: '57.6' },
+    ],
+    cost: {
+      mora: '80,000',
+      materials: [
+        { name: 'Quelled Creeper', count: 8, icon: '/images/quelled-creeper.webp' },
+        { name: 'Nagadus Emerald Chunk', count: 3, icon: '/images/nagadus-emerald-chunk.webp' },
+        { name: 'Kalpalata Lotus', count: 30, icon: '/images/kalpalata-lotus.webp' },
+        { name: 'Luminescent Pollen', count: 18, icon: '/images/luminescent-pollen.webp' },
+      ]
+    }
+  },
+  {
+    phase: '4✦',
+    levels: [
+      { lvl: '60/70', hp: '7,211.89', atk: '208.12', def: '438.71', em: '57.6' },
+      { lvl: '70/70', hp: '7,926.46', atk: '228.74', def: '482.18', em: '57.6' },
+    ],
+    cost: {
+      mora: '100,000',
+      materials: [
+        { name: 'Quelled Creeper', count: 12, icon: '/images/quelled-creeper.webp' },
+        { name: 'Nagadus Emerald Chunk', count: 6, icon: '/images/nagadus-emerald-chunk.webp' },
+        { name: 'Kalpalata Lotus', count: 45, icon: '/images/kalpalata-lotus.webp' },
+        { name: 'Crystalline Cyst Dust', count: 12, icon: '/images/crystalline_cyst_dust.webp' },
+      ]
+    }
+  },
+  {
+    phase: '5✦',
+    levels: [
+      { lvl: '70/80', hp: '8,417.80', atk: '242.92', def: '512.07', em: '86.4' },
+      { lvl: '80/80', hp: '9,140.43', atk: '263.78', def: '556.02', em: '86.4' },
+    ],
+    cost: {
+      mora: '120,000',
+      materials: [
+        { name: 'Quelled Creeper', count: 20, icon: '/images/quelled-creeper.webp' },
+        { name: 'Nagadus Emerald Gemstone', count: 6, icon: '/images/nagadus_emerald_gemstone.webp' },
+        { name: 'Kalpalata Lotus', count: 60, icon: '/images/kalpalata-lotus.webp' },
+        { name: 'Crystalline Cyst Dust', count: 24, icon: '/images/crystalline_cyst_dust.webp' },
+      ]
+    }
+  },
+  {
+    phase: '6✦',
+    levels: [
+      { lvl: '80/90', hp: '9,631.76', atk: '277.96', def: '585.91', em: '115.2' },
+      { lvl: '90/90', hp: '10,360.04', atk: '298.97', def: '630.21', em: '115.2' },
+    ],
+    cost: null
+  }
+];
+
+const totalAscensionCost = [
+  { name: 'Mora', count: '420,000', icon: '/images/mora.webp' },
+  { name: 'Quelled Creeper', count: '46', icon: '/images/quelled-creeper.webp' },
+  { name: 'Nagadus Emerald Sliver', count: '1', icon: '/images/nagadus_emerald_sliver.webp' },
+  { name: 'Nagadus Emerald Fragment', count: '9', icon: '/images/nagadus_emerald_fragment.webp' },
+  { name: 'Nagadus Emerald Chunk', count: '9', icon: '/images/nagadus-emerald-chunk.webp' },
+  { name: 'Nagadus Emerald Gemstone', count: '6', icon: '/images/nagadus_emerald_gemstone.webp' },
+  { name: 'Kalpalata Lotus', count: '168', icon: '/images/kalpalata-lotus.webp' },
+  { name: 'Fungal Spores', count: '18', icon: '/images/fungal-spores.webp' },
+  { name: 'Luminescent Pollen', count: '30', icon: '/images/luminescent-pollen.webp' },
+  { name: 'Crystalline Cyst Dust', count: '36', icon: '/images/crystalline_cyst_dust.webp' },
+];
+
+const talentUpgradeData = [
+  {
+    level: '1 → 2',
+    ascension: '2✦',
+    mora: '12,500',
+    subtotalMora: '12,500',
+    common: { name: 'Fungal Spores', count: 6, subtotal: 6, icon: '/images/fungal-spores.webp' },
+    book: { name: 'Teachings of Ingenuity', count: 3, subtotal: 3 },
+    boss: null,
+    crown: null
+  },
+  {
+    level: '2 → 3',
+    ascension: '3✦',
+    mora: '17,500',
+    subtotalMora: '30,000',
+    common: { name: 'Luminescent Pollen', count: 3, subtotal: 9, icon: '/images/luminescent-pollen.webp' },
+    book: { name: 'Guide to Ingenuity', count: 2, subtotal: 5 },
+    boss: null,
+    crown: null
+  },
+  {
+    level: '3 → 4',
+    ascension: '3✦',
+    mora: '25,000',
+    subtotalMora: '55,000',
+    common: { name: 'Luminescent Pollen', count: 4, subtotal: 13, icon: '/images/luminescent-pollen.webp' },
+    book: { name: 'Guide to Ingenuity', count: 4, subtotal: 9 },
+    boss: null,
+    crown: null
+  },
+  {
+    level: '4 → 5',
+    ascension: '4✦',
+    mora: '30,000',
+    subtotalMora: '85,000',
+    common: { name: 'Luminescent Pollen', count: 6, subtotal: 19, icon: '/images/luminescent-pollen.webp' },
+    book: { name: 'Guide to Ingenuity', count: 6, subtotal: 15 },
+    boss: null,
+    crown: null
+  },
+  {
+    level: '5 → 6',
+    ascension: '4✦',
+    mora: '37,500',
+    subtotalMora: '122,500',
+    common: { name: 'Luminescent Pollen', count: 9, subtotal: 28, icon: '/images/luminescent-pollen.webp' },
+    book: { name: 'Guide to Ingenuity', count: 9, subtotal: 24 },
+    boss: null,
+    crown: null
+  },
+  {
+    level: '6 → 7',
+    ascension: '5✦',
+    mora: '120,000',
+    subtotalMora: '242,500',
+    common: { name: 'Crystalline Cyst Dust', count: 4, subtotal: 32, icon: '/images/crystalline_cyst_dust.webp' },
+    book: { name: 'Philosophies of Ingenuity', count: 4, subtotal: 28 },
+    boss: { name: 'Puppet Strings', count: 1, subtotal: 1 },
+    crown: null
+  },
+  {
+    level: '7 → 8',
+    ascension: '5✦',
+    mora: '260,000',
+    subtotalMora: '502,500',
+    common: { name: 'Crystalline Cyst Dust', count: 6, subtotal: 38, icon: '/images/crystalline_cyst_dust.webp' },
+    book: { name: 'Philosophies of Ingenuity', count: 6, subtotal: 34 },
+    boss: { name: 'Puppet Strings', count: 2, subtotal: 3 },
+    crown: null
+  },
+  {
+    level: '8 → 9',
+    ascension: '6✦',
+    mora: '450,000',
+    subtotalMora: '952,500',
+    common: { name: 'Crystalline Cyst Dust', count: 9, subtotal: 47, icon: '/images/crystalline_cyst_dust.webp' },
+    book: { name: 'Philosophies of Ingenuity', count: 12, subtotal: 46 },
+    boss: { name: 'Puppet Strings', count: 2, subtotal: 5 },
+    crown: null
+  },
+  {
+    level: '9 → 10',
+    ascension: '6✦',
+    mora: '700,000',
+    subtotalMora: '1,652,500',
+    common: { name: 'Crystalline Cyst Dust', count: 12, subtotal: 59, icon: '/images/crystalline_cyst_dust.webp' },
+    book: { name: 'Philosophies of Ingenuity', count: 16, subtotal: 62 },
+    boss: { name: 'Puppet Strings', count: 2, subtotal: 7 },
+    crown: { name: 'Crown of Insight', count: 1, subtotal: 1 }
+  }
+];
+
+const totalTalentCost = [
+  { name: 'Mora', count: '1,652,500', icon: '/images/mora.webp' },
+  { name: 'Fungal Spores', count: '6', icon: '/images/fungal-spores.webp' },
+  { name: 'Luminescent Pollen', count: '22', icon: '/images/luminescent-pollen.webp' },
+  { name: 'Crystalline Cyst Dust', count: '31', icon: '/images/crystalline_cyst_dust.webp' },
+  { name: 'Teachings of Ingenuity', count: '3', badge: 'Ingenuity' },
+  { name: 'Guide to Ingenuity', count: '21', badge: 'Ingenuity' },
+  { name: 'Philosophies of Ingenuity', count: '38', badge: 'Ingenuity' },
+  { name: 'Puppet Strings', count: '6', badge: 'Boss' },
+  { name: 'Crown of Insight', count: '1', badge: 'Crown' }
+];
+
+const languagesData = [
+  { language: 'English', name: 'Nahida', romanization: '' },
+  { language: 'Chinese (Simplified)', name: '纳西妲', romanization: 'Nàxīdá' },
+  { language: 'Chinese (Traditional)', name: '納西妲', romanization: 'Nàxīdá' },
+  { language: 'Japanese', name: 'ナヒーダ', romanization: 'Nahiida' },
+  { language: 'Korean', name: '나히다', romanization: 'Nahida' },
+  { language: 'Spanish', name: 'Nahida', romanization: '' },
+  { language: 'French', name: 'Nahida', romanization: '' },
+  { language: 'Russian', name: 'Нахида', romanization: 'Nakhida' },
+  { language: 'Thai', name: 'Nahida', romanization: '' },
+  { language: 'Vietnamese', name: 'Nahida', romanization: '' },
+  { language: 'German', name: 'Nahida', romanization: '' },
+  { language: 'Indonesian', name: 'Nahida', romanization: '' },
+  { language: 'Portuguese', name: 'Nahida', romanization: '' },
+  { language: 'Turkish', name: 'Nahida', romanization: '' },
+  { language: 'Italian', name: 'Nahida', romanization: '' }
+];
+
+const voiceActors = [
+  { region: 'English', actor: 'Kimberley Anne Campbell' },
+  { region: 'Chinese', actor: 'Hualing' },
+  { region: 'Japanese', actor: 'Yukari Tamura' },
+  { region: 'Korean', actor: 'Park Shi-yoon' }
+];
+---
+
+<BaseLayout
+  title="Nahida — Lesser Lord Kusanali"
+  description="Nahida character dossier: gameplay information, stats, ascension materials, talents, and constellations."
+  section="nahida"
+>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+    
+    <!-- Hero Header -->
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono uppercase tracking-widest bg-emerald-500/10 dark:bg-nahida-mint/10 text-emerald-800 dark:text-nahida-mint border border-emerald-500/20 dark:border-nahida-mint/30 mb-3">
+        <span>ARCHON OF DENDRO • LESSER LORD KUSANALI</span>
+      </div>
+      <h1 class="font-display font-bold text-3xl sm:text-5xl md:text-6xl text-sumeru-950 dark:text-white tracking-tight mb-3">
+        Nahida
+      </h1>
+      <p class="text-xs font-mono text-sumeru-600 dark:text-nahida-mint/80">
+        #specialcharacter #genshinimpact | Post day : June 26th 2025
+      </p>
+    </div>
+
+    <!-- Thematic Narrative Section: Exact Original Text & Visuals -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center mb-20">
+      <div class="md:col-span-5 flex justify-center">
+        <div class="relative w-64 h-64 sm:w-80 sm:h-80 rounded-3xl overflow-hidden glass-panel border-2 border-sumeru-300/60 dark:border-nahida-mint/30 shadow-2xl group">
+          <img
+            src="/images/nahida.jpg"
+            alt="Nahida, Lesser Lord Kusanali"
+            class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+          <div class="absolute bottom-4 left-4 right-4 text-center">
+            <span class="text-xs font-mono text-white/90 drop-shadow-md">
+              Sanctuary of Surasthana
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="md:col-span-7 space-y-6">
+        <div class="space-y-4">
+          <h2 class="font-display font-bold text-2xl sm:text-3xl text-sumeru-950 dark:text-white">
+            Nahida
+          </h2>
+          <p class="text-base text-sumeru-800/90 dark:text-nahida-light/90 leading-relaxed">
+            Nahida is a playable Dendro character in Genshin Impact (and is my lover ehe).
+          </p>
+          <p class="text-base text-sumeru-800/90 dark:text-nahida-light/90 leading-relaxed">
+            As Lesser Lord Kusanali, she strives to have a stronger presence in Sumeru now that she has been freed from her extensive confinement in the Sanctuary of Surasthana.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3 pt-4 border-t border-sumeru-200/40 dark:border-white/[0.08]">
+          <div class="p-3.5 rounded-2xl glass-panel text-center">
+            <div class="text-[11px] font-mono text-sumeru-600 dark:text-nahida-mint mb-0.5">ELEMENT</div>
+            <div class="font-display font-bold text-sm sm:text-base text-sumeru-950 dark:text-white">Dendro</div>
+          </div>
+          <div class="p-3.5 rounded-2xl glass-panel text-center">
+            <div class="text-[11px] font-mono text-sumeru-600 dark:text-nahida-mint mb-0.5">ROLE</div>
+            <div class="font-display font-bold text-xs sm:text-sm md:text-base leading-tight text-sumeru-950 dark:text-white">Support / Sub DPS</div>
+          </div>
+          <div class="p-3.5 rounded-2xl glass-panel text-center">
+            <div class="text-[11px] font-mono text-sumeru-600 dark:text-nahida-mint mb-0.5">WEAPON</div>
+            <div class="font-display font-bold text-sm sm:text-base text-sumeru-950 dark:text-white">Catalyst</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Section Navigation Chips -->
+    <div class="flex flex-wrap items-center justify-center gap-2 mb-16">
+      <a href="#section-talents" class="px-4 py-2 rounded-full text-xs font-mono bg-sumeru-100 dark:bg-white/5 border border-sumeru-200/60 dark:border-white/10 hover:border-sumeru-400 dark:hover:border-nahida-mint text-sumeru-800 dark:text-nahida-light transition-all">
+        Talents
+      </a>
+      <a href="#section-constellations" class="px-4 py-2 rounded-full text-xs font-mono bg-sumeru-100 dark:bg-white/5 border border-sumeru-200/60 dark:border-white/10 hover:border-amber-400 dark:hover:border-nahida-gold text-sumeru-800 dark:text-nahida-light transition-all">
+        Constellations
+      </a>
+      <a href="#section-ascensions" class="px-4 py-2 rounded-full text-xs font-mono bg-sumeru-100 dark:bg-white/5 border border-sumeru-200/60 dark:border-white/10 hover:border-sumeru-400 dark:hover:border-nahida-mint text-sumeru-800 dark:text-nahida-light transition-all">
+        Ascensions & Stats Table
+      </a>
+      <a href="#section-talent-costs" class="px-4 py-2 rounded-full text-xs font-mono bg-sumeru-100 dark:bg-white/5 border border-sumeru-200/60 dark:border-white/10 hover:border-sumeru-400 dark:hover:border-nahida-mint text-sumeru-800 dark:text-nahida-light transition-all">
+        Talent Upgrade Table
+      </a>
+      <a href="#section-availability" class="px-4 py-2 rounded-full text-xs font-mono bg-sumeru-100 dark:bg-white/5 border border-sumeru-200/60 dark:border-white/10 hover:border-sumeru-400 dark:hover:border-nahida-mint text-sumeru-800 dark:text-nahida-light transition-all">
+        Event Wishes
+      </a>
+      <a href="#section-languages" class="px-4 py-2 rounded-full text-xs font-mono bg-sumeru-100 dark:bg-white/5 border border-sumeru-200/60 dark:border-white/10 hover:border-sumeru-400 dark:hover:border-nahida-mint text-sumeru-800 dark:text-nahida-light transition-all">
+        Languages
+      </a>
+    </div>
+
+    <!-- 1. Talents Section -->
+    <div id="section-talents" class="mb-20 scroll-mt-24">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="text-xs font-mono uppercase tracking-widest text-sumeru-600 dark:text-nahida-mint mb-2 block">
+          Gameplay Information
+        </span>
+        <h2 class="font-display font-bold text-2xl sm:text-3xl text-sumeru-950 dark:text-white">
+          Talents
+        </h2>
+      </div>
+
+      <!-- Talents Cards Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+        {talents.map((t) => (
+          <div class="reveal-on-scroll p-6 rounded-3xl glass-panel border border-sumeru-200/60 dark:border-white/[0.08] flex flex-col justify-between group hover:border-sumeru-400 dark:hover:border-nahida-mint/40 transition-all shadow-sm">
+            <div>
+              <div class="w-14 h-14 rounded-2xl bg-sumeru-100 dark:bg-sumeru-900/60 p-2.5 border border-sumeru-200/50 dark:border-nahida-mint/30 mb-4 flex items-center justify-center group-hover:scale-105 transition-transform">
+                <img src={t.icon} alt={t.name} class="w-full h-full object-contain" />
+              </div>
+              <span class="text-[11px] font-mono text-sumeru-600 dark:text-nahida-mint uppercase tracking-wider block mb-1">
+                {t.type}
+              </span>
+              <h3 class="font-display font-bold text-base text-sumeru-950 dark:text-white mb-2">
+                {t.name}
+              </h3>
+              <p class="text-xs text-sumeru-800/80 dark:text-nahida-light/75 leading-relaxed whitespace-pre-line">
+                {t.desc}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+
+    </div>
+
+    <!-- 2. Constellations Section -->
+    <div id="section-constellations" class="mb-20 scroll-mt-24">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="text-xs font-mono uppercase tracking-widest text-amber-700 dark:text-nahida-gold mb-2 block">
+          Sapientia Oromasdis
+        </span>
+        <h2 class="font-display font-bold text-2xl sm:text-3xl text-sumeru-950 dark:text-white">
+          Constellations
+        </h2>
+      </div>
+
+      <!-- Constellation Cards Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        {constellations.map((c) => (
+          <div class="reveal-on-scroll p-6 rounded-3xl glass-panel border border-sumeru-200/60 dark:border-white/[0.08] flex flex-col justify-between group hover:border-amber-400 dark:hover:border-nahida-gold/40 transition-all shadow-sm">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 rounded-2xl bg-sumeru-900/80 p-2 border border-nahida-gold/30 shrink-0 flex items-center justify-center">
+                  <img src={c.icon} alt={c.name} class="w-full h-full object-contain" />
+                </div>
+                <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-amber-500/10 dark:bg-nahida-gold/10 text-amber-800 dark:text-nahida-gold border border-amber-500/20 dark:border-nahida-gold/30">
+                  {c.num}
+                </span>
+              </div>
+              <h3 class="font-display font-bold text-base text-sumeru-950 dark:text-white mb-2 leading-snug">
+                {c.name}
+              </h3>
+              <p class="text-xs text-sumeru-800/85 dark:text-nahida-light/80 leading-relaxed whitespace-pre-line">
+                {c.desc}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+
+    </div>
+
+    <!-- 3. Ascensions and Stats Section: REAL NATIVE TABLE -->
+    <div id="section-ascensions" class="mb-20 scroll-mt-24">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="text-xs font-mono uppercase tracking-widest text-sumeru-600 dark:text-nahida-mint mb-2 block">
+          Progression & Attributes
+        </span>
+        <h2 class="font-display font-bold text-2xl sm:text-3xl text-sumeru-950 dark:text-white">
+          Ascensions and Stats
+        </h2>
+        <p class="text-sm text-sumeru-800/80 dark:text-nahida-light/80 mt-2">
+          Details about Nahida's Ascension Phases, corresponding stats, and required materials.
+        </p>
+      </div>
+
+      <!-- Real Interactive Stats Table -->
+      <div class="reveal-on-scroll p-4 sm:p-8 rounded-3xl glass-panel border border-sumeru-200/60 dark:border-white/[0.08] shadow-lg mb-8">
+        <div class="flex items-center justify-between mb-6 pb-4 border-b border-sumeru-200/50 dark:border-white/[0.08]">
+          <h3 class="font-display font-bold text-lg text-sumeru-950 dark:text-white flex items-center gap-2">
+            <span class="text-sumeru-600 dark:text-nahida-mint">❖</span>
+            <span>Nahida Base Stats & Progression Matrix</span>
+          </h3>
+          <span class="text-xs font-mono px-2.5 py-1 rounded-full bg-sumeru-100 dark:bg-sumeru-900/60 text-sumeru-700 dark:text-nahida-mint border border-sumeru-300/40 dark:border-nahida-mint/30 hidden sm:inline-block">
+            5★ Dendro Catalyst
+          </span>
+        </div>
+
+        <!-- Desktop Table View (>= md screens) -->
+        <div class="hidden md:block overflow-x-auto rounded-2xl border border-sumeru-200/70 dark:border-white/[0.08]">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="bg-sumeru-100/90 dark:bg-sumeru-950/70 text-sumeru-900 dark:text-nahida-mint font-mono font-semibold border-b border-sumeru-200 dark:border-white/10 uppercase tracking-wider">
+                <th class="py-3 px-3.5 sm:px-4 text-center">Phase</th>
+                <th class="py-3 px-3.5 sm:px-4">Level</th>
+                <th class="py-3 px-3.5 sm:px-4 text-right">Base HP</th>
+                <th class="py-3 px-3.5 sm:px-4 text-right">Base ATK</th>
+                <th class="py-3 px-3.5 sm:px-4 text-right">Base DEF</th>
+                <th class="py-3 px-3.5 sm:px-4 text-right">Elemental Mastery</th>
+                <th class="py-3 px-3.5 sm:px-4">Ascension Cost</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-sumeru-200/50 dark:divide-white/[0.05]">
+              {ascensionData.map((item, idx) => (
+                <>
+                  <!-- First Level in Phase -->
+                  <tr class="hover:bg-emerald-500/5 dark:hover:bg-nahida-mint/5 transition-colors">
+                    <td rowspan="2" class="py-3 px-3.5 sm:px-4 text-center font-mono font-bold text-sumeru-800 dark:text-nahida-mint bg-black/[0.01] dark:bg-white/[0.01] border-r border-sumeru-200/40 dark:border-white/[0.04]">
+                      {item.phase}
+                    </td>
+                    <td class="py-2.5 px-3.5 sm:px-4 font-mono font-medium text-sumeru-900 dark:text-white">
+                      {item.levels[0].lvl}
+                    </td>
+                    <td class="py-2.5 px-3.5 sm:px-4 font-mono text-right text-sumeru-800 dark:text-nahida-light/90">
+                      {item.levels[0].hp}
+                    </td>
+                    <td class="py-2.5 px-3.5 sm:px-4 font-mono text-right text-sumeru-800 dark:text-nahida-light/90">
+                      {item.levels[0].atk}
+                    </td>
+                    <td class="py-2.5 px-3.5 sm:px-4 font-mono text-right text-sumeru-800 dark:text-nahida-light/90">
+                      {item.levels[0].def}
+                    </td>
+                    <td class="py-2.5 px-3.5 sm:px-4 font-mono text-right text-emerald-700 dark:text-nahida-mint font-semibold">
+                      {item.levels[0].em}
+                    </td>
+                    <td rowspan="2" class="py-3 px-3.5 sm:px-4 border-l border-sumeru-200/40 dark:border-white/[0.04] align-middle">
+                      {item.cost ? (
+                        <div class="flex flex-wrap items-center gap-1.5 py-1">
+                          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/10 dark:bg-amber-400/10 text-amber-900 dark:text-amber-300 font-mono text-[11px] border border-amber-500/20" title="Mora">
+                            <img src="/images/mora.webp" alt="Mora" class="w-3.5 h-3.5 object-contain" />
+                            <span>{item.cost.mora}</span>
+                          </span>
+                          {item.cost.materials.map((m) => (
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-sumeru-100/80 dark:bg-white/5 text-sumeru-900 dark:text-nahida-light font-mono text-[11px] border border-sumeru-200/60 dark:border-white/10" title={m.name}>
+                              <img src={m.icon} alt={m.name} class="w-3.5 h-3.5 object-contain" />
+                              <span>{m.count}</span>
+                            </span>
+                          ))}
+                        </div>
+                      ) : (
+                        <span class="text-[11px] font-mono text-sumeru-500 dark:text-nahida-mint/50 italic">
+                          Max Level
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                  <!-- Second Level in Phase -->
+                  <tr class="hover:bg-emerald-500/5 dark:hover:bg-nahida-mint/5 transition-colors border-b-2 border-sumeru-200/60 dark:border-white/[0.08]">
+                    <td class="py-2.5 px-3.5 sm:px-4 font-mono font-medium text-sumeru-900 dark:text-white">
+                      {item.levels[1].lvl}
+                    </td>
+                    <td class="py-2.5 px-3.5 sm:px-4 font-mono text-right text-sumeru-800 dark:text-nahida-light/90">
+                      {item.levels[1].hp}
+                    </td>
+                    <td class="py-2.5 px-3.5 sm:px-4 font-mono text-right text-sumeru-800 dark:text-nahida-light/90">
+                      {item.levels[1].atk}
+                    </td>
+                    <td class="py-2.5 px-3.5 sm:px-4 font-mono text-right text-sumeru-800 dark:text-nahida-light/90">
+                      {item.levels[1].def}
+                    </td>
+                    <td class="py-2.5 px-3.5 sm:px-4 font-mono text-right text-emerald-700 dark:text-nahida-mint font-semibold">
+                      {item.levels[1].em}
+                    </td>
+                  </tr>
+                </>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Mobile Phase Cards View (< md screens): Fits 100% width with NO horizontal scrollbar -->
+        <div class="block md:hidden space-y-3">
+          {ascensionData.map((item) => (
+            <div class="p-3.5 rounded-2xl bg-white/70 dark:bg-black/30 border border-sumeru-200/60 dark:border-white/[0.08] shadow-sm">
+              <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-sumeru-200/50 dark:border-white/[0.06]">
+                <span class="font-mono font-bold text-xs px-2.5 py-0.5 rounded-full bg-sumeru-100 dark:bg-nahida-mint/15 text-sumeru-800 dark:text-nahida-mint border border-sumeru-300/40 dark:border-nahida-mint/30">
+                  Phase {item.phase}
+                </span>
+                <span class="text-xs font-mono text-sumeru-700 dark:text-nahida-light/80">
+                  Lv. {item.levels[0].lvl.split('/')[0]} → {item.levels[1].lvl.split('/')[0]}
+                </span>
+              </div>
+
+              <!-- Base Stats Sub-table (100% width) -->
+              <div class="space-y-2 mb-3">
+                {item.levels.map((lvl) => (
+                  <div class="p-2.5 rounded-xl bg-sumeru-50/70 dark:bg-white/[0.03] border border-sumeru-100 dark:border-white/[0.04]">
+                    <div class="flex items-center justify-between mb-1.5">
+                      <span class="font-mono font-bold text-xs text-sumeru-950 dark:text-white">
+                        Level {lvl.lvl}
+                      </span>
+                      <span class="font-mono text-xs font-semibold text-emerald-700 dark:text-nahida-mint">
+                        EM: {lvl.em}
+                      </span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-1.5 text-center text-[11px] font-mono">
+                      <div class="p-1 rounded bg-black/[0.02] dark:bg-white/[0.02]">
+                        <span class="text-[9px] text-sumeru-500 dark:text-nahida-mint/60 block">HP</span>
+                        <span class="font-semibold text-sumeru-900 dark:text-white text-[10px]">{lvl.hp}</span>
+                      </div>
+                      <div class="p-1 rounded bg-black/[0.02] dark:bg-white/[0.02]">
+                        <span class="text-[9px] text-sumeru-500 dark:text-nahida-mint/60 block">ATK</span>
+                        <span class="font-semibold text-sumeru-900 dark:text-white text-[10px]">{lvl.atk}</span>
+                      </div>
+                      <div class="p-1 rounded bg-black/[0.02] dark:bg-white/[0.02]">
+                        <span class="text-[9px] text-sumeru-500 dark:text-nahida-mint/60 block">DEF</span>
+                        <span class="font-semibold text-sumeru-900 dark:text-white text-[10px]">{lvl.def}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <!-- Ascension Cost for this Phase -->
+              {item.cost ? (
+                <div class="pt-2 border-t border-sumeru-200/40 dark:border-white/[0.05]">
+                  <span class="text-[10px] font-mono uppercase tracking-wider text-sumeru-500 dark:text-nahida-mint/70 block mb-1.5">
+                    Phase Ascension Cost:
+                  </span>
+                  <div class="flex flex-wrap items-center gap-1.5">
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/10 dark:bg-amber-400/10 text-amber-900 dark:text-amber-300 font-mono text-[11px] border border-amber-500/20">
+                      <img src="/images/mora.webp" alt="Mora" class="w-3.5 h-3.5 object-contain" />
+                      <span>{item.cost.mora}</span>
+                    </span>
+                    {item.cost.materials.map((m) => (
+                      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-sumeru-100/80 dark:bg-white/5 text-sumeru-900 dark:text-nahida-light font-mono text-[11px] border border-sumeru-200/60 dark:border-white/10">
+                        <img src={m.icon} alt={m.name} class="w-3.5 h-3.5 object-contain" />
+                        <span>{m.count}x {m.name}</span>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div class="pt-2 border-t border-sumeru-200/40 dark:border-white/[0.05] text-[11px] font-mono text-sumeru-500 dark:text-nahida-mint/60 italic text-center">
+                  Maximum Ascension Phase Reached
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Total Cost of Ascensions (Clean Material Chips Grid) -->
+      <div class="reveal-on-scroll p-4 sm:p-8 rounded-3xl glass-panel border border-sumeru-200/60 dark:border-white/[0.08] shadow-md mb-8">
+        <h3 class="font-display font-bold text-lg text-sumeru-950 dark:text-white mb-1 flex items-center gap-2">
+          <span class="text-sumeru-600 dark:text-nahida-mint">❖</span>
+          <span>Total Cost of Ascensions (Level 1 → 90)</span>
+        </h3>
+        <p class="text-xs font-mono text-sumeru-600 dark:text-nahida-mint/80 mb-6">
+          Total materials required for all Nahida's Ascension Phases
+        </p>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5 sm:gap-3">
+          {totalAscensionCost.map((mat) => (
+            <div class="p-2.5 sm:p-3.5 rounded-2xl bg-white/60 dark:bg-black/25 border border-sumeru-200/60 dark:border-white/[0.08] flex items-center gap-2.5 sm:gap-3 hover:border-sumeru-400 dark:hover:border-nahida-mint/40 transition-all group">
+              <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-sumeru-100 dark:bg-sumeru-900/60 p-1 sm:p-1.5 shrink-0 flex items-center justify-center border border-sumeru-200/50 dark:border-white/10 group-hover:scale-105 transition-transform">
+                <img src={mat.icon} alt={mat.name} class="w-full h-full object-contain" />
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="font-mono font-bold text-sm sm:text-base text-sumeru-950 dark:text-white leading-tight">
+                  {mat.count}
+                </div>
+                <div class="text-[11px] sm:text-xs text-sumeru-700 dark:text-nahida-light/80 leading-snug mt-0.5 break-words">
+                  {mat.name}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+
+    </div>
+
+    <!-- 4. Talent Upgrade Materials Section: REAL NATIVE TABLE -->
+    <div id="section-talent-costs" class="mb-20 scroll-mt-24">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="text-xs font-mono uppercase tracking-widest text-sumeru-600 dark:text-nahida-mint mb-2 block">
+          Talent Investment
+        </span>
+        <h2 class="font-display font-bold text-2xl sm:text-3xl text-sumeru-950 dark:text-white">
+          Talent Upgrade
+        </h2>
+        <p class="text-sm text-sumeru-800/80 dark:text-nahida-light/80 mt-2">
+          Required materials for upgrading Nahida's talents from Level 1 to 10.
+        </p>
+      </div>
+
+      <!-- Real Interactive Talent Upgrade Table -->
+      <div class="reveal-on-scroll p-4 sm:p-8 rounded-3xl glass-panel border border-sumeru-200/60 dark:border-white/[0.08] shadow-lg mb-8">
+        <div class="flex items-center justify-between mb-6 pb-4 border-b border-sumeru-200/50 dark:border-white/[0.08]">
+          <h3 class="font-display font-bold text-lg text-sumeru-950 dark:text-white flex items-center gap-2">
+            <span class="text-sumeru-600 dark:text-nahida-mint">❖</span>
+            <span>Talent Level Materials (1 → 10 per Talent)</span>
+          </h3>
+          <span class="text-xs font-mono px-2.5 py-1 rounded-full bg-sumeru-100 dark:bg-sumeru-900/60 text-sumeru-700 dark:text-nahida-mint border border-sumeru-300/40 dark:border-nahida-mint/30 hidden sm:inline-block">
+            Ingenuity Series • Sumeru
+          </span>
+        </div>
+
+        <!-- Desktop Table View (>= md screens) -->
+        <div class="hidden md:block overflow-x-auto rounded-2xl border border-sumeru-200/70 dark:border-white/[0.08]">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="bg-sumeru-100/90 dark:bg-sumeru-950/70 text-sumeru-900 dark:text-nahida-mint font-mono font-semibold border-b border-sumeru-200 dark:border-white/10 uppercase tracking-wider">
+                <th class="py-3 px-3.5 sm:px-4 text-center">Talent Level</th>
+                <th class="py-3 px-3.5 sm:px-4 text-center">Ascension</th>
+                <th class="py-3 px-3.5 sm:px-4">Mora [Subtotal]</th>
+                <th class="py-3 px-3.5 sm:px-4">Common Material [Subtotal]</th>
+                <th class="py-3 px-3.5 sm:px-4">Talent Book [Subtotal]</th>
+                <th class="py-3 px-3.5 sm:px-4">Weekly Boss Mat</th>
+                <th class="py-3 px-3.5 sm:px-4">Special</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-sumeru-200/50 dark:divide-white/[0.05]">
+              {talentUpgradeData.map((row) => (
+                <tr class="hover:bg-emerald-500/5 dark:hover:bg-nahida-mint/5 transition-colors">
+                  <td class="py-3 px-3.5 sm:px-4 font-mono font-bold text-sumeru-950 dark:text-white text-center">
+                    {row.level}
+                  </td>
+                  <td class="py-3 px-3.5 sm:px-4 font-mono text-center text-emerald-700 dark:text-nahida-mint font-semibold">
+                    {row.ascension}
+                  </td>
+                  <td class="py-3 px-3.5 sm:px-4">
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/10 dark:bg-amber-400/10 text-amber-900 dark:text-amber-300 font-mono text-[11px]">
+                      <img src="/images/mora.webp" alt="Mora" class="w-3.5 h-3.5 object-contain" />
+                      <span>{row.mora}</span>
+                      <span class="text-amber-700/70 dark:text-amber-300/60 text-[10px]">[{row.subtotalMora}]</span>
+                    </span>
+                  </td>
+                  <td class="py-3 px-3.5 sm:px-4">
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-sumeru-100/80 dark:bg-white/5 text-sumeru-900 dark:text-nahida-light font-mono text-[11px] border border-sumeru-200/60 dark:border-white/10">
+                      <img src={row.common.icon} alt={row.common.name} class="w-3.5 h-3.5 object-contain" />
+                      <span>{row.common.count}x {row.common.name}</span>
+                      <span class="opacity-60 text-[10px]">[{row.common.subtotal}]</span>
+                    </span>
+                  </td>
+                  <td class="py-3 px-3.5 sm:px-4">
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-500/10 dark:bg-nahida-mint/10 text-emerald-900 dark:text-nahida-mint font-mono text-[11px] border border-emerald-500/20 dark:border-nahida-mint/20">
+                      <span>{row.book.count}x {row.book.name}</span>
+                      <span class="opacity-60 text-[10px]">[{row.book.subtotal}]</span>
+                    </span>
+                  </td>
+                  <td class="py-3 px-3.5 sm:px-4">
+                    {row.boss ? (
+                      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-purple-500/10 dark:bg-purple-400/10 text-purple-900 dark:text-purple-300 font-mono text-[11px] border border-purple-500/20">
+                        <span>{row.boss.count}x {row.boss.name}</span>
+                        <span class="opacity-60 text-[10px]">[{row.boss.subtotal}]</span>
+                      </span>
+                    ) : (
+                      <span class="text-sumeru-400 dark:text-white/20">—</span>
+                    )}
+                  </td>
+                  <td class="py-3 px-3.5 sm:px-4">
+                    {row.crown ? (
+                      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/15 dark:bg-nahida-gold/15 text-amber-900 dark:text-nahida-gold font-mono text-[11px] font-bold border border-amber-500/30">
+                        <span>👑 {row.crown.count}x {row.crown.name}</span>
+                      </span>
+                    ) : (
+                      <span class="text-sumeru-400 dark:text-white/20">—</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Mobile Card View (< md screens): Fits screen horizontally without slide/scroll -->
+        <div class="block md:hidden space-y-3">
+          {talentUpgradeData.map((row) => (
+            <div class="p-3.5 rounded-2xl bg-white/70 dark:bg-black/30 border border-sumeru-200/70 dark:border-white/[0.08] shadow-sm">
+              <!-- Header: Level & Phase -->
+              <div class="flex items-center justify-between pb-2 mb-2.5 border-b border-sumeru-200/40 dark:border-white/[0.06]">
+                <div class="flex items-center gap-2">
+                  <span class="px-2 py-0.5 rounded-md bg-emerald-500/15 dark:bg-nahida-mint/15 text-emerald-800 dark:text-nahida-mint font-mono font-bold text-xs">
+                    Lv. {row.level}
+                  </span>
+                  <span class="text-[11px] font-mono text-sumeru-700 dark:text-nahida-light/80">
+                    Phase <strong class="text-emerald-700 dark:text-nahida-mint font-bold">{row.ascension}</strong>
+                  </span>
+                </div>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/10 dark:bg-amber-400/10 text-amber-900 dark:text-amber-300 font-mono text-[11px] font-semibold">
+                  <img src="/images/mora.webp" alt="Mora" class="w-3.5 h-3.5 object-contain" />
+                  <span>{row.mora}</span>
+                </span>
+              </div>
+
+              <!-- Required Materials Chips (Wrapped for 100% Mobile Screen Width) -->
+              <div class="flex flex-wrap gap-1.5 items-center">
+                <!-- Common Material -->
+                <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-sumeru-100/80 dark:bg-white/5 text-sumeru-900 dark:text-nahida-light font-mono text-[11px] border border-sumeru-200/60 dark:border-white/10">
+                  <img src={row.common.icon} alt={row.common.name} class="w-3.5 h-3.5 object-contain" />
+                  <span>{row.common.count}x {row.common.name}</span>
+                </span>
+
+                <!-- Talent Book -->
+                <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-500/10 dark:bg-nahida-mint/10 text-emerald-900 dark:text-nahida-mint font-mono text-[11px] border border-emerald-500/20 dark:border-nahida-mint/20">
+                  <span>📜 {row.book.count}x {row.book.name}</span>
+                </span>
+
+                <!-- Boss Material if any -->
+                {row.boss && (
+                  <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-purple-500/10 dark:bg-purple-400/10 text-purple-900 dark:text-purple-300 font-mono text-[11px] border border-purple-500/20">
+                    <span>⚡ {row.boss.count}x {row.boss.name}</span>
+                  </span>
+                )}
+
+                <!-- Crown if any -->
+                {row.crown && (
+                  <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-amber-500/15 dark:bg-nahida-gold/15 text-amber-900 dark:text-nahida-gold font-mono text-[11px] font-bold border border-amber-500/30">
+                    <span>👑 {row.crown.count}x {row.crown.name}</span>
+                  </span>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Total Cost for One Talent (1 -> 10) Grid -->
+      <div class="reveal-on-scroll p-4 sm:p-8 rounded-3xl glass-panel border border-sumeru-200/60 dark:border-white/[0.08] shadow-md mb-8">
+        <h3 class="font-display font-bold text-lg text-sumeru-950 dark:text-white mb-1 flex items-center gap-2">
+          <span class="text-sumeru-600 dark:text-nahida-mint">❖</span>
+          <span>Total Cost (1 → 10 for One Talent)</span>
+        </h3>
+        <p class="text-xs font-mono text-sumeru-600 dark:text-nahida-mint/80 mb-6">
+          Multiply by 3 to triple-crown all of Nahida's talents
+        </p>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5 sm:gap-3">
+          {totalTalentCost.map((mat) => (
+            <div class="p-2.5 sm:p-3.5 rounded-2xl bg-white/60 dark:bg-black/25 border border-sumeru-200/60 dark:border-white/[0.08] flex items-center gap-2.5 sm:gap-3 hover:border-sumeru-400 dark:hover:border-nahida-mint/40 transition-all group">
+              <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-sumeru-100 dark:bg-sumeru-900/60 p-1 sm:p-1.5 shrink-0 flex items-center justify-center border border-sumeru-200/50 dark:border-white/10 group-hover:scale-105 transition-transform">
+                {mat.icon ? (
+                  <img src={mat.icon} alt={mat.name} class="w-full h-full object-contain" />
+                ) : (
+                  <span class="font-mono text-xs font-bold text-sumeru-700 dark:text-nahida-mint">
+                    {mat.badge === 'Crown' ? '👑' : '📜'}
+                  </span>
+                )}
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="font-mono font-bold text-sm sm:text-base text-sumeru-950 dark:text-white leading-tight">
+                  {mat.count}
+                </div>
+                <div class="text-[11px] sm:text-xs text-sumeru-700 dark:text-nahida-light/80 leading-snug mt-0.5 break-words">
+                  {mat.name}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+
+    </div>
+
+    <!-- 5. Availability Section -->
+    <div id="section-availability" class="mb-20 scroll-mt-24">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="text-xs font-mono uppercase tracking-widest text-sumeru-600 dark:text-nahida-mint mb-2 block">
+          Event Wishes
+        </span>
+        <h2 class="font-display font-bold text-2xl sm:text-3xl text-sumeru-950 dark:text-white">
+          Availability
+        </h2>
+      </div>
+
+      <div class="space-y-8">
+        <!-- Event Wishes Card -->
+        <div class="reveal-on-scroll p-6 sm:p-8 rounded-3xl glass-panel border border-sumeru-200/60 dark:border-white/[0.08] shadow-md">
+          <h3 class="font-display font-bold text-lg text-sumeru-950 dark:text-white mb-2 flex items-center gap-2">
+            <span class="text-sumeru-600 dark:text-nahida-mint">❖</span>
+            <span>Character Event Wishes</span>
+          </h3>
+          <p class="text-sm text-sumeru-800/80 dark:text-nahida-light/80 mb-6">
+            Nahida has been promoted or featured with a drop-rate boost in 5 Event Wishes:
+          </p>
+          <div class="rounded-2xl overflow-hidden bg-black/5 dark:bg-black/40 p-3 sm:p-6 flex items-center justify-center border border-sumeru-200/40 dark:border-white/5">
+            <img
+              src="/images/nahida_banners.jpeg"
+              alt="All Nahida banners up to now"
+              class="max-w-full max-h-[580px] w-auto h-auto object-contain rounded-xl shadow-sm"
+              loading="lazy"
+            />
+          </div>
+          <figcaption class="text-xs italic text-center text-sumeru-600 dark:text-nahida-mint/70 mt-3 font-mono">
+            All Nahida banners up to now.
+          </figcaption>
+        </div>
+
+        <!-- Chronicled Wishes Card -->
+        <div class="reveal-on-scroll p-6 rounded-3xl glass-panel border border-sumeru-200/60 dark:border-white/[0.08]">
+          <h3 class="font-display font-bold text-base text-sumeru-950 dark:text-white mb-1.5 flex items-center gap-2">
+            <span class="text-sumeru-600 dark:text-nahida-mint">❖</span>
+            <span>Chronicled Wishes</span>
+          </h3>
+          <p class="text-sm text-sumeru-800/80 dark:text-nahida-light/80">
+            Nahida has not been included in any Chronicled Wishes.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Languages Section: REAL TABLE -->
+    <div id="section-languages" class="mb-20 scroll-mt-24">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="text-xs font-mono uppercase tracking-widest text-sumeru-600 dark:text-nahida-mint mb-2 block">
+          Localization & Voice Cast
+        </span>
+        <h2 class="font-display font-bold text-2xl sm:text-3xl text-sumeru-950 dark:text-white">
+          Languages
+        </h2>
+        <p class="text-sm text-sumeru-800/80 dark:text-nahida-light/80 mt-2">
+          Official character names and localization across all supported game languages.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- Official Names Real Table -->
+        <div class="lg:col-span-8 reveal-on-scroll p-4 sm:p-8 rounded-3xl glass-panel border border-sumeru-200/60 dark:border-white/[0.08] shadow-lg">
+          <div class="flex items-center justify-between mb-6 pb-4 border-b border-sumeru-200/50 dark:border-white/[0.08]">
+            <h3 class="font-display font-bold text-lg text-sumeru-950 dark:text-white flex items-center gap-2">
+              <span class="text-sumeru-600 dark:text-nahida-mint">❖</span>
+              <span>Official Localization Names</span>
+            </h3>
+            <span class="text-xs font-mono text-sumeru-600 dark:text-nahida-mint/80">
+              15 Languages
+            </span>
+          </div>
+
+          <!-- Desktop Table View (>= sm screens) -->
+          <div class="hidden sm:block overflow-x-auto rounded-2xl border border-sumeru-200/70 dark:border-white/[0.08]">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="bg-sumeru-100/90 dark:bg-sumeru-950/70 text-sumeru-900 dark:text-nahida-mint font-mono font-semibold border-b border-sumeru-200 dark:border-white/10 uppercase tracking-wider">
+                  <th class="py-3 px-4">Language</th>
+                  <th class="py-3 px-4">Official Name</th>
+                  <th class="py-3 px-4">Romanization / Script</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-sumeru-200/50 dark:divide-white/[0.05]">
+                {languagesData.map((item) => (
+                  <tr class="hover:bg-emerald-500/5 dark:hover:bg-nahida-mint/5 transition-colors">
+                    <td class="py-2.5 px-4 font-mono font-medium text-sumeru-900 dark:text-white">
+                      {item.language}
+                    </td>
+                    <td class="py-2.5 px-4 font-display font-semibold text-sm text-sumeru-950 dark:text-white">
+                      {item.name}
+                    </td>
+                    <td class="py-2.5 px-4 font-mono text-xs text-emerald-700 dark:text-nahida-mint">
+                      {item.romanization ? item.romanization : <span class="text-sumeru-400 dark:text-white/20">—</span>}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Mobile Card View (< sm screens): Fits screen horizontally without slide/scroll -->
+          <div class="block sm:hidden space-y-2">
+            {languagesData.map((item) => (
+              <div class="p-3 rounded-2xl bg-white/70 dark:bg-black/30 border border-sumeru-200/60 dark:border-white/[0.06] flex items-center justify-between">
+                <div class="min-w-0 pr-2">
+                  <span class="text-[10px] font-mono uppercase tracking-wider text-sumeru-500 dark:text-nahida-mint/70 block">
+                    {item.language}
+                  </span>
+                  <span class="font-display font-semibold text-sm text-sumeru-950 dark:text-white block mt-0.5">
+                    {item.name}
+                  </span>
+                </div>
+                {item.romanization ? (
+                  <span class="text-[11px] font-mono px-2 py-0.5 rounded-md bg-emerald-500/10 dark:bg-nahida-mint/10 text-emerald-800 dark:text-nahida-mint shrink-0">
+                    {item.romanization}
+                  </span>
+                ) : (
+                  <span class="text-[11px] font-mono text-sumeru-400 dark:text-white/20 shrink-0">
+                    —
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Voice Actors Side Card -->
+        <div class="lg:col-span-4 reveal-on-scroll p-6 rounded-3xl glass-panel border border-sumeru-200/60 dark:border-white/[0.08] shadow-md space-y-6">
+          <div>
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono bg-sumeru-100 dark:bg-nahida-mint/10 text-sumeru-800 dark:text-nahida-mint mb-2">
+              CASTING
+            </div>
+            <h3 class="font-display font-bold text-lg text-sumeru-950 dark:text-white">
+              Official Voice Actors
+            </h3>
+            <p class="text-xs text-sumeru-700 dark:text-nahida-light/75 mt-1 leading-relaxed">
+              The vocal talents bringing Lesser Lord Kusanali to life across major game voiceovers.
+            </p>
+          </div>
+
+          <div class="space-y-3">
+            {voiceActors.map((va) => (
+              <div class="p-3.5 rounded-2xl bg-white/60 dark:bg-black/25 border border-sumeru-200/50 dark:border-white/[0.06] flex items-center justify-between">
+                <div>
+                  <span class="text-[10px] font-mono text-sumeru-500 dark:text-nahida-mint/70 uppercase tracking-wider block">
+                    {va.region}
+                  </span>
+                  <div class="font-display font-semibold text-sm text-sumeru-950 dark:text-white mt-0.5">
+                    {va.actor}
+                  </div>
+                </div>
+                <span class="text-xs text-sumeru-400 dark:text-nahida-mint/40">🎙️</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quote Banner -->
+    <div class="rounded-3xl p-8 sm:p-10 glass-panel border border-sumeru-300/50 dark:border-nahida-mint/20 text-center relative overflow-hidden">
+      <div class="relative z-10 max-w-2xl mx-auto space-y-4">
+        <div class="w-10 h-10 mx-auto text-sumeru-600 dark:text-nahida-mint opacity-60">
+          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+        </div>
+        <p class="font-display text-lg sm:text-xl text-sumeru-950 dark:text-white italic leading-relaxed">
+          "The world will forget me... but wisdom, once shared, lives on forever in the stories of those who learn."
+        </p>
+        <span class="text-xs font-mono text-sumeru-600 dark:text-nahida-mint/80 uppercase tracking-widest block">
+          — Greater Lord Rukkhadevata & Nahida
+        </span>
+      </div>
+    </div>
+
+  </div>
+</BaseLayout>

@@ -1,0 +1,174 @@
+---
+import SEO from '../components/common/SEO.astro';
+import DynamicGradient from '../components/common/DynamicGradient.astro';
+import CustomCursor from '../components/common/CustomCursor.astro';
+import Navbar from '../components/common/Navbar.astro';
+import MobileNav from '../components/common/MobileNav.astro';
+import Footer from '../components/common/Footer.astro';
+import ProjectModal from '../components/workspace/ProjectModal.astro';
+import { ClientRouter } from 'astro:transitions';
+import '../styles/global.css';
+import '../styles/animations.css';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  publishedTime?: string;
+  section?: 'home' | 'activities' | 'workspace' | 'nahida' | 'about' | 'contact';
+}
+
+const {
+  title,
+  description,
+  image,
+  type = 'website',
+  publishedTime,
+  section = 'home',
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <SEO
+      title={title}
+      description={description}
+      image={image}
+      type={type}
+      publishedTime={publishedTime}
+    />
+
+    <ClientRouter />
+
+    <!-- Directional Navigation Slide Detection & Theme Synchronization -->
+    <script is:inline>
+      (function() {
+        const navOrder = [
+          '/',
+          '/activities',
+          '/workspace',
+          '/nahida',
+          '/about',
+          '/contact'
+        ];
+
+        function getNavIndex(urlPath) {
+          if (!urlPath) return -1;
+          const clean = urlPath.replace(/\/$/, '') || '/';
+          for (let i = navOrder.length - 1; i >= 0; i--) {
+            const item = navOrder[i];
+            if (item === '/' && clean === '/') return 0;
+            if (item !== '/' && (clean === item || clean.startsWith(item + '/'))) return i;
+          }
+          return -1;
+        }
+
+        document.addEventListener('astro:before-preparation', (event) => {
+          const fromIdx = getNavIndex(event.from.pathname);
+          const toIdx = getNavIndex(event.to.pathname);
+
+          if (fromIdx !== -1 && toIdx !== -1 && fromIdx !== toIdx) {
+            if (toIdx < fromIdx) {
+              // Navigating to the left tab in the header bar
+              document.documentElement.dataset.slideDirection = 'left';
+            } else {
+              // Navigating to the right tab in the header bar
+              document.documentElement.dataset.slideDirection = 'right';
+            }
+          } else {
+            document.documentElement.dataset.slideDirection = 'fade';
+          }
+        });
+
+        function syncTheme() {
+          const storedTheme = localStorage.getItem('theme');
+          const userPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (storedTheme === 'dark' || (!storedTheme && userPrefersDark)) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        }
+
+        syncTheme();
+        document.addEventListener('astro:before-swap', (event) => {
+          const storedTheme = localStorage.getItem('theme');
+          const userPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (storedTheme === 'dark' || (!storedTheme && userPrefersDark)) {
+            event.newDocument.documentElement.classList.add('dark');
+          } else {
+            event.newDocument.documentElement.classList.remove('dark');
+          }
+        });
+        document.addEventListener('astro:after-swap', syncTheme);
+      })();
+    </script>
+  </head>
+  <body id="top" class="selection:bg-sumeru-400/30 selection:text-sumeru-950 dark:selection:bg-nahida-mint/30 dark:selection:text-nahida-mint">
+    <!-- Ambient Dynamic Gradient Canvas -->
+    <div transition:persist="dynamic-gradient">
+      <DynamicGradient />
+    </div>
+
+    <!-- Desktop Custom Cursor -->
+    <div transition:persist="custom-cursor">
+      <CustomCursor />
+    </div>
+
+    <!-- Navigation Header (Completely static and persistent) -->
+    <Navbar />
+    <MobileNav />
+
+    <!-- Lightbox Modal (Elevated root level above header) -->
+    <ProjectModal />
+
+    <!-- Page Content Container (Slides on navigation, leaving header untouched) -->
+    <div id="page-content" class="flex-grow flex flex-col w-full min-h-screen">
+      <!-- Main Content Container with section attribute for gradient matching -->
+      <main id="main-content" class="flex-grow pt-24 sm:pt-28 relative z-10" data-section={section}>
+        <slot />
+      </main>
+
+      <!-- Site Footer -->
+      <Footer />
+    </div>
+
+    <!-- Global Scroll-Reveal Observer -->
+    <script>
+      function setupScrollReveal() {
+        const elements = document.querySelectorAll('.reveal-on-scroll');
+        if (elements.length === 0) return;
+
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          elements.forEach(el => el.classList.add('is-revealed'));
+          return;
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-revealed');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, {
+          root: null,
+          rootMargin: '0px 0px -40px 0px',
+          threshold: 0.1,
+        });
+
+        elements.forEach(el => observer.observe(el));
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setupScrollReveal);
+      } else {
+        setupScrollReveal();
+      }
+
+      document.addEventListener('astro:after-swap', setupScrollReveal);
+    </script>
+  </body>
+</html>

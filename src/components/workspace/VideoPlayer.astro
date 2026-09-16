@@ -1,0 +1,59 @@
+---
+export interface Props {
+  media: string;
+  poster?: string;
+  title: string;
+  source?: {
+    platform: string;
+    url: string;
+    label?: string;
+  };
+  aspectRatio?: string;
+}
+
+const { media, poster, title, source, aspectRatio = '16:9' } = Astro.props;
+const fallbackPoster = '/images/Nahida_Icon.webp';
+---
+
+<div class="video-player-container relative w-full rounded-2xl overflow-hidden glass-panel border border-sumeru-200/50 dark:border-white/[0.08] flex flex-col group">
+  <!-- Video Frame -->
+  <div class:list={['relative w-full bg-black/90 overflow-hidden flex items-center justify-center', aspectRatio === '9:16' ? 'aspect-[9/16] max-h-[560px]' : 'aspect-video']}>
+    <video
+      src={media}
+      poster={poster || fallbackPoster}
+      controls
+      playsinline
+      preload="metadata"
+      class="w-full h-full object-contain"
+      aria-label={`Video player for ${title}`}
+    >
+      <p class="p-6 text-sm text-center text-white/80">
+        Your browser does not support HTML5 video. 
+        {source && (
+          <a href={source.url} target="_blank" rel="noopener noreferrer" class="text-nahida-mint underline ml-1">
+            Watch source on {source.platform}
+          </a>
+        )}
+      </p>
+    </video>
+  </div>
+
+  <!-- Video Metadata Footer & Optional Social Origin -->
+  {source && (
+    <div class="p-4 bg-sumeru-50/70 dark:bg-black/40 border-t border-sumeru-200/40 dark:border-white/[0.06] flex items-center justify-between text-xs">
+      <div class="flex items-center gap-2 text-sumeru-700 dark:text-nahida-light/80 font-mono">
+        <span class="w-2 h-2 rounded-full bg-sumeru-500 dark:bg-nahida-mint animate-pulse"></span>
+        <span>Source: {source.platform}</span>
+      </div>
+      <a
+        href={source.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-1 font-semibold text-sumeru-800 dark:text-nahida-mint hover:underline"
+      >
+        <span>{source.label || `View on ${source.platform}`}</span>
+        <span>↗</span>
+      </a>
+    </div>
+  )}
+</div>

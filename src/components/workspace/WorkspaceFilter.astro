@@ -1,0 +1,122 @@
+---
+export interface Props {
+  types: string[];
+  tags: string[];
+  totalProjects: number;
+}
+
+const { types, tags, totalProjects } = Astro.props;
+---
+
+<div class="mb-10 space-y-6">
+  <!-- Search Input -->
+  <div class="relative max-w-xl mx-auto">
+    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-sumeru-500 dark:text-nahida-mint/60">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </div>
+    <input
+      type="search"
+      id="workspace-search-input"
+      placeholder="Search creative projects by title, tool, or platform..."
+      class="w-full pl-12 pr-10 py-3.5 rounded-2xl bg-white/80 dark:bg-black/40 border border-sumeru-200/80 dark:border-white/10 text-sm text-sumeru-950 dark:text-white placeholder-sumeru-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sumeru-500/50 dark:focus:ring-nahida-mint/50 backdrop-blur-md transition-all duration-200 shadow-sm"
+      autocomplete="off"
+    />
+  </div>
+
+  <!-- Type & Platform Filter Tabs -->
+  <div class="flex items-center justify-center flex-wrap gap-2" id="workspace-type-tabs">
+    <button
+      type="button"
+      data-type="all"
+      class="ws-filter-tab active px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-200 bg-sumeru-600 dark:bg-nahida-mint text-white dark:text-sumeru-950 shadow-sm"
+    >
+      All Media ({totalProjects})
+    </button>
+    {types.map((type) => (
+      <button
+        type="button"
+        data-type={type.toLowerCase()}
+        class="ws-filter-tab px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-200 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 text-sumeru-800 dark:text-nahida-light/80 border border-transparent hover:border-sumeru-300 dark:hover:border-nahida-mint/30"
+      >
+        {type}
+      </button>
+    ))}
+  </div>
+</div>
+
+<script>
+  function setupWorkspaceFilter() {
+    const input = document.getElementById('workspace-search-input') as HTMLInputElement;
+    const tabs = document.querySelectorAll('.ws-filter-tab');
+    const cards = document.querySelectorAll('#workspace-grid .workspace-card');
+    const emptyState = document.getElementById('workspace-empty-state');
+    const countDisplay = document.getElementById('workspace-count-display');
+
+    if (!input || !cards.length) return;
+
+    let selectedType = 'all';
+
+    function filterProjects() {
+      const query = input.value.toLowerCase().trim();
+      let visibleCount = 0;
+
+      cards.forEach((card) => {
+        const title = card.getAttribute('data-title') || '';
+        const desc = card.getAttribute('data-project-desc') || '';
+        const type = card.getAttribute('data-type') || '';
+        const platform = card.getAttribute('data-platform') || '';
+        const tags = card.getAttribute('data-tags') || '';
+
+        const matchesType = (selectedType === 'all') || (type.toLowerCase() === selectedType.toLowerCase()) || (platform.toLowerCase() === selectedType.toLowerCase());
+        const matchesQuery = query === '' || 
+          title.includes(query) || 
+          desc.includes(query) || 
+          tags.includes(query) || 
+          platform.includes(query) ||
+          type.includes(query);
+
+        if (matchesType && matchesQuery) {
+          (card as HTMLElement).style.display = '';
+          visibleCount++;
+        } else {
+          (card as HTMLElement).style.display = 'none';
+        }
+      });
+
+      if (emptyState) {
+        if (visibleCount === 0) {
+          emptyState.classList.remove('hidden');
+        } else {
+          emptyState.classList.add('hidden');
+        }
+      }
+
+      if (countDisplay) {
+        countDisplay.textContent = `${visibleCount} project${visibleCount === 1 ? '' : 's'}`;
+      }
+    }
+
+    input.addEventListener('input', filterProjects);
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => {
+          t.classList.remove('active', 'bg-sumeru-600', 'dark:bg-nahida-mint', 'text-white', 'dark:text-sumeru-950', 'shadow-sm');
+          t.classList.add('bg-black/5', 'dark:bg-white/5', 'text-sumeru-800', 'dark:text-nahida-light/80');
+        });
+
+        tab.classList.add('active', 'bg-sumeru-600', 'dark:bg-nahida-mint', 'text-white', 'dark:text-sumeru-950', 'shadow-sm');
+        tab.classList.remove('bg-black/5', 'dark:bg-white/5', 'text-sumeru-800', 'dark:text-nahida-light/80');
+
+        selectedType = tab.getAttribute('data-type') || 'all';
+        filterProjects();
+      });
+    });
+  }
+
+  setupWorkspaceFilter();
+  document.addEventListener('astro:after-swap', setupWorkspaceFilter);
+</script>

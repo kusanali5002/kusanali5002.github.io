@@ -1,0 +1,65 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { calculateReadingTime } from '../../utils/formatters';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('activities');
+  const sorted = posts.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+  return sorted.map((post, index) => {
+    const prevPost = index < sorted.length - 1 ? sorted[index + 1] : null;
+    const nextPost = index > 0 ? sorted[index - 1] : null;
+
+    const slug = post.id.replace(/\.md$/, '');
+
+    // Find up to 3 related posts based on matching category or tags
+    const related = sorted
+      .filter((p) => p.id !== post.id)
+      .filter((p) => p.data.category === post.data.category || p.data.tags.some(t => post.data.tags.includes(t)))
+      .slice(0, 3);
+
+    return {
+      params: { slug },
+      props: {
+        post,
+        prevPost: prevPost ? { title: prevPost.data.title, slug: prevPost.id.replace(/\.md$/, '') } : null,
+        nextPost: nextPost ? { title: nextPost.data.title, slug: nextPost.id.replace(/\.md$/, '') } : null,
+        relatedPosts: related.map(r => ({
+          title: r.data.title,
+          slug: r.id.replace(/\.md$/, ''),
+          date: r.data.date,
+          cover: r.data.cover,
+        })),
+      },
+    };
+  });
+}
+
+interface Props {
+  post: CollectionEntry<'activities'>;
+  prevPost?: { title: string; slug: string } | null;
+  nextPost?: { title: string; slug: string } | null;
+  relatedPosts?: Array<{ title: string; slug: string; date: string; cover?: string }>;
+}
+
+const { post, prevPost, nextPost, relatedPosts } = Astro.props;
+const { Content } = await render(post);
+const readingTime = calculateReadingTime(post.body || '');
+---
+
+<ArticleLayout
+  title={post.data.title}
+  description={post.data.description}
+  date={post.data.date}
+  category={post.data.category}
+  tags={post.data.tags}
+  cover={post.data.cover}
+  author={post.data.author}
+  readingTime={readingTime}
+  prevPost={prevPost}
+  nextPost={nextPost}
+  relatedPosts={relatedPosts}
+>
+  <Content />
+</ArticleLayout>

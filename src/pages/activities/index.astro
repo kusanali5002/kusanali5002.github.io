@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ActivityCard from '../../components/activities/ActivityCard.astro';
+import ActivitySearch from '../../components/activities/ActivitySearch.astro';
+import { calculateReadingTime } from '../../utils/formatters';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('activities');
+const sortedPosts = allPosts.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+// Discover unique categories from Markdown metadata
+const categories = Array.from(new Set(allPosts.map((p) => p.data.category))).filter(Boolean);
+---
+
+<BaseLayout
+  title="Activities - The Kusanali Blog & Archive"
+  description="Explore short articles, game system analyses, university reflections and esports commentary written by Dun."
+  section="activities"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+    <!-- Section Header -->
+    <div class="text-center max-w-3xl mx-auto mb-10">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono uppercase tracking-widest bg-sumeru-100 dark:bg-nahida-mint/10 text-sumeru-800 dark:text-nahida-mint border border-sumeru-300/40 dark:border-nahida-mint/20 mb-4">
+        <span>READ • LEARN • THINK</span>
+      </div>
+      <h1 class="font-display font-bold text-3xl sm:text-5xl text-sumeru-950 dark:text-white tracking-tight mb-4">
+        Activities Archive
+      </h1>
+      <p class="text-base sm:text-lg text-sumeru-800/80 dark:text-nahida-light/80 leading-relaxed">
+        A repository mathematical analyses of game mechanics, personal stories and stuffs. Filter by category or search instantly.
+      </p>
+    </div>
+
+    <!-- Search & Filter Controls -->
+    <ActivitySearch categories={categories} totalPosts={sortedPosts.length} />
+
+    <!-- Results Count Bar -->
+    <div class="flex items-center justify-between mb-8 px-2 text-xs font-mono text-sumeru-600 dark:text-nahida-mint/70 border-b border-sumeru-200/40 dark:border-white/[0.05] pb-3">
+      <span id="activities-count-display">Showing {sortedPosts.length} articles</span>
+      <span>Sorted by: Most Recent</span>
+    </div>
+
+    <!-- Articles Grid -->
+    <div id="activities-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+      {sortedPosts.map((post) => (
+        <div class="reveal-on-scroll">
+          <ActivityCard
+            title={post.data.title}
+            description={post.data.description}
+            date={post.data.date}
+            slug={post.id.replace(/\.md$/, '')}
+            category={post.data.category}
+            tags={post.data.tags}
+            cover={post.data.cover}
+            readingTime={calculateReadingTime(post.body || '')}
+          />
+        </div>
+      ))}
+    </div>
+
+    <!-- Empty State -->
+    <div id="activities-empty-state" class="hidden text-center py-20">
+      <div class="w-16 h-16 mx-auto mb-4 text-sumeru-400 dark:text-nahida-mint/40">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8" stroke-width="2"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </div>
+      <h3 class="font-display font-semibold text-xl text-sumeru-950 dark:text-white mb-2">
+        No activities found
+      </h3>
+      <p class="text-sm text-sumeru-700 dark:text-nahida-light/70 max-w-sm mx-auto">
+        Try adjusting your search query or selecting a different category from the filters above.
+      </p>
+    </div>
+  </div>
+</BaseLayout>

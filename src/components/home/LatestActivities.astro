@@ -1,0 +1,49 @@
+---
+import ActivityCard from '../activities/ActivityCard.astro';
+import { calculateReadingTime } from '../../utils/formatters';
+import type { CollectionEntry } from 'astro:content';
+
+export interface Props {
+  posts: CollectionEntry<'activities'>[];
+}
+
+const { posts } = Astro.props;
+---
+
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-sumeru-200/40 dark:border-white/[0.05]">
+  <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12">
+    <div>
+      <span class="text-xs font-mono font-semibold uppercase tracking-widest text-sumeru-600 dark:text-nahida-mint mb-2 block">
+        Knowledge Archive
+      </span>
+      <h2 class="font-display font-bold text-3xl sm:text-4xl text-sumeru-950 dark:text-white">
+        Latest Inquiries & Reflections
+      </h2>
+    </div>
+
+    <a
+      href="/activities/"
+      class="mt-4 sm:mt-0 text-xs font-semibold uppercase tracking-wider text-sumeru-700 dark:text-nahida-mint hover:underline inline-flex items-center gap-1 group"
+    >
+      <span>View All Activities ({posts.length})</span>
+      <span class="transform group-hover:translate-x-1 transition-transform">→</span>
+    </a>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+    {posts.slice(0, 3).map((post) => (
+      <div class="reveal-on-scroll">
+        <ActivityCard
+          title={post.data.title}
+          description={post.data.description}
+          date={post.data.date}
+          slug={post.id.replace(/\.md$/, '')}
+          category={post.data.category}
+          tags={post.data.tags}
+          cover={post.data.cover}
+          readingTime={calculateReadingTime(post.body || '')}
+        />
+      </div>
+    ))}
+  </div>
+</section>

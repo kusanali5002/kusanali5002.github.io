@@ -1,0 +1,96 @@
+---
+import { formatDate } from '../../utils/formatters';
+
+export interface Props {
+  title: string;
+  description: string;
+  date: string;
+  slug: string;
+  category?: string;
+  tags?: string[];
+  cover?: string;
+  readingTime?: string;
+}
+
+const {
+  title,
+  description,
+  date,
+  slug,
+  category = 'General',
+  tags = [],
+  cover,
+  readingTime = '3 min read',
+} = Astro.props;
+
+const fallbackCover = '/images/Nahida_Icon.webp';
+const coverImage = cover || fallbackCover;
+---
+
+<article
+  class="group interactive-card glass-panel rounded-3xl overflow-hidden flex flex-col h-full border border-sumeru-200/50 dark:border-white/[0.08] transition-all duration-300"
+  data-title={title.toLowerCase()}
+  data-description={description.toLowerCase()}
+  data-category={category.toLowerCase()}
+  data-tags={tags.join(' ').toLowerCase()}
+>
+  <a href={`/activities/${slug}/`} class="flex flex-col h-full focus-visible:outline-none">
+    <!-- Image Header -->
+    <div class="relative w-full h-52 sm:h-56 overflow-hidden bg-sumeru-100 dark:bg-sumeru-950/40">
+      <img
+        src={coverImage}
+        alt={title}
+        loading="lazy"
+        decoding="async"
+        class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 ease-out"
+        onerror="this.src='/images/Nahida_Icon.webp'; this.classList.add('p-8', 'object-contain');"
+      />
+      <!-- Subtle gradient overlay on image -->
+      <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity"></div>
+
+      <!-- Category Pill -->
+      <span class="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase bg-white/90 dark:bg-black/70 text-sumeru-900 dark:text-nahida-mint backdrop-blur-md shadow-sm">
+        {category}
+      </span>
+
+      <!-- Reading time badge -->
+      <span class="absolute bottom-3 right-4 text-xs font-medium text-white/90 drop-shadow-sm font-mono">
+        {readingTime}
+      </span>
+    </div>
+
+    <!-- Content Body -->
+    <div class="p-6 flex flex-col flex-grow justify-between">
+      <div>
+        <!-- Date -->
+        <time datetime={date} class="text-xs font-mono text-sumeru-600 dark:text-nahida-mint/80 mb-2 block">
+          {formatDate(date)}
+        </time>
+
+        <!-- Title -->
+        <h3 class="font-display font-semibold text-lg sm:text-xl text-sumeru-950 dark:text-nahida-light group-hover:text-sumeru-600 dark:group-hover:text-nahida-mint transition-colors line-clamp-2 leading-snug mb-3">
+          {title}
+        </h3>
+
+        <!-- Description -->
+        <p class="text-sm text-sumeru-800/80 dark:text-nahida-light/70 line-clamp-3 leading-relaxed mb-4">
+          {description}
+        </p>
+      </div>
+
+      <!-- Tags Footer -->
+      <div class="pt-4 border-t border-sumeru-200/40 dark:border-white/[0.05] flex flex-wrap gap-1.5 items-center">
+        {tags.slice(0, 3).map((tag) => (
+          <span class="px-2.5 py-0.5 rounded-lg text-[11px] font-medium bg-sumeru-100/70 dark:bg-sumeru-900/40 text-sumeru-800 dark:text-nahida-mint/90 border border-sumeru-200/50 dark:border-nahida-mint/20">
+            #{tag}
+          </span>
+        ))}
+        {tags.length > 3 && (
+          <span class="text-[11px] text-sumeru-500 dark:text-nahida-mint/60">
+            +{tags.length - 3}
+          </span>
+        )}
+      </div>
+    </div>
+  </a>
+</article>

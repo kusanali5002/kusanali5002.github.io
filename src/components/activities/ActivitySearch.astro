@@ -1,0 +1,145 @@
+---
+export interface Props {
+  categories: string[];
+  totalPosts: number;
+}
+
+const { categories, totalPosts } = Astro.props;
+---
+
+<div class="mb-10 space-y-6">
+  <!-- Search Input Bar -->
+  <div class="relative max-w-xl mx-auto">
+    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-sumeru-500 dark:text-nahida-mint/60">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </div>
+    <input
+      type="search"
+      id="activities-search-input"
+      placeholder="Search articles by title, tag, or topic..."
+      class="w-full pl-12 pr-10 py-3.5 rounded-2xl bg-white/80 dark:bg-black/40 border border-sumeru-200/80 dark:border-white/10 text-sm text-sumeru-950 dark:text-white placeholder-sumeru-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sumeru-500/50 dark:focus:ring-nahida-mint/50 backdrop-blur-md transition-all duration-200 shadow-sm"
+      autocomplete="off"
+    />
+    <button
+      id="search-clear-btn"
+      type="button"
+      class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-sumeru-400 dark:text-gray-400 hover:text-sumeru-700 dark:hover:text-white hidden"
+      aria-label="Clear search"
+    >
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Category Filter Chips -->
+  <div class="flex items-center justify-center flex-wrap gap-2 pt-1" id="category-chips-container">
+    <button
+      type="button"
+      data-category="all"
+      class="category-chip active px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-200 bg-sumeru-600 dark:bg-nahida-mint text-white dark:text-sumeru-950 shadow-sm"
+    >
+      All ({totalPosts})
+    </button>
+    {categories.map((cat) => (
+      <button
+        type="button"
+        data-category={cat.toLowerCase()}
+        class="category-chip px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-200 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 text-sumeru-800 dark:text-nahida-light/80 border border-transparent hover:border-sumeru-300 dark:hover:border-nahida-mint/30"
+      >
+        {cat}
+      </button>
+    ))}
+  </div>
+</div>
+
+<script>
+  function setupSearchFilter() {
+    const input = document.getElementById('activities-search-input') as HTMLInputElement;
+    const clearBtn = document.getElementById('search-clear-btn');
+    const chips = document.querySelectorAll('.category-chip');
+    const cards = document.querySelectorAll('#activities-grid article');
+    const emptyState = document.getElementById('activities-empty-state');
+    const countDisplay = document.getElementById('activities-count-display');
+
+    if (!input || !cards.length) return;
+
+    let selectedCategory = 'all';
+
+    function filterCards() {
+      const query = input.value.toLowerCase().trim();
+      if (clearBtn) {
+        if (query.length > 0) {
+          clearBtn.classList.remove('hidden');
+        } else {
+          clearBtn.classList.add('hidden');
+        }
+      }
+
+      let visibleCount = 0;
+
+      cards.forEach((card) => {
+        const title = card.getAttribute('data-title') || '';
+        const desc = card.getAttribute('data-description') || '';
+        const cat = card.getAttribute('data-category') || '';
+        const tags = card.getAttribute('data-tags') || '';
+
+        const matchesCategory = (selectedCategory === 'all') || (cat === selectedCategory);
+        const matchesQuery = query === '' || 
+          title.includes(query) || 
+          desc.includes(query) || 
+          tags.includes(query) || 
+          cat.includes(query);
+
+        if (matchesCategory && matchesQuery) {
+          (card as HTMLElement).style.display = '';
+          visibleCount++;
+        } else {
+          (card as HTMLElement).style.display = 'none';
+        }
+      });
+
+      if (emptyState) {
+        if (visibleCount === 0) {
+          emptyState.classList.remove('hidden');
+        } else {
+          emptyState.classList.add('hidden');
+        }
+      }
+
+      if (countDisplay) {
+        countDisplay.textContent = `${visibleCount} article${visibleCount === 1 ? '' : 's'}`;
+      }
+    }
+
+    input.addEventListener('input', filterCards);
+
+    clearBtn?.addEventListener('click', () => {
+      input.value = '';
+      filterCards();
+      input.focus();
+    });
+
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        chips.forEach(c => {
+          c.classList.remove('active', 'bg-sumeru-600', 'dark:bg-nahida-mint', 'text-white', 'dark:text-sumeru-950', 'shadow-sm');
+          c.classList.add('bg-black/5', 'dark:bg-white/5', 'text-sumeru-800', 'dark:text-nahida-light/80');
+        });
+
+        chip.classList.add('active', 'bg-sumeru-600', 'dark:bg-nahida-mint', 'text-white', 'dark:text-sumeru-950', 'shadow-sm');
+        chip.classList.remove('bg-black/5', 'dark:bg-white/5', 'text-sumeru-800', 'dark:text-nahida-light/80');
+
+        selectedCategory = chip.getAttribute('data-category') || 'all';
+        filterCards();
+      });
+    });
+  }
+
+  setupSearchFilter();
+  document.addEventListener('astro:after-swap', setupSearchFilter);
+</script>

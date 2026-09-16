@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kusanali5002.github.io/sitemap-index.xml

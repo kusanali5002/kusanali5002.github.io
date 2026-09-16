@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/home/Hero.astro';
+import Introduction from '../components/home/Introduction.astro';
+import LatestActivities from '../components/home/LatestActivities.astro';
+import WorkspacePreview from '../components/home/WorkspacePreview.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('activities');
+const sortedPosts = allPosts.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+const allProjects = await getCollection('workspace');
+const sortedProjects = allProjects.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+---
+
+<BaseLayout
+  title="The Kusanali - Personal Blog & Creative Workspace"
+  description="A personal blogs and creative laboratory inspired by Nahida theme. Maintained by Dun."
+  section="home"
+>
+  <Hero />
+  <Introduction />
+  <LatestActivities posts={sortedPosts} />
+  <WorkspacePreview projects={sortedProjects} />
+</BaseLayout>

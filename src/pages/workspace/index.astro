@@ -1,0 +1,174 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import MediaProjectCard from '../../components/workspace/MediaProjectCard.astro';
+import WorkspaceFilter from '../../components/workspace/WorkspaceFilter.astro';
+import { getCollection } from 'astro:content';
+
+const allProjects = await getCollection('workspace');
+const sortedProjects = allProjects.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+// Collect unique media types and platform labels
+const rawTypes = Array.from(new Set(allProjects.map(p => p.data.platform || (p.data.type === 'image' ? 'Local Work' : p.data.type)))).filter(Boolean);
+const productionTools = [
+  {
+    name: 'After Effect',
+    category: 'Motion & VFX',
+    icon: '/images/tools/after-effects.png',
+  },
+  {
+    name: 'Flowframes',
+    category: 'AI Interpolation',
+    icon: '/images/tools/flowframes.png',
+  },
+  {
+    name: 'Topaz',
+    category: 'AI Video Upscale',
+    icon: '/images/tools/topaz.png',
+  },
+  {
+    name: 'Capcut',
+    category: 'Video Editing',
+    icon: '/images/tools/capcut.png',
+  },
+  {
+    name: 'Photoshop',
+    category: 'Design & Graphics',
+    icon: '/images/tools/photoshop.png',
+  },
+  {
+    name: 'Blender',
+    category: '3D & Motion',
+    icon: '/images/tools/blender.png',
+  }
+];
+const allTags = Array.from(new Set(allProjects.flatMap(p => p.data.tags)));
+---
+
+<BaseLayout
+  title="Workspace - The Kusanali Creative Workspace"
+  description="Explore motion graphics, video experiments and GFX arts created by Dun."
+  section="workspace"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+    <!-- Section Header -->
+    <div class="text-center max-w-3xl mx-auto mb-10">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono uppercase tracking-widest bg-amber-500/10 dark:bg-nahida-gold/15 text-amber-800 dark:text-nahida-gold border border-amber-500/20 dark:border-nahida-gold/30 mb-4">
+        <span>MAKE • CREATE • EXPERIMENT</span>
+      </div>
+      <h1 class="font-display font-bold text-3xl sm:text-5xl text-sumeru-950 dark:text-white tracking-tight mb-4">
+        Creative Workspace
+      </h1>
+      <p class="text-base sm:text-lg text-sumeru-800/80 dark:text-nahida-light/80 leading-relaxed">
+        A personal workspace where motion graphics, TikTok reels, and graphic design come to life.
+      </p>
+    </div>
+
+    <!-- Production Software Row (Official PC Shortcuts Only) -->
+    <div class="reveal-on-scroll flex items-center justify-center gap-4 sm:gap-6 md:gap-8 mb-10">
+      {productionTools.map((tool) => (
+        <button
+          type="button"
+          class="software-shortcut-btn group relative transition-transform duration-300 hover:scale-110 hover:-translate-y-1 focus:outline-none"
+          data-tool-query={tool.name}
+          title={tool.name}
+          aria-label={tool.name}
+        >
+          <img
+            src={tool.icon}
+            alt={`${tool.name} official PC shortcut`}
+            class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 object-contain drop-shadow-md group-hover:drop-shadow-xl transition-all duration-300"
+            loading="lazy"
+          />
+        </button>
+      ))}
+    </div>
+
+    <!-- Filter & Search Controls -->
+    <WorkspaceFilter types={rawTypes} tags={allTags} totalProjects={sortedProjects.length} />
+
+    <!-- Results Status Bar -->
+    <div class="flex items-center justify-between mb-8 px-2 text-xs font-mono text-sumeru-600 dark:text-nahida-mint/70 border-b border-sumeru-200/40 dark:border-white/[0.05] pb-3">
+      <span id="workspace-count-display">Showing {sortedProjects.length} projects</span>
+      <span>Click any project card to open in lightbox viewer</span>
+    </div>
+
+    <!-- Asymmetric Editorial Grid -->
+    <div id="workspace-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+      {sortedProjects.map((project) => (
+        <div class="reveal-on-scroll">
+          <MediaProjectCard
+            title={project.data.title}
+            description={project.data.description}
+            date={project.data.date}
+            slug={project.id.replace(/\.md$/, '')}
+            type={project.data.type}
+            platform={project.data.platform}
+            url={project.data.url}
+            thumbnail={project.data.thumbnail}
+            media={project.data.media}
+            poster={project.data.poster}
+            fallbackVideo={project.data.fallbackVideo}
+            images={project.data.images}
+            source={project.data.source}
+            tags={project.data.tags}
+            featured={project.data.featured}
+            aspectRatio={project.data.aspectRatio}
+          />
+        </div>
+      ))}
+    </div>
+
+    <!-- Empty State -->
+    <div id="workspace-empty-state" class="hidden text-center py-20">
+      <div class="w-16 h-16 mx-auto mb-4 text-amber-500/50">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+        </svg>
+      </div>
+      <h3 class="font-display font-semibold text-xl text-sumeru-950 dark:text-white mb-2">
+        No projects match your filter
+      </h3>
+      <p class="text-sm text-sumeru-700 dark:text-nahida-light/70 max-w-sm mx-auto">
+        Try clearing the search query or selecting "All Media" to view all creative projects.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    function setupSoftwareShortcuts() {
+      const shortcutBtns = document.querySelectorAll('.software-shortcut-btn');
+      const searchInput = document.getElementById('workspace-search-input') as HTMLInputElement | null;
+
+      shortcutBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const query = btn.getAttribute('data-tool-query') || '';
+          if (!searchInput) return;
+
+          if (searchInput.value.toLowerCase() === query.toLowerCase()) {
+            searchInput.value = '';
+            shortcutBtns.forEach(b => b.classList.remove('scale-110', 'opacity-60', 'drop-shadow-2xl'));
+          } else {
+            searchInput.value = query;
+            shortcutBtns.forEach(b => {
+              b.classList.remove('scale-110', 'drop-shadow-2xl');
+              b.classList.add('opacity-50');
+            });
+            btn.classList.remove('opacity-50');
+            btn.classList.add('scale-110', 'drop-shadow-2xl');
+          }
+
+          searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+      });
+
+      searchInput?.addEventListener('input', () => {
+        if (!searchInput.value.trim()) {
+          shortcutBtns.forEach(b => b.classList.remove('scale-110', 'opacity-50', 'drop-shadow-2xl'));
+        }
+      });
+    }
+
+    setupSoftwareShortcuts();
+    document.addEventListener('astro:page-load', setupSoftwareShortcuts);
+  </script>
+</BaseLayout>

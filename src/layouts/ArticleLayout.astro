@@ -1,0 +1,501 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { formatDate } from '../utils/formatters';
+
+export interface Props {
+  title: string;
+  description: string;
+  date: string;
+  category: string;
+  tags: string[];
+  cover?: string;
+  author?: string;
+  readingTime: string;
+  prevPost?: { title: string; slug: string } | null;
+  nextPost?: { title: string; slug: string } | null;
+  relatedPosts?: Array<{ title: string; slug: string; date: string; cover?: string }>;
+}
+
+const {
+  title,
+  description,
+  date,
+  category,
+  tags,
+  cover,
+  author = 'Ha Manh Dung (Dun)',
+  readingTime,
+  prevPost,
+  nextPost,
+  relatedPosts = [],
+} = Astro.props;
+
+const fallbackCover = '/images/Nahida_Icon.webp';
+const coverImage = cover || fallbackCover;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  image={coverImage}
+  type="article"
+  publishedTime={date}
+  section="activities"
+>
+  <article id="article-root" class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 transition-all duration-300">
+    <!-- Back to Activities Navigation Link -->
+    <div class="mb-8">
+      <a
+        href="/activities/"
+        class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-sumeru-700 dark:text-nahida-mint hover:text-sumeru-950 dark:hover:text-white transition-colors py-1 px-3 rounded-full bg-sumeru-100/60 dark:bg-nahida-mint/10 border border-sumeru-200/60 dark:border-nahida-mint/20"
+      >
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        <span>Back to Activities</span>
+      </a>
+    </div>
+
+    <!-- Article Header -->
+    <header class="mb-10 text-center sm:text-left">
+      <!-- Category & Date Meta -->
+      <div class="flex flex-wrap items-center justify-center sm:justify-start gap-3 mb-4">
+        <span class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-sumeru-600 dark:bg-nahida-mint text-white dark:text-sumeru-950">
+          {category}
+        </span>
+        <span class="text-xs font-mono text-sumeru-600 dark:text-nahida-mint/80">
+          {formatDate(date)}
+        </span>
+        <span class="text-xs text-sumeru-400 dark:text-gray-500">•</span>
+        <span class="text-xs font-mono text-sumeru-600 dark:text-nahida-mint/80">
+          {readingTime}
+        </span>
+      </div>
+
+      <!-- Title -->
+      <h1 class="font-display font-bold text-2xl sm:text-4xl lg:text-5xl text-sumeru-950 dark:text-white tracking-tight leading-tight mb-6">
+        {title}
+      </h1>
+
+      <!-- Description / Excerpt -->
+      <p class="text-base sm:text-lg text-sumeru-800/85 dark:text-nahida-light/80 leading-relaxed max-w-3xl">
+        {description}
+      </p>
+
+      <!-- Author and Tags -->
+      <div class="mt-6 pt-6 border-t border-sumeru-200/50 dark:border-white/[0.08] flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-full overflow-hidden border border-sumeru-600/30">
+            <img src="/images/about-me-image.jpg" alt={author} class="w-full h-full object-cover" onerror="this.src='/images/Nahida_Icon.webp'" />
+          </div>
+          <span class="text-xs font-medium text-sumeru-900 dark:text-nahida-light">{author}</span>
+        </div>
+
+        <div class="flex flex-wrap gap-1.5">
+          {tags.map((tag) => (
+            <span class="px-2.5 py-0.5 rounded-lg text-xs font-medium bg-sumeru-100/70 dark:bg-sumeru-900/40 text-sumeru-800 dark:text-nahida-mint/90 border border-sumeru-200/50 dark:border-nahida-mint/20">
+              #{tag}
+            </span>
+          ))}
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile / Tablet Inline TOC (positioned right before content) -->
+    <div id="article-toc-mobile" class="hidden mb-10 xl:hidden"></div>
+
+    <!-- Article Content Wrapper (Flex layout with sticky sidebar when TOC exists on xl+) -->
+    <div id="article-body-wrapper" class="w-full">
+      <!-- Main Markdown Body with Editorial Typography -->
+      <div class="article-prose prose prose-lg dark:prose-invert max-w-none flex-1 min-w-0">
+        <slot />
+      </div>
+
+      <!-- Desktop Sticky Sidebar TOC (displayed on xl+ screens) -->
+      <div id="article-toc-desktop" class="hidden xl:block w-72 flex-shrink-0 sticky top-28 self-start"></div>
+    </div>
+
+    <!-- Article Navigation (Previous / Next) -->
+    <div class="mt-16 pt-8 border-t border-sumeru-200/60 dark:border-white/[0.08] grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {prevPost ? (
+        <a
+          href={`/activities/${prevPost.slug}/`}
+          class="p-5 rounded-2xl glass-panel border border-sumeru-200/60 dark:border-white/[0.08] hover:border-sumeru-400 dark:hover:border-nahida-mint/40 transition-all flex flex-col group"
+        >
+          <span class="text-xs text-sumeru-600 dark:text-nahida-mint/70 font-mono mb-1">← Previous Article</span>
+          <span class="font-display font-semibold text-sm text-sumeru-950 dark:text-white group-hover:text-sumeru-600 dark:group-hover:text-nahida-mint transition-colors line-clamp-2">
+            {prevPost.title}
+          </span>
+        </a>
+      ) : <div />}
+
+      {nextPost ? (
+        <a
+          href={`/activities/${nextPost.slug}/`}
+          class="p-5 rounded-2xl glass-panel border border-sumeru-200/60 dark:border-white/[0.08] hover:border-sumeru-400 dark:hover:border-nahida-mint/40 transition-all flex flex-col items-end text-right group"
+        >
+          <span class="text-xs text-sumeru-600 dark:text-nahida-mint/70 font-mono mb-1">Next Article →</span>
+          <span class="font-display font-semibold text-sm text-sumeru-950 dark:text-white group-hover:text-sumeru-600 dark:group-hover:text-nahida-mint transition-colors line-clamp-2">
+            {nextPost.title}
+          </span>
+        </a>
+      ) : <div />}
+    </div>
+
+    <!-- Related Articles Section -->
+    {relatedPosts.length > 0 && (
+      <div class="mt-16 pt-10 border-t border-sumeru-200/60 dark:border-white/[0.08]">
+        <h3 class="font-display font-semibold text-xl text-sumeru-950 dark:text-white mb-6">
+          Related Inquiries & Lore
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {relatedPosts.map((rel) => (
+            <a
+              href={`/activities/${rel.slug}/`}
+              class="group p-4 rounded-2xl glass-panel border border-sumeru-200/50 dark:border-white/[0.06] hover:border-sumeru-400 dark:hover:border-nahida-mint/30 transition-all flex flex-col justify-between"
+            >
+              <div>
+                <time class="text-[11px] font-mono text-sumeru-600 dark:text-nahida-mint/70 mb-1.5 block">
+                  {formatDate(rel.date)}
+                </time>
+                <h4 class="font-display font-semibold text-sm text-sumeru-950 dark:text-white group-hover:text-sumeru-600 dark:group-hover:text-nahida-mint transition-colors line-clamp-2">
+                  {rel.title}
+                </h4>
+              </div>
+              <span class="text-xs text-sumeru-600 dark:text-nahida-mint mt-3 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                Read entry →
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
+  </article>
+</BaseLayout>
+
+<style is:global>
+  /* Editorial Long-form Reading Styles */
+  .article-prose {
+    color: var(--text-primary);
+    line-height: 1.8;
+  }
+
+  .article-prose h2 {
+    font-family: var(--font-serif);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .article-prose h3 {
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .article-prose p {
+    margin-bottom: 1.35rem;
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+  }
+
+  .article-prose strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .article-prose a {
+    color: var(--accent-mint);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .article-prose a:hover {
+    color: var(--accent-gold);
+  }
+
+  .article-prose figure {
+    margin: 2.5rem 0;
+    text-align: center;
+  }
+
+  .article-prose figure img,
+  .article-prose img {
+    border-radius: 1rem;
+    max-width: 100%;
+    max-height: 75vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    margin: 0 auto;
+    display: block;
+    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.12);
+  }
+
+  .article-prose figcaption {
+    font-size: 0.85rem;
+    text-align: center;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+    font-style: italic;
+  }
+
+  .article-prose blockquote {
+    border-left: 3px solid var(--accent-mint);
+    padding-left: 1.25rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: var(--text-muted);
+  }
+
+  .article-prose ul, .article-prose ol {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+  }
+
+  .article-prose li {
+    margin-bottom: 0.5rem;
+  }
+
+  .article-prose pre {
+    border-radius: 1rem;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+    overflow-x: auto;
+  }
+
+  .article-prose table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+  }
+
+  .article-prose th, .article-prose td {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+  }
+
+  .article-prose th {
+    background-color: var(--bg-secondary);
+    font-weight: 600;
+  }
+
+  /* Table of Contents Modern Styling */
+  .table-of-contents {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(82, 142, 102, 0.25);
+    border-radius: 1.25rem;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0 2rem 0;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04);
+    backdrop-filter: blur(12px);
+  }
+
+  html.dark .table-of-contents {
+    background: rgba(12, 22, 17, 0.85);
+    border-color: rgba(110, 231, 183, 0.2);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.35);
+  }
+
+  .table-of-contents h3 {
+    font-family: var(--font-display) !important;
+    font-size: 0.85rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+    color: var(--accent-mint) !important;
+    margin: 0 0 0.85rem 0 !important;
+    padding-bottom: 0.65rem !important;
+    border-bottom: 1px solid rgba(82, 142, 102, 0.2) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+  }
+
+  html.dark .table-of-contents h3 {
+    border-bottom-color: rgba(110, 231, 183, 0.15) !important;
+  }
+
+  .table-of-contents ul {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .table-of-contents li {
+    margin: 0.35rem 0 !important;
+    padding: 0 !important;
+    line-height: 1.45 !important;
+  }
+
+  .table-of-contents a {
+    color: var(--text-secondary) !important;
+    text-decoration: none !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    transition: all 0.2s ease !important;
+    border-radius: 0.5rem !important;
+    padding: 0.25rem 0.5rem !important;
+    margin-left: -0.5rem !important;
+    line-height: 1.35 !important;
+  }
+
+  .table-of-contents a:hover {
+    color: var(--accent-mint) !important;
+    background: rgba(82, 142, 102, 0.1) !important;
+    transform: translateX(4px) !important;
+  }
+
+  html.dark .table-of-contents a:hover {
+    color: #a7f3d0 !important;
+    background: rgba(110, 231, 183, 0.12) !important;
+  }
+
+  .table-of-contents a.active-toc-link {
+    color: var(--accent-mint) !important;
+    font-weight: 600 !important;
+    background: rgba(82, 142, 102, 0.12) !important;
+  }
+
+  html.dark .table-of-contents a.active-toc-link {
+    color: #6ee7b7 !important;
+    background: rgba(110, 231, 183, 0.15) !important;
+  }
+
+  .table-of-contents ul ul {
+    margin-top: 0.25rem !important;
+    margin-bottom: 0.25rem !important;
+    margin-left: 0.75rem !important;
+    padding-left: 0.75rem !important;
+    border-left: 1.5px solid rgba(82, 142, 102, 0.25) !important;
+  }
+
+  html.dark .table-of-contents ul ul {
+    border-left-color: rgba(110, 231, 183, 0.2) !important;
+  }
+
+  .table-of-contents ul ul a {
+    font-size: 0.8125rem !important;
+    opacity: 0.9 !important;
+  }
+
+  .table-of-contents ul ul ul {
+    margin-left: 0.5rem !important;
+    padding-left: 0.5rem !important;
+  }
+
+  /* Headings scroll margin so header bar doesn't obscure heading when jumping */
+  .article-prose h2,
+  .article-prose h3,
+  .article-prose h4 {
+    scroll-margin-top: 5.5rem;
+  }
+</style>
+
+<script>
+  function setupTOC() {
+    const rawTOC = document.querySelector('.article-prose .table-of-contents');
+    if (!rawTOC) return;
+
+    const root = document.getElementById('article-root');
+    const wrapper = document.getElementById('article-body-wrapper');
+    const mobileContainer = document.getElementById('article-toc-mobile');
+    const desktopContainer = document.getElementById('article-toc-desktop');
+
+    // Enable wider layout on xl+ screens when TOC exists
+    root?.classList.remove('max-w-4xl');
+    root?.classList.add('max-w-4xl', 'xl:max-w-6xl');
+    wrapper?.classList.add('xl:flex', 'xl:gap-12', 'xl:items-start');
+
+    // Add list icon to H3
+    const h3 = rawTOC.querySelector('h3');
+    if (h3 && !h3.querySelector('svg')) {
+      const icon = document.createElement('span');
+      icon.innerHTML = `<svg class="w-4 h-4 text-sumeru-600 dark:text-nahida-mint" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h10M4 18h7" /></svg>`;
+      icon.className = 'inline-flex items-center';
+      h3.prepend(icon);
+    }
+
+    // Populate desktop sidebar
+    if (desktopContainer) {
+      desktopContainer.innerHTML = '';
+      desktopContainer.appendChild(rawTOC.cloneNode(true));
+      desktopContainer.classList.remove('hidden');
+    }
+
+    // Populate mobile container and remove raw TOC from bottom of article prose
+    if (mobileContainer) {
+      mobileContainer.innerHTML = '';
+      mobileContainer.appendChild(rawTOC);
+      mobileContainer.classList.remove('hidden');
+    }
+
+    // Setup active TOC scroll spy
+    setupTOCScrollSpy();
+  }
+
+  let activeScrollCleanup: (() => void) | null = null;
+
+  function setupTOCScrollSpy() {
+    if (activeScrollCleanup) {
+      activeScrollCleanup();
+      activeScrollCleanup = null;
+    }
+
+    const headings = Array.from(document.querySelectorAll('.article-prose h2[id], .article-prose h3[id]'));
+    if (headings.length === 0) return;
+
+    let ticking = false;
+    function onScroll() {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollPos = window.scrollY + 120;
+          let currentId = '';
+
+          for (const heading of headings) {
+            if ((heading as HTMLElement).offsetTop <= scrollPos) {
+              currentId = heading.id;
+            } else {
+              break;
+            }
+          }
+
+          if (!currentId && headings.length > 0) {
+            currentId = headings[0].id;
+          }
+
+          document.querySelectorAll('.table-of-contents a').forEach((a) => {
+            const href = a.getAttribute('href');
+            if (href === `#${currentId}`) {
+              a.classList.add('active-toc-link');
+            } else {
+              a.classList.remove('active-toc-link');
+            }
+          });
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    activeScrollCleanup = () => window.removeEventListener('scroll', onScroll);
+    onScroll();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupTOC);
+  } else {
+    setupTOC();
+  }
+  document.addEventListener('astro:after-swap', setupTOC);
+</script>

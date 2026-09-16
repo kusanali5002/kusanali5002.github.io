@@ -1,0 +1,113 @@
+---
+---
+<div class="ambient-gradient-canvas" aria-hidden="true">
+  <div id="ambient-mesh" class="ambient-gradient-mesh"></div>
+</div>
+<div class="ambient-noise" aria-hidden="true"></div>
+
+<script>
+  function setupDynamicGradient() {
+    // Check reduced motion preference
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    let ticking = false;
+    const root = document.documentElement;
+
+    // Preset theme color palettes per section
+    const sectionThemes: Record<string, { light1: string; light2: string; dark1: string; dark2: string }> = {
+      home: {
+        light1: 'rgba(186, 230, 203, 0.45)',
+        light2: 'rgba(224, 242, 233, 0.4)',
+        dark1: 'rgba(32, 77, 50, 0.45)',
+        dark2: 'rgba(18, 48, 36, 0.55)',
+      },
+      activities: {
+        light1: 'rgba(168, 230, 207, 0.45)', // brighter mint
+        light2: 'rgba(200, 242, 225, 0.4)',
+        dark1: 'rgba(24, 86, 60, 0.5)',
+        dark2: 'rgba(14, 56, 42, 0.6)',
+      },
+      workspace: {
+        light1: 'rgba(150, 218, 185, 0.5)', // richer creative green
+        light2: 'rgba(240, 230, 180, 0.35)', // touch of gold
+        dark1: 'rgba(36, 92, 60, 0.55)',
+        dark2: 'rgba(54, 46, 20, 0.4)',
+      },
+      nahida: {
+        light1: 'rgba(178, 238, 212, 0.5)',
+        light2: 'rgba(252, 236, 180, 0.42)', // dreamlike gold & ethereal mint
+        dark1: 'rgba(42, 105, 72, 0.55)',
+        dark2: 'rgba(75, 62, 25, 0.45)',
+      },
+      about: {
+        light1: 'rgba(195, 222, 205, 0.4)',
+        light2: 'rgba(235, 228, 215, 0.4)',
+        dark1: 'rgba(28, 65, 48, 0.45)',
+        dark2: 'rgba(38, 42, 36, 0.5)',
+      },
+      contact: {
+        light1: 'rgba(165, 215, 195, 0.4)',
+        light2: 'rgba(190, 210, 225, 0.35)',
+        dark1: 'rgba(18, 52, 40, 0.6)',
+        dark2: 'rgba(14, 30, 42, 0.5)',
+      }
+    };
+
+    function updateGradient() {
+      const scrollY = window.scrollY;
+      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const progress = Math.min(1, Math.max(0, scrollY / maxScroll));
+
+      // Calculate subtle fluid position based on scroll progress
+      const gradX = 45 + Math.sin(progress * Math.PI * 2) * 15;
+      const gradY = 20 + progress * 60;
+
+      root.style.setProperty('--gradient-x', `${gradX.toFixed(1)}%`);
+      root.style.setProperty('--gradient-y', `${gradY.toFixed(1)}%`);
+      root.style.setProperty('--gradient-progress', progress.toFixed(3));
+
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(updateGradient);
+        ticking = true;
+      }
+    }, { passive: true });
+
+    // Section Observer to smoothly tune color mood
+    const sections = document.querySelectorAll('section[data-section]');
+    if (sections.length > 0) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
+            const sectionName = entry.target.getAttribute('data-section') || 'home';
+            const theme = sectionThemes[sectionName] || sectionThemes.home;
+            const isDark = root.classList.contains('dark');
+
+            if (isDark) {
+              root.style.setProperty('--gradient-color-1', theme.dark1);
+              root.style.setProperty('--gradient-color-2', theme.dark2);
+            } else {
+              root.style.setProperty('--gradient-color-1', theme.light1);
+              root.style.setProperty('--gradient-color-2', theme.light2);
+            }
+          }
+        });
+      }, { threshold: [0.3, 0.6] });
+
+      sections.forEach(s => observer.observe(s));
+    }
+
+    updateGradient();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupDynamicGradient);
+  } else {
+    setupDynamicGradient();
+  }
+</script>

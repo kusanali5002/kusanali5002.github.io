@@ -1,0 +1,39 @@
+---
+export interface Props {
+  images: string[];
+  title: string;
+}
+
+const { images, title } = Astro.props;
+---
+
+<div class="image-gallery-container w-full">
+  <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+    {images.map((img, idx) => (
+      <div
+        class="gallery-item group relative aspect-square rounded-xl overflow-hidden bg-sumeru-100 dark:bg-sumeru-950 cursor-pointer border border-sumeru-200/50 dark:border-white/[0.08]"
+        data-full-src={img}
+        data-index={idx}
+        data-gallery-title={`${title} (${idx + 1}/${images.length})`}
+        role="button"
+        tabindex="0"
+        aria-label={`View image ${idx + 1} of ${title}`}
+      >
+        <img
+          src={img}
+          alt={`${title} - image ${idx + 1}`}
+          loading="lazy"
+          class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+          onerror="this.src='/images/Nahida_Icon.webp'"
+        />
+        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+          <div class="w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-200 backdrop-blur-xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>

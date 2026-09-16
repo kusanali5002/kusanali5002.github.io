@@ -1,0 +1,223 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'HYWenHei Extended';
+  src: url('/fonts/HYWenHei Extended.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-serif: 'HYWenHei Extended', 'Cinzel', 'Georgia', serif;
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  /* Light Theme - Soft botanical, warm ivory, pale mint, subtle gold */
+  --bg-primary: #fcfbf7;
+  --bg-secondary: #f4f6f1;
+  --bg-card: rgba(255, 255, 255, 0.82);
+  --bg-card-hover: rgba(255, 255, 255, 0.95);
+  --border-color: rgba(36, 74, 51, 0.12);
+  --border-hover: rgba(53, 129, 86, 0.28);
+  --text-primary: #18281d;
+  --text-secondary: #3f5446;
+  --text-muted: #6e8275;
+  --accent-green: #2d6b45;
+  --accent-mint: #4ba677;
+  --accent-gold: #b38827;
+  --accent-gold-soft: #faecd0;
+  --badge-bg: #eaf5ee;
+  --badge-text: #215436;
+
+  /* Dynamic Gradient Colors - Light */
+  --gradient-color-1: rgba(186, 230, 203, 0.45);
+  --gradient-color-2: rgba(224, 242, 233, 0.4);
+  --gradient-color-3: rgba(247, 232, 196, 0.35);
+  --gradient-color-4: rgba(195, 222, 235, 0.25);
+
+  --gradient-x: 50%;
+  --gradient-y: 20%;
+  --gradient-progress: 0;
+}
+
+.dark {
+  /* Dark Theme - Deep nocturnal Sumeru forest, luminous mint, gold accents */
+  --bg-primary: #09110d;
+  --bg-secondary: #0f1c15;
+  --bg-card: rgba(18, 32, 25, 0.75);
+  --bg-card-hover: rgba(25, 44, 34, 0.88);
+  --border-color: rgba(78, 160, 110, 0.18);
+  --border-hover: rgba(110, 214, 154, 0.4);
+  --text-primary: #ecf5ef;
+  --text-secondary: #a3c2af;
+  --text-muted: #6c8a77;
+  --accent-green: #52b77c;
+  --accent-mint: #7ee8b0;
+  --accent-gold: #dfba60;
+  --accent-gold-soft: rgba(223, 186, 96, 0.18);
+  --badge-bg: rgba(45, 107, 69, 0.35);
+  --badge-text: #96e0b7;
+
+  /* Dynamic Gradient Colors - Dark */
+  --gradient-color-1: rgba(32, 77, 50, 0.45);
+  --gradient-color-2: rgba(18, 48, 36, 0.55);
+  --gradient-color-3: rgba(64, 52, 24, 0.3);
+  --gradient-color-4: rgba(18, 42, 54, 0.35);
+}
+
+html {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-x: hidden;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Dynamic Ambient Gradient Canvas */
+.ambient-gradient-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  transition: opacity 0.5s ease;
+}
+
+.ambient-gradient-mesh {
+  position: absolute;
+  width: 140vw;
+  height: 140vh;
+  top: -20vh;
+  left: -20vw;
+  background: 
+    radial-gradient(circle at var(--gradient-x, 50%) var(--gradient-y, 25%), var(--gradient-color-1) 0%, transparent 55%),
+    radial-gradient(circle at calc(100% - var(--gradient-x, 50%)) calc(85% - var(--gradient-y, 25%)), var(--gradient-color-2) 0%, transparent 50%),
+    radial-gradient(circle at 80% 30%, var(--gradient-color-3) 0%, transparent 45%),
+    radial-gradient(circle at 20% 70%, var(--gradient-color-4) 0%, transparent 45%);
+  filter: blur(60px);
+  will-change: transform, background;
+  transform: translateZ(0);
+}
+
+/* Noise overlay for organic texture */
+.ambient-noise {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.035;
+  background-image: radial-gradient(#000 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+.dark .ambient-noise {
+  opacity: 0.045;
+  background-image: radial-gradient(#fff 1px, transparent 0);
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  background-color: var(--bg-card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dark .glass-panel {
+  box-shadow: 0 8px 30px -4px rgba(0, 0, 0, 0.35);
+}
+
+.glass-panel:hover {
+  border-color: var(--border-hover);
+  background-color: var(--bg-card-hover);
+}
+
+/* Video Player Shell (Responsive 16:9 & 9:16 vertical video player) */
+.player-shell {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.player-shell.vertical {
+  aspect-ratio: 9 / 16;
+  width: min(430px, 100%, calc(56.25vh - 100px));
+  max-height: calc(100vh - 190px);
+  margin: 0 auto;
+}
+
+.player-shell iframe,
+.player-shell video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 6px;
+  border: 2px solid var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-mint);
+}
+
+/* Typography styles */
+.font-display {
+  font-family: var(--font-serif);
+  letter-spacing: 0.02em;
+}
+
+/* Focus styles for accessibility */
+:focus-visible {
+  outline: 2px solid var(--accent-mint);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .ambient-gradient-mesh {
+    filter: blur(30px);
+    transform: none !important;
+  }
+}

@@ -1,0 +1,58 @@
+---
+export interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  canonicalURL?: string;
+  type?: 'website' | 'article';
+  publishedTime?: string;
+}
+
+const {
+  title = "The Kusanali — Personal Blog & Creative Workspace",
+  description = "A personal knowledge archive and creative laboratory inspired by Nahida, Sumeru, nature, dreams, and interactive technology.",
+  image = "/images/nahida.jpg",
+  canonicalURL = Astro.url.href,
+  type = "website",
+  publishedTime,
+} = Astro.props;
+
+const siteTitle = title.includes("The Kusanali") ? title : `${title} | The Kusanali`;
+const imageURL = new URL(image, Astro.site || Astro.url.origin).href;
+const cleanDescription = description ? description.replace(/<[^>]*>/g, '').replace(/\*\*(.*?)\*\*/g, '$1') : '';
+---
+
+<!-- Global Metadata -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="generator" content={Astro.generator} />
+<meta name="description" content={cleanDescription} />
+<link rel="canonical" href={canonicalURL} />
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+
+<!-- Theme Color Meta -->
+<meta name="theme-color" content="#244a33" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#09110d" media="(prefers-color-scheme: dark)" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={siteTitle} />
+<meta property="og:description" content={cleanDescription} />
+<meta property="og:image" content={imageURL} />
+<meta property="og:site_name" content="The Kusanali" />
+{publishedTime && <meta property="article:published_time" content={publishedTime} />}
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonicalURL} />
+<meta name="twitter:title" content={siteTitle} />
+<meta name="twitter:description" content={cleanDescription} />
+<meta name="twitter:image" content={imageURL} />
+
+<!-- Font Preloads -->
+<link rel="preload" href="/fonts/HYWenHei Extended.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+
+<!-- Page Title -->
+<title>{siteTitle}</title>

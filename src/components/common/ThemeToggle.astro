@@ -1,0 +1,71 @@
+---
+---
+<button
+  id="theme-toggle-btn"
+  type="button"
+  class="relative p-2 rounded-full text-sumeru-800 dark:text-nahida-mint hover:bg-black/5 dark:hover:bg-white/10 transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-sumeru-500"
+  aria-label="Toggle light and dark theme"
+  title="Toggle Theme"
+>
+  <!-- Sun Icon (shown in dark mode to switch to light) -->
+  <svg
+    id="theme-icon-sun"
+    class="w-5 h-5 hidden dark:block transition-transform duration-300 hover:rotate-45"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <circle cx="12" cy="12" r="4"></circle>
+    <path d="M12 2v2"></path>
+    <path d="M12 20v2"></path>
+    <path d="m4.93 4.93 1.41 1.41"></path>
+    <path d="m17.66 17.66 1.41 1.41"></path>
+    <path d="M2 12h2"></path>
+    <path d="M20 12h2"></path>
+    <path d="m6.34 17.66-1.41 1.41"></path>
+    <path d="m19.07 4.93-1.41 1.41"></path>
+  </svg>
+
+  <!-- Moon Icon (shown in light mode to switch to dark) -->
+  <svg
+    id="theme-icon-moon"
+    class="w-5 h-5 block dark:hidden transition-transform duration-300 hover:-rotate-12"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+  </svg>
+</button>
+
+<script>
+  function toggleTheme() {
+    const isDark = document.documentElement.classList.contains('dark');
+    if (isDark) {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    } else {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    }
+  }
+
+  // Use document-level delegation with a global guard so the listener is registered exactly ONCE
+  // and is never duplicated during View Transitions or page navigations
+  if (!(window as any).__themeToggleInitialized) {
+    (window as any).__themeToggleInitialized = true;
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement | null;
+      if (target?.closest('#theme-toggle-btn')) {
+        e.preventDefault();
+        toggleTheme();
+      }
+    });
+  }
+</script>

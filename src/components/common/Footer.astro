@@ -1,0 +1,85 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="mt-auto border-t border-sumeru-200/50 dark:border-white/[0.07] bg-white/40 dark:bg-[#09110d]/60 backdrop-blur-sm relative z-10 transition-colors">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+      <!-- Col 1: Identity -->
+      <div class="md:col-span-2 space-y-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-7 h-7 rounded-lg overflow-hidden border border-sumeru-600/30 dark:border-nahida-mint/40 shadow-sm bg-sumeru-100 dark:bg-sumeru-950">
+            <img src="/favicon.png" alt="The Kusanali" class="w-full h-full object-cover" />
+          </div>
+          <span class="font-display font-semibold tracking-wider text-base text-sumeru-950 dark:text-nahida-light">
+            THE KUSANALI
+          </span>
+        </div>
+        <p class="text-sm text-sumeru-800/80 dark:text-nahida-light/70 max-w-md leading-relaxed">
+          A personal blog and creative workspace inspired by Nahida theme. Maintained by Dun (Ha Manh Dung).
+        </p>
+        <div class="text-xs text-sumeru-600/70 dark:text-nahida-mint/60 font-mono">
+          "Curiosity deserves a reward"
+        </div>
+      </div>
+
+      <!-- Col 2 & 3: Navigation & Channels (side-by-side on mobile, 2 columns on desktop) -->
+      <div class="grid grid-cols-2 gap-4 sm:gap-8 md:col-span-2">
+        <!-- Col 2: Navigation -->
+        <div>
+          <h4 class="text-xs font-semibold uppercase tracking-wider text-sumeru-900 dark:text-nahida-mint mb-3 font-mono">
+            Navigation
+          </h4>
+          <ul class="space-y-2 text-sm text-sumeru-700 dark:text-nahida-light/75">
+            <li><a href="/" class="hover:text-sumeru-900 dark:hover:text-white transition-colors">Home</a></li>
+            <li><a href="/activities/" class="hover:text-sumeru-900 dark:hover:text-white transition-colors">Activities (Blog)</a></li>
+            <li><a href="/workspace/" class="hover:text-sumeru-900 dark:hover:text-white transition-colors">Workspace (Lab)</a></li>
+            <li><a href="/nahida/" class="hover:text-sumeru-900 dark:hover:text-white transition-colors">Nahida Shrine</a></li>
+            <li><a href="/about/" class="hover:text-sumeru-900 dark:hover:text-white transition-colors">About Dun</a></li>
+            <li><a href="/contact/" class="hover:text-sumeru-900 dark:hover:text-white transition-colors">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Socials & Channels -->
+        <div>
+          <h4 class="text-xs font-semibold uppercase tracking-wider text-sumeru-900 dark:text-nahida-mint mb-3 font-mono">
+            Channels
+          </h4>
+          <ul class="space-y-2 text-sm text-sumeru-700 dark:text-nahida-light/75">
+            <li>
+              <a href="https://www.tiktok.com/@kusanali.workstation" target="_blank" rel="noopener noreferrer" class="hover:text-sumeru-900 dark:hover:text-white transition-colors flex items-center gap-1.5">
+                <span>TikTok</span>
+                <span class="text-xs opacity-60">↗</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.youtube.com/@kusanali.workstation" target="_blank" rel="noopener noreferrer" class="hover:text-sumeru-900 dark:hover:text-white transition-colors flex items-center gap-1.5">
+                <span>YouTube</span>
+                <span class="text-xs opacity-60">↗</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.facebook.com/kusanali.workstation" target="_blank" rel="noopener noreferrer" class="hover:text-sumeru-900 dark:hover:text-white transition-colors flex items-center gap-1.5">
+                <span>Facebook</span>
+                <span class="text-xs opacity-60">↗</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/kusanali5002" target="_blank" rel="noopener noreferrer" class="hover:text-sumeru-900 dark:hover:text-white transition-colors flex items-center gap-1.5">
+                <span>GitHub</span>
+                <span class="text-xs opacity-60">↗</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="pt-8 border-t border-sumeru-200/40 dark:border-white/[0.05] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-sumeru-600/80 dark:text-nahida-mint/60">
+      <p>© {currentYear} THE KUSANALI. Crafted with botanical devotion & Astro.</p>
+      <div>
+        <a href="#top" class="hover:underline hover:text-sumeru-900 dark:hover:text-white transition-colors">Back to top ↑</a>
+      </div>
+    </div>
+  </div>
+</footer>
