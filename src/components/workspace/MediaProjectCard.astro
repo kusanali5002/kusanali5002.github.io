@@ -103,6 +103,8 @@ const badge = typeBadgeConfig[type] || typeBadgeConfig.project;
   data-aspect-ratio={aspectRatio}
   data-gallery-images={JSON.stringify(images)}
   data-slug={slug}
+  data-project-date={formatDate(date)}
+  data-project-tags={JSON.stringify(tags)}
 >
   <!-- Card Media Viewport -->
   <div class:list={[

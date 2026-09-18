@@ -46,12 +46,12 @@ const previewImage = project.data.thumbnail || project.data.poster || '/images/N
   publishedTime={project.data.date}
   section="workspace"
 >
-  <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+  <article class="max-w-6xl xl:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
     <!-- Back Link -->
     <div class="mb-8">
       <a
         href="/workspace/"
-        class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-amber-700 dark:text-nahida-gold hover:text-amber-950 dark:hover:text-white transition-colors py-1 px-3 rounded-full bg-amber-100/60 dark:bg-nahida-gold/10 border border-amber-200/60 dark:border-nahida-gold/20"
+        class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-amber-700 dark:text-nahida-gold hover:text-amber-950 dark:hover:text-white transition-colors py-1.5 px-3.5 rounded-full bg-amber-100/60 dark:bg-nahida-gold/10 border border-amber-200/60 dark:border-nahida-gold/20"
       >
         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -60,90 +60,98 @@ const previewImage = project.data.thumbnail || project.data.poster || '/images/N
       </a>
     </div>
 
-    <!-- Project Header -->
-    <header class="mb-10 text-center sm:text-left">
-      <div class="flex flex-wrap items-center justify-center sm:justify-start gap-3 mb-4">
-        <span class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-emerald-500/15 text-emerald-800 dark:text-emerald-400 border border-emerald-500/30">
-          {project.data.type === 'image' ? 'Local Work' : (project.data.platform || project.data.type)}
-        </span>
-        <span class="text-xs font-mono text-sumeru-600 dark:text-nahida-mint/80">
-          {formatDate(project.data.date)}
-        </span>
+    <!-- Desktop Two-Part Layout: Left Media, Right Information -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start mb-12">
+      <!-- Left Column: Product Video or Image Display -->
+      <div class="lg:col-span-7 xl:col-span-7 lg:sticky lg:top-24">
+        <div class="rounded-3xl overflow-hidden glass-panel border border-sumeru-200/60 dark:border-white/[0.08] shadow-2xl bg-black/40 flex items-center justify-center">
+          {project.data.type === 'video' && project.data.media ? (
+            <VideoPlayer
+              media={project.data.media}
+              poster={project.data.poster}
+              title={project.data.title}
+              source={project.data.source}
+              aspectRatio={project.data.aspectRatio}
+            />
+          ) : project.data.type === 'social' && project.data.url ? (
+            <SocialEmbed
+              platform={project.data.platform || 'other'}
+              url={project.data.url}
+              title={project.data.title}
+              thumbnail={project.data.thumbnail}
+              poster={project.data.poster}
+              fallbackVideo={project.data.fallbackVideo}
+            />
+          ) : project.data.type === 'gallery' && project.data.images ? (
+            <div class="p-6 w-full">
+              <ImageGallery images={project.data.images} title={project.data.title} />
+            </div>
+          ) : (
+            <div class="relative w-full flex items-center justify-center p-4 sm:p-8 bg-sumeru-950/20 overflow-hidden">
+              <img
+                src={previewImage}
+                alt={project.data.title}
+                class="max-h-[75vh] w-auto max-w-full rounded-2xl shadow-2xl object-contain"
+              />
+            </div>
+          )}
+        </div>
       </div>
 
-      <h1 class="font-display font-bold text-2xl sm:text-4xl lg:text-5xl text-sumeru-950 dark:text-white tracking-tight leading-tight mb-4">
-        {project.data.title}
-      </h1>
+      <!-- Right Column: Information Display -->
+      <div class="lg:col-span-5 xl:col-span-5 flex flex-col gap-6">
+        <!-- Project Header Details -->
+        <header class="text-left">
+          <div class="flex flex-wrap items-center gap-3 mb-4">
+            <span class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-emerald-500/15 text-emerald-800 dark:text-emerald-400 border border-emerald-500/30">
+              {project.data.type === 'image' ? 'Local Work' : (project.data.platform || project.data.type)}
+            </span>
+            <span class="text-xs font-mono text-sumeru-600 dark:text-nahida-mint/80">
+              {formatDate(project.data.date)}
+            </span>
+          </div>
 
-      <p class="text-base sm:text-lg text-sumeru-800/85 dark:text-nahida-light/80 leading-relaxed max-w-3xl mb-6" set:html={project.data.description} />
+          <h1 class="font-display font-bold text-2xl sm:text-3xl lg:text-4xl text-sumeru-950 dark:text-white tracking-tight leading-tight mb-4">
+            {project.data.title}
+          </h1>
 
-      <div class="flex flex-wrap gap-1.5 pt-4 border-t border-sumeru-200/50 dark:border-white/[0.08]">
-        {project.data.tags.map((tag) => (
-          <span class="px-2.5 py-0.5 rounded-lg text-xs font-medium bg-sumeru-100/70 dark:bg-sumeru-900/40 text-sumeru-800 dark:text-nahida-mint/90 border border-sumeru-200/50 dark:border-nahida-mint/20">
-            #{tag}
-          </span>
-        ))}
+          <p class="text-base sm:text-lg text-sumeru-800/85 dark:text-nahida-light/80 leading-relaxed mb-5" set:html={project.data.description} />
+
+          <div class="flex flex-wrap gap-1.5 pt-4 border-t border-sumeru-200/50 dark:border-white/[0.08]">
+            {project.data.tags.map((tag) => (
+              <span class="px-2.5 py-0.5 rounded-lg text-xs font-medium bg-sumeru-100/70 dark:bg-sumeru-900/40 text-sumeru-800 dark:text-nahida-mint/90 border border-sumeru-200/50 dark:border-nahida-mint/20">
+                #{tag}
+              </span>
+            ))}
+          </div>
+        </header>
+
+        <!-- External Source Action -->
+        {(project.data.url || project.data.source) && (
+          <div class="p-5 rounded-2xl glass-panel border border-sumeru-200/60 dark:border-white/[0.08] flex items-center justify-between">
+            <div class="text-xs text-sumeru-700 dark:text-nahida-light/80 font-mono">
+              <span>Official Distribution: {project.data.type === 'image' ? 'Local Work' : (project.data.platform || project.data.source?.platform || 'Source')}</span>
+            </div>
+            <a
+              href={project.data.url || project.data.source?.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="px-4 py-2 rounded-xl text-xs font-semibold bg-sumeru-600 dark:bg-nahida-mint text-white dark:text-sumeru-950 hover:bg-sumeru-700 dark:hover:bg-white transition-colors shadow-sm inline-flex items-center gap-1.5"
+            >
+              <span>{project.data.source?.label || `Open on ${project.data.platform || project.data.source?.platform || 'Web'}`}</span>
+              <span>↗</span>
+            </a>
+          </div>
+        )}
+
+        <!-- Project Notes Markdown Content -->
+        <div class="article-prose prose prose-sm sm:prose-base dark:prose-invert max-w-none pt-4 border-t border-sumeru-200/50 dark:border-white/[0.08]">
+          <h2 class="font-display font-bold text-lg text-sumeru-950 dark:text-white mb-3">
+            Project Background & Development
+          </h2>
+          <Content />
+        </div>
       </div>
-    </header>
-
-    <!-- Primary Media Stage -->
-    <div class="my-10 rounded-3xl overflow-hidden glass-panel border border-sumeru-200/60 dark:border-white/[0.08] shadow-xl">
-      {project.data.type === 'video' && project.data.media ? (
-        <VideoPlayer
-          media={project.data.media}
-          poster={project.data.poster}
-          title={project.data.title}
-          source={project.data.source}
-          aspectRatio={project.data.aspectRatio}
-        />
-      ) : project.data.type === 'social' && project.data.url ? (
-        <SocialEmbed
-          platform={project.data.platform || 'other'}
-          url={project.data.url}
-          title={project.data.title}
-          thumbnail={project.data.thumbnail}
-          poster={project.data.poster}
-          fallbackVideo={project.data.fallbackVideo}
-        />
-      ) : project.data.type === 'gallery' && project.data.images ? (
-        <div class="p-6">
-          <ImageGallery images={project.data.images} title={project.data.title} />
-        </div>
-      ) : (
-        <div class="relative w-full flex items-center justify-center p-4 sm:p-8 bg-sumeru-950/20 overflow-hidden">
-          <img
-            src={previewImage}
-            alt={project.data.title}
-            class="max-h-[75vh] w-auto max-w-full rounded-2xl shadow-2xl object-contain"
-          />
-        </div>
-      )}
-    </div>
-
-    <!-- External Source Action -->
-    {(project.data.url || project.data.source) && (
-      <div class="mb-12 p-5 rounded-2xl glass-panel border border-sumeru-200/60 dark:border-white/[0.08] flex items-center justify-between">
-        <div class="text-xs text-sumeru-700 dark:text-nahida-light/80 font-mono">
-          <span>Official Distribution: {project.data.type === 'image' ? 'Local Work' : (project.data.platform || project.data.source?.platform || 'Source')}</span>
-        </div>
-        <a
-          href={project.data.url || project.data.source?.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="px-4 py-2 rounded-xl text-xs font-semibold bg-sumeru-600 dark:bg-nahida-mint text-white dark:text-sumeru-950 hover:bg-sumeru-700 dark:hover:bg-white transition-colors shadow-sm inline-flex items-center gap-1.5"
-        >
-          <span>{project.data.source?.label || `Open on ${project.data.platform || project.data.source?.platform || 'Web'}`}</span>
-          <span>↗</span>
-        </a>
-      </div>
-    )}
-
-    <!-- Project Notes Markdown Content -->
-    <div class="article-prose prose prose-lg dark:prose-invert max-w-none">
-      <h2 class="font-display font-bold text-xl text-sumeru-950 dark:text-white mb-4">
-        Project Background & Development
-      </h2>
-      <Content />
     </div>
 
     <!-- Previous / Next Navigation -->
