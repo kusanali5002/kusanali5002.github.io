@@ -10,6 +10,8 @@
 .reveal-on-scroll.is-revealed {
   opacity: 1;
   transform: translateY(0);
+  /* Free the compositing layer once animation ends */
+  will-change: auto;
 }
 
 /* Stagger delay children */
@@ -73,6 +75,14 @@
 
 .dark .interactive-card:hover {
   box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.5);
+}
+
+/* On touch devices: disable card lift animation (hover doesn't apply but the
+   transition property itself still creates a stacking context on every card) */
+@media (hover: none) {
+  .interactive-card {
+    transition: none;
+  }
 }
 
 /* Botanical Glow */

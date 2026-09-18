@@ -95,7 +95,7 @@ const allTags = Array.from(new Set(allProjects.flatMap(p => p.data.tags)));
     <!-- Asymmetric Editorial Grid -->
     <div id="workspace-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
       {sortedProjects.map((project) => (
-        <div class="reveal-on-scroll">
+        <div class="reveal-on-scroll" style="content-visibility: auto; contain-intrinsic-size: 0 400px;">
           <MediaProjectCard
             title={project.data.title}
             description={project.data.description}

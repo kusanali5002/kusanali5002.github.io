@@ -113,6 +113,19 @@ body {
   transform: translateZ(0);
 }
 
+/* On mobile: simplify gradient to reduce paint+composite cost */
+@media (hover: none) {
+  .ambient-gradient-mesh {
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    filter: blur(40px);
+    will-change: auto;
+    transform: none;
+  }
+}
+
 /* Noise overlay for organic texture */
 .ambient-noise {
   position: fixed;
@@ -136,7 +149,18 @@ body {
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--border-color);
   box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.04);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* On touch/mobile: kill backdrop-blur (very GPU-expensive), use solid bg instead */
+@media (hover: none) {
+  .glass-panel {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background-color: var(--bg-card-hover);
+  }
 }
 
 .dark .glass-panel {

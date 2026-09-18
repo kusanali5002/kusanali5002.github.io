@@ -71,12 +71,18 @@
       ticking = false;
     }
 
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        requestAnimationFrame(updateGradient);
-        ticking = true;
-      }
-    }, { passive: true });
+    // Only animate gradient position on pointer devices — on touch, every
+    // scroll frame triggers a style recalculation that compounds with other
+    // layout work and causes jank.
+    const isPointerDevice = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (isPointerDevice) {
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          requestAnimationFrame(updateGradient);
+          ticking = true;
+        }
+      }, { passive: true });
+    }
 
     // Section Observer to smoothly tune color mood
     const sections = document.querySelectorAll('section[data-section]');

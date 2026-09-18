@@ -121,230 +121,271 @@
 </div>
 
 <script>
-  function setupProjectModal() {
-    const modal = document.getElementById('project-lightbox-modal');
-    const backdrop = document.getElementById('modal-backdrop');
-    const panel = document.getElementById('modal-panel');
-    const closeBtn = document.getElementById('modal-close-btn');
-    const stage = document.getElementById('modal-media-stage');
-    const titleEl = document.getElementById('modal-project-title');
-    const descEl = document.getElementById('modal-project-description');
-    const platformEl = document.getElementById('modal-project-platform');
-    const badgeEl = document.getElementById('modal-project-badge');
-    const externalCta = document.getElementById('modal-external-cta') as HTMLAnchorElement;
-    const ctaLabel = document.getElementById('modal-cta-label');
+  function getModalElements() {
+    return {
+      modal: document.getElementById('project-lightbox-modal'),
+      backdrop: document.getElementById('modal-backdrop'),
+      panel: document.getElementById('modal-panel'),
+      closeBtn: document.getElementById('modal-close-btn'),
+      stage: document.getElementById('modal-media-stage'),
+      titleEl: document.getElementById('modal-project-title'),
+      descEl: document.getElementById('modal-project-description'),
+      platformEl: document.getElementById('modal-project-platform'),
+      badgeEl: document.getElementById('modal-project-badge'),
+      externalCta: document.getElementById('modal-external-cta') as HTMLAnchorElement | null,
+      ctaLabel: document.getElementById('modal-cta-label'),
+      dateEl: document.getElementById('modal-project-date'),
+      typeLabelEl: document.getElementById('modal-project-type-label'),
+      tagsContainer: document.getElementById('modal-project-tags'),
+      detailLink: document.getElementById('modal-detail-link') as HTMLAnchorElement | null,
+    };
+  }
 
-    const dateEl = document.getElementById('modal-project-date');
-    const typeLabelEl = document.getElementById('modal-project-type-label');
-    const tagsContainer = document.getElementById('modal-project-tags');
-    const detailLink = document.getElementById('modal-detail-link') as HTMLAnchorElement | null;
-
-    if (!modal || !stage || !panel) return;
-
-    function getTikTokVideoId(rawUrl: string): string | null {
-      try {
-        const match = rawUrl.match(/\/video\/(\d+)/);
-        return match ? match[1] : null;
-      } catch {
-        return null;
-      }
-    }
-
-    function openModal(card: HTMLElement) {
-      const type = card.getAttribute('data-media-type') || 'project';
-      const url = card.getAttribute('data-media-url') || '';
-      const poster = card.getAttribute('data-media-poster') || '';
-      const title = card.getAttribute('data-project-title') || '';
-      const desc = card.getAttribute('data-project-desc') || '';
-      const platform = card.getAttribute('data-project-platform') || '';
-      const externalUrl = card.getAttribute('data-external-url') || '';
-      const fallbackVideo = card.getAttribute('data-fallback-video') || '';
-      const aspectRatio = card.getAttribute('data-aspect-ratio') || '16:9';
-      const galleryImages = JSON.parse(card.getAttribute('data-gallery-images') || '[]');
-      const isVertical = aspectRatio === '9:16' || platform.toLowerCase() === 'tiktok';
-      const slug = card.getAttribute('data-slug') || '';
-      const projectDate = card.getAttribute('data-project-date') || '';
-      let projectTags: string[] = [];
-      try {
-        projectTags = JSON.parse(card.getAttribute('data-project-tags') || '[]');
-      } catch {
-        projectTags = [];
-      }
-
-      if (titleEl) titleEl.textContent = title;
-      if (descEl) descEl.innerHTML = desc;
-      const isLocalWork = type === 'image' || platform.toLowerCase() === 'local work';
-      if (platformEl) platformEl.textContent = isLocalWork ? '@Local Work' : (platform ? `@${platform}` : '');
-      if (badgeEl) badgeEl.textContent = (isLocalWork ? 'LOCAL WORK' : (platform || type)).toUpperCase();
-
-      if (dateEl) dateEl.textContent = projectDate;
-      if (typeLabelEl) typeLabelEl.textContent = isLocalWork ? 'Local Work' : (platform ? platform.toUpperCase() : type.toUpperCase());
-
-      if (tagsContainer) {
-        tagsContainer.innerHTML = '';
-        projectTags.forEach((tag) => {
-          const tagSpan = document.createElement('span');
-          tagSpan.className = 'px-2 py-0.5 rounded-lg text-[10px] sm:text-xs font-medium bg-sumeru-100/80 dark:bg-sumeru-900/50 text-sumeru-800 dark:text-nahida-mint/90 border border-sumeru-200/60 dark:border-nahida-mint/20';
-          tagSpan.textContent = `#${tag}`;
-          tagsContainer.appendChild(tagSpan);
-        });
-      }
-
-      if (detailLink) {
-        if (slug) {
-          detailLink.href = `/workspace/${slug}/`;
-          detailLink.classList.remove('hidden');
-        } else {
-          detailLink.classList.add('hidden');
-        }
-      }
-
-      if (externalCta && ctaLabel) {
-        if (externalUrl || url) {
-          externalCta.href = externalUrl || url;
-          externalCta.classList.remove('hidden');
-          const customCta = card.getAttribute('data-cta-label');
-          const plat = (platform || '').toLowerCase();
-          if (customCta) {
-            ctaLabel.textContent = customCta;
-          } else if (plat === 'tiktok') {
-            ctaLabel.textContent = 'Watch directly on TikTok';
-          } else if (plat === 'youtube') {
-            ctaLabel.textContent = 'Watch directly on YouTube';
-          } else {
-            ctaLabel.textContent = `Watch on ${platform || 'Source'}`;
-          }
-        } else {
-          externalCta.classList.add('hidden');
-        }
-      }
-
-      // Render Stage Content Based on Type
-      stage.innerHTML = '';
-
-      const tiktokId = getTikTokVideoId(url) || getTikTokVideoId(externalUrl);
-
-      if (type === 'video' || fallbackVideo) {
-        const shell = document.createElement('div');
-        shell.className = isVertical ? 'player-shell vertical shadow-2xl' : 'player-shell shadow-2xl';
-        const video = document.createElement('video');
-        video.src = fallbackVideo || url;
-        video.poster = poster;
-        video.controls = true;
-        video.autoplay = true;
-        video.playsInline = true;
-        video.className = 'w-full h-full object-contain';
-        shell.appendChild(video);
-        stage.appendChild(shell);
-      } else if (tiktokId || platform.toLowerCase() === 'tiktok') {
-        if (tiktokId) {
-          const shell = document.createElement('div');
-          shell.className = 'player-shell vertical shadow-2xl';
-          const iframe = document.createElement('iframe');
-          iframe.src = `https://www.tiktok.com/player/v1/${tiktokId}?autoplay=1&loop=0&rel=0&music_info=0&description=0&muted=0&volume_control=1`;
-          iframe.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture; fullscreen');
-          iframe.setAttribute('allowfullscreen', 'true');
-          iframe.setAttribute('title', title);
-          iframe.onload = () => {
-            try {
-              const win = iframe.contentWindow;
-              win?.postMessage({ type: 'unMute', value: undefined, 'x-tiktok-player': true }, 'https://www.tiktok.com');
-              win?.postMessage({ type: 'play', value: undefined, 'x-tiktok-player': true }, 'https://www.tiktok.com');
-            } catch {}
-          };
-          shell.appendChild(iframe);
-          stage.appendChild(shell);
-        } else {
-          renderFallbackImage(poster, title, isVertical);
-        }
-      } else if (type === 'social' && platform.toLowerCase() === 'youtube') {
-        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-        const match = url.match(regExp);
-        const videoId = (match && match[2].length === 11) ? match[2] : null;
-
-        if (videoId) {
-          const shell = document.createElement('div');
-          shell.className = isVertical ? 'player-shell vertical shadow-2xl' : 'player-shell shadow-2xl';
-          const iframe = document.createElement('iframe');
-          iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&playsinline=1&controls=1&loop=1&playlist=${videoId}`;
-          iframe.setAttribute('frameborder', '0');
-          iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
-          iframe.setAttribute('allowfullscreen', 'true');
-          iframe.setAttribute('title', title);
-          shell.appendChild(iframe);
-          stage.appendChild(shell);
-        } else {
-          renderFallbackImage(poster, title, isVertical);
-        }
-      } else if (type === 'gallery' && galleryImages.length > 0) {
-        const shell = document.createElement('div');
-        shell.className = 'w-full h-full flex items-center justify-center p-2 sm:p-4';
-        const img = document.createElement('img');
-        img.src = galleryImages[0];
-        img.alt = title;
-        img.className = 'max-h-full max-w-full w-auto h-auto object-contain rounded-xl shadow-2xl';
-        shell.appendChild(img);
-        stage.appendChild(shell);
-      } else {
-        renderFallbackImage(poster, title, isVertical);
-      }
-
-      modal?.classList.remove('pointer-events-none', 'opacity-0');
-      modal?.classList.add('pointer-events-auto', 'opacity-100');
-      panel?.classList.remove('scale-95');
-      panel?.classList.add('scale-100');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function renderFallbackImage(src: string, alt: string, isVertical = false) {
-      const wrapper = document.createElement('div');
-      wrapper.className = 'w-full h-full flex items-center justify-center p-2 sm:p-4';
-      const img = document.createElement('img');
-      img.src = src || '/images/Nahida_Icon.webp';
-      img.alt = alt;
-      img.className = 'max-h-full max-w-full w-auto h-auto object-contain rounded-xl shadow-2xl';
-      wrapper.appendChild(img);
-      stage.appendChild(wrapper);
-    }
-
-    function closeModal() {
-      modal?.classList.add('pointer-events-none', 'opacity-0');
-      modal?.classList.remove('pointer-events-auto', 'opacity-100');
-      panel?.classList.add('scale-95');
-      panel?.classList.remove('scale-100');
-      document.body.style.overflow = '';
-      setTimeout(() => {
-        if (stage) stage.innerHTML = '';
-      }, 300);
-    }
-
-    // Use document-level delegation so triggers work reliably across all page navigations without duplicate bindings
-    if (!(window as any).__projectModalInitialized) {
-      (window as any).__projectModalInitialized = true;
-
-      document.addEventListener('click', (e) => {
-        const target = e.target as HTMLElement | null;
-        if (!target) return;
-
-        const trigger = target.closest('.project-card-trigger');
-        if (trigger) {
-          const card = trigger.closest('.workspace-card') as HTMLElement;
-          if (card) openModal(card);
-          return;
-        }
-
-        if (target.closest('#modal-close-btn') || target.closest('#modal-backdrop')) {
-          closeModal();
-        }
-      });
-
-      window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal?.classList.contains('opacity-100')) {
-          closeModal();
-        }
-      });
+  function getTikTokVideoId(rawUrl: string): string | null {
+    try {
+      const match = rawUrl.match(/\/video\/(\d+)/);
+      return match ? match[1] : null;
+    } catch {
+      return null;
     }
   }
 
-  setupProjectModal();
+  function renderFallbackImage(stage: HTMLElement, src: string, alt: string, isVertical = false) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'w-full h-full flex items-center justify-center p-2 sm:p-4';
+    const img = document.createElement('img');
+    img.src = src || '/images/Nahida_Icon.webp';
+    img.alt = alt;
+    img.className = 'max-h-full max-w-full w-auto h-auto object-contain rounded-xl shadow-2xl';
+    wrapper.appendChild(img);
+    stage.appendChild(wrapper);
+  }
+
+  function openModal(card: HTMLElement) {
+    const {
+      modal,
+      panel,
+      stage,
+      titleEl,
+      descEl,
+      platformEl,
+      badgeEl,
+      externalCta,
+      ctaLabel,
+      dateEl,
+      typeLabelEl,
+      tagsContainer,
+      detailLink,
+    } = getModalElements();
+
+    if (!modal || !stage || !panel) return;
+
+    const type = card.getAttribute('data-media-type') || 'project';
+    const url = card.getAttribute('data-media-url') || '';
+    const poster = card.getAttribute('data-media-poster') || '';
+    const title = card.getAttribute('data-project-title') || '';
+    const desc = card.getAttribute('data-project-desc') || '';
+    const platform = card.getAttribute('data-project-platform') || '';
+    const externalUrl = card.getAttribute('data-external-url') || '';
+    const fallbackVideo = card.getAttribute('data-fallback-video') || '';
+    const aspectRatio = card.getAttribute('data-aspect-ratio') || '16:9';
+    const galleryImages = JSON.parse(card.getAttribute('data-gallery-images') || '[]');
+    const isVertical = aspectRatio === '9:16' || platform.toLowerCase() === 'tiktok';
+    const slug = card.getAttribute('data-slug') || '';
+    const projectDate = card.getAttribute('data-project-date') || '';
+    let projectTags: string[] = [];
+    try {
+      projectTags = JSON.parse(card.getAttribute('data-project-tags') || '[]');
+    } catch {
+      projectTags = [];
+    }
+
+    if (titleEl) titleEl.textContent = title;
+    if (descEl) descEl.innerHTML = desc;
+    const isLocalWork = type === 'image' || platform.toLowerCase() === 'local work';
+    if (platformEl) platformEl.textContent = isLocalWork ? '@Local Work' : (platform ? `@${platform}` : '');
+    if (badgeEl) badgeEl.textContent = (isLocalWork ? 'LOCAL WORK' : (platform || type)).toUpperCase();
+
+    if (dateEl) dateEl.textContent = projectDate;
+    if (typeLabelEl) typeLabelEl.textContent = isLocalWork ? 'Local Work' : (platform ? platform.toUpperCase() : type.toUpperCase());
+
+    if (tagsContainer) {
+      tagsContainer.innerHTML = '';
+      projectTags.forEach((tag) => {
+        const tagSpan = document.createElement('span');
+        tagSpan.className = 'px-2 py-0.5 rounded-lg text-[10px] sm:text-xs font-medium bg-sumeru-100/80 dark:bg-sumeru-900/50 text-sumeru-800 dark:text-nahida-mint/90 border border-sumeru-200/60 dark:border-nahida-mint/20';
+        tagSpan.textContent = `#${tag}`;
+        tagsContainer.appendChild(tagSpan);
+      });
+    }
+
+    if (detailLink) {
+      if (slug) {
+        detailLink.href = `/workspace/${slug}/`;
+        detailLink.classList.remove('hidden');
+      } else {
+        detailLink.classList.add('hidden');
+      }
+    }
+
+    if (externalCta && ctaLabel) {
+      if (externalUrl || url) {
+        externalCta.href = externalUrl || url;
+        externalCta.classList.remove('hidden');
+        const customCta = card.getAttribute('data-cta-label');
+        const plat = (platform || '').toLowerCase();
+        if (customCta) {
+          ctaLabel.textContent = customCta;
+        } else if (plat === 'tiktok') {
+          ctaLabel.textContent = 'Watch directly on TikTok';
+        } else if (plat === 'youtube') {
+          ctaLabel.textContent = 'Watch directly on YouTube';
+        } else {
+          ctaLabel.textContent = `Watch on ${platform || 'Source'}`;
+        }
+      } else {
+        externalCta.classList.add('hidden');
+      }
+    }
+
+    // Render Stage Content Based on Type
+    stage.innerHTML = '';
+
+    const tiktokId = getTikTokVideoId(url) || getTikTokVideoId(externalUrl);
+
+    if (type === 'video' || fallbackVideo) {
+      const shell = document.createElement('div');
+      shell.className = isVertical ? 'player-shell vertical shadow-2xl' : 'player-shell shadow-2xl';
+      const video = document.createElement('video');
+      video.src = fallbackVideo || url;
+      video.poster = poster;
+      video.controls = true;
+      video.autoplay = true;
+      video.playsInline = true;
+      video.className = 'w-full h-full object-contain';
+      shell.appendChild(video);
+      stage.appendChild(shell);
+    } else if (tiktokId || platform.toLowerCase() === 'tiktok') {
+      if (tiktokId) {
+        const shell = document.createElement('div');
+        shell.className = 'player-shell vertical shadow-2xl';
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.tiktok.com/player/v1/${tiktokId}?autoplay=1&loop=0&rel=0&music_info=0&description=0&muted=0&volume_control=1`;
+        iframe.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture; fullscreen');
+        iframe.setAttribute('allowfullscreen', 'true');
+        iframe.setAttribute('title', title);
+        iframe.onload = () => {
+          try {
+            const win = iframe.contentWindow;
+            win?.postMessage({ type: 'unMute', value: undefined, 'x-tiktok-player': true }, 'https://www.tiktok.com');
+            win?.postMessage({ type: 'play', value: undefined, 'x-tiktok-player': true }, 'https://www.tiktok.com');
+          } catch {}
+        };
+        shell.appendChild(iframe);
+        stage.appendChild(shell);
+      } else {
+        renderFallbackImage(stage, poster, title, isVertical);
+      }
+    } else if (type === 'social' && platform.toLowerCase() === 'youtube') {
+      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+      const match = url.match(regExp);
+      const videoId = (match && match[2].length === 11) ? match[2] : null;
+
+      if (videoId) {
+        const shell = document.createElement('div');
+        shell.className = isVertical ? 'player-shell vertical shadow-2xl' : 'player-shell shadow-2xl';
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&playsinline=1&controls=1&loop=1&playlist=${videoId}`;
+        iframe.setAttribute('frameborder', '0');
+        iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+        iframe.setAttribute('allowfullscreen', 'true');
+        iframe.setAttribute('title', title);
+        shell.appendChild(iframe);
+        stage.appendChild(shell);
+      } else {
+        renderFallbackImage(stage, poster, title, isVertical);
+      }
+    } else if (type === 'gallery' && galleryImages.length > 0) {
+      const shell = document.createElement('div');
+      shell.className = 'w-full h-full flex items-center justify-center p-2 sm:p-4';
+      const img = document.createElement('img');
+      img.src = galleryImages[0];
+      img.alt = title;
+      img.className = 'max-h-full max-w-full w-auto h-auto object-contain rounded-xl shadow-2xl';
+      shell.appendChild(img);
+      stage.appendChild(shell);
+    } else {
+      renderFallbackImage(stage, poster, title, isVertical);
+    }
+
+    modal.classList.remove('pointer-events-none', 'opacity-0');
+    modal.classList.add('pointer-events-auto', 'opacity-100');
+    panel.classList.remove('scale-95');
+    panel.classList.add('scale-100');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    const { modal, panel, stage } = getModalElements();
+    if (!modal || !panel) return;
+
+    modal.classList.add('pointer-events-none', 'opacity-0');
+    modal.classList.remove('pointer-events-auto', 'opacity-100');
+    panel.classList.add('scale-95');
+    panel.classList.remove('scale-100');
+    document.body.style.overflow = '';
+    setTimeout(() => {
+      if (stage) stage.innerHTML = '';
+    }, 300);
+  }
+
+  function initGlobalProjectModalHandlers() {
+    if ((window as any).__projectModalInitialized) return;
+    (window as any).__projectModalInitialized = true;
+
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+
+      const trigger = target.closest('.project-card-trigger');
+      if (trigger) {
+        e.preventDefault();
+        const card = trigger.closest('.workspace-card') as HTMLElement;
+        if (card) openModal(card);
+        return;
+      }
+
+      if (target.closest('#modal-close-btn') || target.closest('#modal-backdrop')) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const { modal } = getModalElements();
+        if (modal?.classList.contains('opacity-100')) {
+          closeModal();
+        }
+      }
+
+      if (e.key === 'Enter' || e.key === ' ') {
+        const target = e.target as HTMLElement | null;
+        const trigger = target?.closest('.project-card-trigger');
+        if (trigger) {
+          e.preventDefault();
+          const card = trigger.closest('.workspace-card') as HTMLElement;
+          if (card) openModal(card);
+        }
+      }
+    });
+  }
+
+  initGlobalProjectModalHandlers();
+  document.addEventListener('astro:page-load', initGlobalProjectModalHandlers);
+  document.addEventListener('astro:after-swap', () => {
+    const { modal } = getModalElements();
+    if (!modal || modal.classList.contains('opacity-0')) {
+      document.body.style.overflow = '';
+    }
+  });
 </script>

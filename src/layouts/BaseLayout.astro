@@ -121,8 +121,10 @@ const {
     <Navbar />
     <MobileNav />
 
-    <!-- Lightbox Modal (Elevated root level above header) -->
-    <ProjectModal />
+    <!-- Lightbox Modal (Elevated root level above header, persistent across transitions) -->
+    <div transition:persist="project-lightbox">
+      <ProjectModal />
+    </div>
 
     <!-- Page Content Container (Slides on navigation, leaving header untouched) -->
     <div id="page-content" class="flex-grow flex flex-col w-full min-h-screen">

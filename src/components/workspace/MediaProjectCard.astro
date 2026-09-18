@@ -107,22 +107,28 @@ const badge = typeBadgeConfig[type] || typeBadgeConfig.project;
   data-project-tags={JSON.stringify(tags)}
 >
   <!-- Card Media Viewport -->
-  <div class:list={[
-    'relative w-full overflow-hidden bg-sumeru-950/20 cursor-pointer project-card-trigger',
-    aspectRatio === '9:16' ? 'aspect-[9/16] max-h-[420px]' : (featured ? 'aspect-[16/9] sm:aspect-[21/9]' : 'aspect-video')
-  ]}>
+  <div
+    class:list={[
+      'relative w-full overflow-hidden bg-sumeru-950/20 cursor-pointer project-card-trigger focus:outline-none focus-visible:ring-2 focus-visible:ring-sumeru-500',
+      aspectRatio === '9:16' ? 'aspect-[9/16] max-h-[420px]' : (featured ? 'aspect-[16/9] sm:aspect-[21/9]' : 'aspect-video')
+    ]}
+    role="button"
+    tabindex="0"
+    aria-haspopup="dialog"
+    aria-label={`Open media preview for ${title}`}
+  >
     <img
       src={previewImage}
       alt={title}
       loading="lazy"
-      class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 ease-out"
+      class="w-full h-full object-cover sm:group-hover:scale-105 sm:transition-transform sm:duration-500 sm:ease-out"
       onerror="this.src='/images/Nahida_Icon.webp'"
     />
-    <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent opacity-75 group-hover:opacity-60 transition-opacity"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent opacity-75 sm:group-hover:opacity-60 sm:transition-opacity"></div>
 
     <!-- Type Badge -->
     <div class="absolute top-4 left-4">
-      <span class:list={['inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider backdrop-blur-md border shadow-sm', badge.colorClass]}>
+      <span class:list={['inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider sm:backdrop-blur-md border shadow-sm', badge.colorClass]}>
         <span>{badge.icon}</span>
         <span>{badge.label}</span>
       </span>
@@ -130,7 +136,7 @@ const badge = typeBadgeConfig[type] || typeBadgeConfig.project;
 
     <!-- Quick Preview / Play Action Icon -->
     <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-      <div class="w-12 h-12 rounded-full bg-white/80 dark:bg-black/70 text-sumeru-950 dark:text-nahida-mint flex items-center justify-center opacity-0 group-hover:opacity-100 transform scale-75 group-hover:scale-100 transition-all duration-300 backdrop-blur-md shadow-lg">
+      <div class="w-12 h-12 rounded-full bg-white/80 dark:bg-black/70 text-sumeru-950 dark:text-nahida-mint flex items-center justify-center opacity-90 sm:opacity-0 sm:group-hover:opacity-100 sm:backdrop-blur-md shadow-lg">
         {type === 'video' || (type === 'social' && platform === 'youtube') ? (
           <svg class="w-5 h-5 ml-0.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
         ) : type === 'gallery' ? (
