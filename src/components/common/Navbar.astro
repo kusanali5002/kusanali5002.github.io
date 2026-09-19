@@ -1,15 +1,16 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
+import LanguageToggle from './LanguageToggle.astro';
 
 const currentPath = Astro.url.pathname;
 
 const navItems = [
-  { name: 'HOME', href: '/' },
-  { name: 'ACTIVITIES', href: '/activities/' },
-  { name: 'WORKSPACE', href: '/workspace/' },
-  { name: 'NAHIDA', href: '/nahida/' },
-  { name: 'ABOUT ME', href: '/about/' },
-  { name: 'CONTACT', href: '/contact/' },
+  { key: 'nav-home', name: 'HOME', href: '/' },
+  { key: 'nav-activities', name: 'ACTIVITIES', href: '/activities/' },
+  { key: 'nav-workspace', name: 'WORKSPACE', href: '/workspace/' },
+  { key: 'nav-nahida', name: 'NAHIDA', href: '/nahida/' },
+  { key: 'nav-about', name: 'ABOUT ME', href: '/about/' },
+  { key: 'nav-contact', name: 'CONTACT', href: '/contact/' },
 ];
 
 function isActive(itemHref: string) {
@@ -47,6 +48,7 @@ function isActive(itemHref: string) {
         <span
           id="header-brand-subtitle"
           class="text-[10px] sm:text-[11px] tracking-wide text-sumeru-600/90 dark:text-nahida-mint/80 font-mono leading-tight"
+          data-i18n="header-subtitle"
         >
           Dun's official webpage
         </span>
@@ -67,7 +69,7 @@ function isActive(itemHref: string) {
                 : 'text-sumeru-800/80 dark:text-nahida-light/75 hover:text-sumeru-950 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
             ]}
           >
-            {item.name}
+            <span data-i18n={item.key}>{item.name}</span>
             {active && (
               <span class="nav-active-pill absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-sumeru-600 dark:bg-nahida-mint rounded-full animate-fade-in" />
             )}
@@ -76,8 +78,9 @@ function isActive(itemHref: string) {
       })}
     </nav>
 
-    <!-- Header Actions (Theme Toggle & Mobile Menu Button) -->
+    <!-- Header Actions (Theme Toggle, Language Toggle & Mobile Menu Button) -->
     <div class="flex items-center gap-2">
+      <LanguageToggle />
       <ThemeToggle />
 
       <!-- Mobile Hamburger Button -->

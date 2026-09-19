@@ -2,12 +2,12 @@
 const currentPath = Astro.url.pathname;
 
 const navItems = [
-  { name: 'HOME', href: '/', desc: 'Entrance & Identity' },
-  { name: 'ACTIVITIES', href: '/activities/', desc: 'Articles, Knowledge & Guides' },
-  { name: 'WORKSPACE', href: '/workspace/', desc: 'Creative Media & Experiments' },
-  { name: 'NAHIDA', href: '/nahida/', desc: "Dun's Lover" },
-  { name: 'ABOUT ME', href: '/about/', desc: 'Personal Story & Adult Journey' },
-  { name: 'CONTACT', href: '/contact/', desc: 'Get in touch & Socials' },
+  { key: 'nav-home', name: 'HOME', href: '/', desc: 'Entrance & Identity' },
+  { key: 'nav-activities', name: 'ACTIVITIES', href: '/activities/', desc: 'Articles, Knowledge & Guides' },
+  { key: 'nav-workspace', name: 'WORKSPACE', href: '/workspace/', desc: 'Creative Media & Experiments' },
+  { key: 'nav-nahida', name: 'NAHIDA', href: '/nahida/', desc: "Dun's Lover" },
+  { key: 'nav-about', name: 'ABOUT ME', href: '/about/', desc: 'Personal Story & Adult Journey' },
+  { key: 'nav-contact', name: 'CONTACT', href: '/contact/', desc: 'Get in touch & Socials' },
 ];
 
 function isActive(itemHref: string) {
@@ -47,7 +47,7 @@ function isActive(itemHref: string) {
             <div class="font-display font-semibold text-sm text-sumeru-950 dark:text-nahida-light tracking-wide">
               THE KUSANALI
             </div>
-            <div class="text-[10px] text-sumeru-600 dark:text-nahida-mint font-mono">Dun's official webpage</div>
+            <div class="text-[10px] text-sumeru-600 dark:text-nahida-mint font-mono" data-i18n="header-subtitle">Dun's official webpage</div>
           </div>
         </div>
 
@@ -79,7 +79,7 @@ function isActive(itemHref: string) {
               ]}
             >
               <div>
-                <div class="font-semibold text-sm tracking-wider uppercase">{item.name}</div>
+                <div class="font-semibold text-sm tracking-wider uppercase" data-i18n={item.key}>{item.name}</div>
                 <div class="text-xs text-sumeru-600/80 dark:text-nahida-mint/60 mt-0.5">{item.desc}</div>
               </div>
               <svg class="w-4 h-4 text-sumeru-400 dark:text-nahida-mint/50 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">

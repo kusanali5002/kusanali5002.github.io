@@ -15,7 +15,7 @@ const currentYear = new Date().getFullYear();
             THE KUSANALI
           </span>
         </div>
-        <p class="text-sm text-sumeru-800/80 dark:text-nahida-light/70 max-w-md leading-relaxed">
+        <p class="text-sm text-sumeru-800/80 dark:text-nahida-light/70 max-w-md leading-relaxed" data-i18n="footer-desc">
           A personal blog and creative workspace inspired by Nahida theme. Maintained by Dun (Ha Manh Dung).
         </p>
         <div class="text-xs text-sumeru-600/70 dark:text-nahida-mint/60 font-mono">
@@ -27,22 +27,22 @@ const currentYear = new Date().getFullYear();
       <div class="grid grid-cols-2 gap-4 sm:gap-8 md:col-span-2">
         <!-- Col 2: Navigation -->
         <div>
-          <h4 class="text-xs font-semibold uppercase tracking-wider text-sumeru-900 dark:text-nahida-mint mb-3 font-mono">
+          <h4 class="text-xs font-semibold uppercase tracking-wider text-sumeru-900 dark:text-nahida-mint mb-3 font-mono" data-i18n="footer-nav-label">
             Navigation
           </h4>
           <ul class="space-y-2 text-sm text-sumeru-700 dark:text-nahida-light/75">
-            <li><a href="/" class="hover:text-sumeru-900 dark:hover:text-white transition-colors">Home</a></li>
-            <li><a href="/activities/" class="hover:text-sumeru-900 dark:hover:text-white transition-colors">Activities (Blog)</a></li>
-            <li><a href="/workspace/" class="hover:text-sumeru-900 dark:hover:text-white transition-colors">Workspace (Lab)</a></li>
-            <li><a href="/nahida/" class="hover:text-sumeru-900 dark:hover:text-white transition-colors">Nahida Shrine</a></li>
-            <li><a href="/about/" class="hover:text-sumeru-900 dark:hover:text-white transition-colors">About Dun</a></li>
-            <li><a href="/contact/" class="hover:text-sumeru-900 dark:hover:text-white transition-colors">Contact</a></li>
+            <li><a href="/" class="hover:text-sumeru-900 dark:hover:text-white transition-colors" data-i18n="footer-nav-home">Home</a></li>
+            <li><a href="/activities/" class="hover:text-sumeru-900 dark:hover:text-white transition-colors" data-i18n="footer-nav-activities">Activities (Blog)</a></li>
+            <li><a href="/workspace/" class="hover:text-sumeru-900 dark:hover:text-white transition-colors" data-i18n="footer-nav-workspace">Workspace (Lab)</a></li>
+            <li><a href="/nahida/" class="hover:text-sumeru-900 dark:hover:text-white transition-colors" data-i18n="footer-nav-nahida">Nahida Shrine</a></li>
+            <li><a href="/about/" class="hover:text-sumeru-900 dark:hover:text-white transition-colors" data-i18n="footer-nav-about">About Dun</a></li>
+            <li><a href="/contact/" class="hover:text-sumeru-900 dark:hover:text-white transition-colors" data-i18n="footer-nav-contact">Contact</a></li>
           </ul>
         </div>
 
         <!-- Col 3: Socials & Channels -->
         <div>
-          <h4 class="text-xs font-semibold uppercase tracking-wider text-sumeru-900 dark:text-nahida-mint mb-3 font-mono">
+          <h4 class="text-xs font-semibold uppercase tracking-wider text-sumeru-900 dark:text-nahida-mint mb-3 font-mono" data-i18n="footer-channels-label">
             Channels
           </h4>
           <ul class="space-y-2 text-sm text-sumeru-700 dark:text-nahida-light/75">
@@ -64,12 +64,7 @@ const currentYear = new Date().getFullYear();
                 <span class="text-xs opacity-60">↗</span>
               </a>
             </li>
-            <li>
-              <a href="https://github.com/kusanali5002" target="_blank" rel="noopener noreferrer" class="hover:text-sumeru-900 dark:hover:text-white transition-colors flex items-center gap-1.5">
-                <span>GitHub</span>
-                <span class="text-xs opacity-60">↗</span>
-              </a>
-            </li>
+
           </ul>
         </div>
       </div>
@@ -78,7 +73,7 @@ const currentYear = new Date().getFullYear();
     <div class="pt-8 border-t border-sumeru-200/40 dark:border-white/[0.05] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-sumeru-600/80 dark:text-nahida-mint/60">
       <p>© {currentYear} THE KUSANALI. Crafted with botanical devotion & Astro.</p>
       <div>
-        <a href="#top" class="hover:underline hover:text-sumeru-900 dark:hover:text-white transition-colors">Back to top ↑</a>
+        <a href="#top" class="hover:underline hover:text-sumeru-900 dark:hover:text-white transition-colors" data-i18n="footer-backtotop">Back to top ↑</a>
       </div>
     </div>
   </div>

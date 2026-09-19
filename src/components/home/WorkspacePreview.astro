@@ -12,11 +12,11 @@ const { projects } = Astro.props;
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-sumeru-200/40 dark:border-white/[0.05]">
   <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12">
     <div>
-      <span class="text-xs font-mono font-semibold uppercase tracking-widest text-amber-700 dark:text-nahida-gold mb-2 block">
+      <span class="text-xs font-mono font-semibold uppercase tracking-widest text-amber-700 dark:text-nahida-gold mb-3.5 sm:mb-4 block" data-i18n="ws-label">
         Creative Workspace
       </span>
-      <h2 class="font-display font-bold text-3xl sm:text-4xl text-sumeru-950 dark:text-white">
-        All Social & Local Works
+      <h2 class="font-display font-bold text-3xl sm:text-4xl text-sumeru-950 dark:text-white" data-i18n="ws-title">
+        ALL PROJECTS
       </h2>
     </div>
 
@@ -24,7 +24,7 @@ const { projects } = Astro.props;
       href="/workspace/"
       class="mt-4 sm:mt-0 text-xs font-semibold uppercase tracking-wider text-amber-700 dark:text-nahida-gold hover:underline inline-flex items-center gap-1 group"
     >
-      <span>Open Workspace ({projects.length})</span>
+      <span data-i18n="ws-viewall" data-count={projects.length}>Open Workspace ({projects.length})</span>
       <span class="transform group-hover:translate-x-1 transition-transform">→</span>
     </a>
   </div>

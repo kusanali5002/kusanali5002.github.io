@@ -65,6 +65,14 @@ const {
           return -1;
         }
 
+        // Immediate check on initial cold load
+        const initialPath = (window.location.pathname || '').replace(/\/$/, '') || '/';
+        if (initialPath !== '/' && localStorage.getItem('site-lang') === 'vn') {
+          document.documentElement.classList.add('pending-vn-modal');
+          document.documentElement.classList.add('hide-page-content');
+          localStorage.setItem('site-lang', 'en');
+        }
+
         document.addEventListener('astro:before-preparation', (event) => {
           const fromIdx = getNavIndex(event.from.pathname);
           const toIdx = getNavIndex(event.to.pathname);
@@ -79,6 +87,21 @@ const {
             }
           } else {
             document.documentElement.dataset.slideDirection = 'fade';
+          }
+
+          // Pre-transition check: show notification before new page content loads
+          const toPath = (event.to.pathname || '').replace(/\/$/, '') || '/';
+          const isVN = localStorage.getItem('site-lang') === 'vn';
+          if (toPath !== '/' && isVN) {
+            localStorage.setItem('site-lang', 'en');
+            document.documentElement.classList.add('hide-page-content');
+            const banner = document.getElementById('vn-notify-banner');
+            if (banner) {
+              banner.style.display = 'flex';
+            }
+            if (typeof window.applyLang === 'function') {
+              window.applyLang('en');
+            }
           }
         });
 
@@ -101,8 +124,23 @@ const {
           } else {
             event.newDocument.documentElement.classList.remove('dark');
           }
+
+          const toPath = (window.location.pathname || '').replace(/\/$/, '') || '/';
+          const isVN = localStorage.getItem('site-lang') === 'vn';
+          if (toPath !== '/' && isVN) {
+            localStorage.setItem('site-lang', 'en');
+            event.newDocument.documentElement.classList.add('hide-page-content');
+            const banner = document.getElementById('vn-notify-banner');
+            if (banner) banner.style.display = 'flex';
+          }
         });
-        document.addEventListener('astro:after-swap', syncTheme);
+        document.addEventListener('astro:after-swap', () => {
+          syncTheme();
+          const current = (window.location.pathname || '').replace(/\/$/, '') || '/';
+          if (current === '/') {
+            document.documentElement.classList.remove('hide-page-content');
+          }
+        });
       })();
     </script>
   </head>
@@ -124,6 +162,38 @@ const {
     <!-- Lightbox Modal (Elevated root level above header, persistent across transitions) -->
     <div transition:persist="project-lightbox">
       <ProjectModal />
+    </div>
+
+    <!-- VN Notification Modal (Persistent across transitions, elevated root level) -->
+    <div transition:persist="vn-notification">
+      <div
+        id="vn-notify-banner"
+        style="display:none"
+        class="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-md transition-all duration-300 vn-modal-backdrop"
+        role="alertdialog"
+        aria-modal="true"
+        aria-label="Thông báo bản dịch"
+      >
+        <div
+          class="relative w-full max-w-md sm:max-w-lg p-6 sm:p-8 rounded-3xl bg-white/95 dark:bg-[#122419]/95 border-2 border-sumeru-400 dark:border-nahida-mint/50 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.4)] dark:shadow-[0_0_60px_rgba(126,232,176,0.22)] backdrop-blur-2xl text-center flex flex-col items-center gap-5 vn-modal-card"
+        >
+          <!-- Ambient decorative leaf glow -->
+          <div class="w-16 h-16 rounded-2xl bg-sumeru-100 dark:bg-nahida-mint/15 text-sumeru-800 dark:text-nahida-mint border border-sumeru-300/60 dark:border-nahida-mint/30 flex items-center justify-center text-3xl shadow-inner animate-pulse">
+            🌿
+          </div>
+
+          <p class="text-base sm:text-lg font-medium text-sumeru-900 dark:text-white leading-relaxed max-w-sm mx-auto">
+            Bản dịch tiếng Việt đang trong quá trình hoàn thiện
+          </p>
+
+          <button
+            id="vn-notify-ok"
+            class="w-full sm:w-auto px-10 py-3 rounded-2xl text-sm font-bold uppercase tracking-wider bg-sumeru-600 dark:bg-nahida-mint text-white dark:text-sumeru-950 hover:bg-sumeru-700 dark:hover:bg-white hover:scale-105 active:scale-95 transition-all shadow-lg cursor-pointer"
+          >
+            OK
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- Page Content Container (Slides on navigation, leaving header untouched) -->
@@ -171,6 +241,211 @@ const {
       }
 
       document.addEventListener('astro:after-swap', setupScrollReveal);
+    </script>
+
+    <!-- i18n Engine -->
+    <script>
+      // ─── Translation dictionary ────────────────────────────────────────────
+      const I18N: Record<string, Record<string, string>> = {
+        en: {
+          'header-subtitle':   "Dun's official webpage",
+          'nav-home':          'HOME',
+          'nav-activities':    'ACTIVITIES',
+          'nav-workspace':     'WORKSPACE',
+          'nav-nahida':        'NAHIDA',
+          'nav-about':         'ABOUT ME',
+          'nav-contact':       'CONTACT',
+          'hero-badge':        'PHYSIC OF PURITY',
+          'hero-title':        'Lesser Lord Kusanali',
+          'hero-quote':        '"Hello, I\'m the Lesser Lord Kusanali or commonly known as Nahida, is Sumeru\'s current Dendro Archon. This is Dun\'s blog but when he is absent, I will be manager. Let\'s take a look around and you can find something interesting about him :3"',
+          'hero-btn-nahida':   'Visit Nahida Shrine',
+          'hero-btn-about':    'About Dun',
+          'intro-act-badge':   'Game analysis & Daily Life',
+          'intro-act-title':   'Activities',
+          'intro-act-desc':    'The written chronicle. Short analyses on game design, statistical studies on gacha mechanics, esports commentary, and candid reflections from university and daily life.',
+          'intro-act-link':    'Browse All Articles',
+          'intro-ws-badge':    'CREATIVE WORKSPACE',
+          'intro-ws-title':    'Workspace',
+          'intro-ws-desc':     'The creative workshop. Motion graphics reels, TikTok clips and GFX arts.',
+          'intro-ws-link':     'Explore The Workspace',
+          'latest-label':      'Archive',
+          'latest-title':      'Featured posts',
+          'latest-viewall':    'View All Activities ({n})',
+          'ws-label':          'Creative Workspace',
+          'ws-title':          'ALL PROJECTS',
+          'ws-viewall':        'Open Workspace ({n})',
+          'footer-desc':       'A personal blog and creative workspace inspired by Nahida theme. Maintained by Dun (Ha Manh Dung).',
+          'footer-nav-label':  'Navigation',
+          'footer-channels-label': 'Channels',
+          'footer-nav-home':       'Home',
+          'footer-nav-activities': 'Activities (Blog)',
+          'footer-nav-workspace':  'Workspace (Lab)',
+          'footer-nav-nahida':     'Nahida Shrine',
+          'footer-nav-about':      'About Dun',
+          'footer-nav-contact':    'Contact',
+          'footer-backtotop':      'Back to top ↑',
+        },
+        vn: {
+          'header-subtitle':   'Trang web chính thức của Dun',
+          'nav-home':          'TRANG CHỦ',
+          'nav-activities':    'HOẠT ĐỘNG',
+          'nav-workspace':     'KHÔNG GIAN SÁNG TẠO',
+          'nav-nahida':        'NAHIDA',
+          'nav-about':         'VỀ DUN',
+          'nav-contact':       'LIÊN HỆ',
+          'hero-badge':        'KẾT TINH BẠCH THẢO',
+          'hero-title':        'TIỂU VƯƠNG KUSANALI',
+          'hero-quote':        '"Xin chào, tôi là Thảo Thần Kusanali hay còn được biết đến với tên gọi là Nahida, Thảo thần hiện tại của Sumeru. Đây là blog của Dun nhưng khi cậu ấy vắng mặt, tôi sẽ tạm thời trở thành người quản lí nơi này. Nào, hãy cùng nhìn quanh một chút nhé ! Biết đâu bạn sẽ tìm thấy điều gì đó thú vị về cậu ấy đấy :3"',
+          'hero-btn-nahida':   'Ghé thăm Nahida',
+          'hero-btn-about':    'Về Dun',
+          'intro-act-badge':   'PHÂN TÍCH GAME & CUỘC SỐNG CỦA DUN',
+          'intro-act-title':   'Hoạt động',
+          'intro-act-desc':    'Những ghi chép và những câu chuyện ngắn của Dun. Phân tích ngắn về thiết kế game, các nghiên cứu thống kê về cơ chế gacha, tản mạn về esports cùng những suy nghĩ về cuộc sống đại học và thường nhật.',
+          'intro-act-link':    'XEM TẤT CẢ BÀI VIẾT',
+          'intro-ws-badge':    'KHÔNG GIAN SÁNG TẠO',
+          'intro-ws-title':    'Workspace',
+          'intro-ws-desc':     'Góc sáng tạo nhỏ của Dun. Những video motion graphics, các clip ngắn trên TikTok và GFX Dun tự thiết kế.',
+          'intro-ws-link':     'KHÁM PHÁ KHÔNG GIAN SÁNG TẠO',
+          'latest-label':      'Kho lưu trữ',
+          'latest-title':      'CÁC BÀI ĐĂNG NỔI BẬT',
+          'latest-viewall':    'Xem tất cả bài viết ({n})',
+          'ws-label':          'Không gian sáng tạo',
+          'ws-title':          'TẤT CẢ DỰ ÁN',
+          'ws-viewall':        'Xem không gian sáng tạo ({n})',
+          'footer-desc':       'Blog cá nhân và không gian sáng tạo lấy cảm hứng từ chủ đề nhân vật Nahida. Được quản lý bởi Dun (Hà Mạnh Dũng)',
+          'footer-nav-label':  'ĐIỀU HƯỚNG',
+          'footer-channels-label': 'CÁC KÊNH THÔNG TIN',
+          'footer-nav-home':       'Trang chủ',
+          'footer-nav-activities': 'Hoạt động',
+          'footer-nav-workspace':  'Không gian sáng tạo',
+          'footer-nav-nahida':     'Nahida',
+          'footer-nav-about':      'Về bản thân Dun',
+          'footer-nav-contact':    'Liên hệ',
+          'footer-backtotop':      'Quay lại phía trên cùng ↑',
+        }
+      };
+
+      // ─── Apply translations to all [data-i18n] elements ──────────────────
+      function applyLang(lang: string) {
+        const dict = I18N[lang] || I18N.en;
+        document.querySelectorAll<HTMLElement>('[data-i18n]').forEach(el => {
+          const key = el.getAttribute('data-i18n')!;
+          let text = dict[key];
+          if (!text) return;
+          // Handle {n} placeholder for count-bearing strings
+          const count = el.getAttribute('data-count');
+          if (count !== null) text = text.replace('{n}', count);
+          el.textContent = text;
+        });
+        // Sync toggle label
+        const lbl = document.getElementById('lang-toggle-label');
+        if (lbl) lbl.textContent = lang === 'vn' ? 'VN' : 'ENG';
+      }
+
+      // ─── Language & Notification State Machine ────────────────────────────
+      function isTranslatedPage() {
+        const path = window.location.pathname.replace(/\/$/, '') || '/';
+        return path === '/';
+      }
+
+      function showVnModal() {
+        const banner = document.getElementById('vn-notify-banner');
+        if (banner) {
+          banner.style.display = 'flex';
+        }
+      }
+
+      function closeVnModal() {
+        document.documentElement.classList.remove('pending-vn-modal');
+        document.documentElement.classList.remove('hide-page-content');
+        const banner = document.getElementById('vn-notify-banner');
+        if (banner) {
+          banner.style.display = 'none';
+        }
+      }
+
+      function handleLangToggle() {
+        const currentLang = localStorage.getItem('site-lang') || 'en';
+        const isHome = isTranslatedPage();
+
+        if (currentLang === 'en') {
+          // User is trying to switch to VN
+          if (isHome) {
+            // Home has full VN translation -> switch smoothly
+            localStorage.setItem('site-lang', 'vn');
+            applyLang('vn');
+          } else {
+            // Untranslated page: hide content, show modal, keep in English
+            document.documentElement.classList.add('hide-page-content');
+            localStorage.setItem('site-lang', 'en');
+            applyLang('en');
+            showVnModal();
+          }
+        } else {
+          // Currently in VN (on Home), switch back to English
+          localStorage.setItem('site-lang', 'en');
+          applyLang('en');
+        }
+      }
+
+      function setupVnModalEvents() {
+        if ((window as any).__vnModalEventsBound) return;
+        (window as any).__vnModalEventsBound = true;
+
+        document.addEventListener('click', (e) => {
+          const target = e.target as HTMLElement | null;
+          if (!target) return;
+          if (target.closest('#vn-notify-ok') || target.id === 'vn-notify-banner') {
+            e.preventDefault();
+            closeVnModal();
+          }
+        });
+
+        window.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') closeVnModal();
+        });
+      }
+
+      // ─── Boot on every page load & navigation ─────────────────────────────
+      function bootI18n() {
+        setupVnModalEvents();
+
+        const currentLang = localStorage.getItem('site-lang') || 'en';
+        const isHome = isTranslatedPage();
+
+        if (isHome) {
+          document.documentElement.classList.remove('hide-page-content');
+          applyLang(currentLang);
+        } else if (currentLang === 'vn') {
+          // User navigated from VN page (Home) to an untranslated page:
+          // Keep content hidden until user clicks OK on the notification!
+          document.documentElement.classList.add('hide-page-content');
+          localStorage.setItem('site-lang', 'en');
+          applyLang('en');
+          showVnModal();
+        } else {
+          // Normal load in ENG
+          const banner = document.getElementById('vn-notify-banner');
+          const isModalOpen = banner && banner.style.display === 'flex';
+          if (!isModalOpen) {
+            document.documentElement.classList.remove('hide-page-content');
+          }
+          applyLang(currentLang);
+        }
+      }
+
+      // Expose globally so LanguageToggle and any link can call them
+      (window as any).applyLang = applyLang;
+      (window as any).handleLangToggle = handleLangToggle;
+      (window as any).showVnModal = showVnModal;
+      (window as any).closeVnModal = closeVnModal;
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bootI18n);
+      } else {
+        bootI18n();
+      }
+      document.addEventListener('astro:page-load', bootI18n);
     </script>
   </body>
 </html>
