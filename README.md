@@ -1,6 +1,6 @@
 # The Kusanali - Dun Official Webpage
 
-> Personal Blog, Archive, and Creative Workspace inspired by **Nahida**theme. Built with **Astro 5**, **TypeScript**, **Tailwind CSS**, and modern client-side motion design for **GitHub Pages**.
+> Personal Blog, Archive, and Creative Workspace inspired by **Nahida** theme. Built with **Astro 5**, **TypeScript**, **Tailwind CSS**, and modern client-side motion design for **GitHub Pages**.
 
 ---
 
