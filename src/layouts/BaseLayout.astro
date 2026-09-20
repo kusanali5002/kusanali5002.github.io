@@ -70,7 +70,13 @@ const {
           return clean === '/' || clean === '/activities' || clean === '/nahida';
         }
 
-        // Immediate check on initial cold load
+        // Immediate check on initial cold load:
+        // Ensure that on first visit / new session, language always defaults to English (ENG)
+        if (!sessionStorage.getItem('site-session')) {
+          sessionStorage.setItem('site-session', '1');
+          localStorage.setItem('site-lang', 'en');
+        }
+
         const initialPath = (window.location.pathname || '').replace(/\/$/, '') || '/';
         if (!isPageTranslated(initialPath) && localStorage.getItem('site-lang') === 'vn') {
           document.documentElement.classList.add('pending-vn-modal');
@@ -458,6 +464,11 @@ const {
       // ─── Boot on every page load & navigation ─────────────────────────────
       function bootI18n() {
         setupVnModalEvents();
+
+        if (!sessionStorage.getItem('site-session')) {
+          sessionStorage.setItem('site-session', '1');
+          localStorage.setItem('site-lang', 'en');
+        }
 
         const currentLang = localStorage.getItem('site-lang') || 'en';
         const isHome = isTranslatedPage();

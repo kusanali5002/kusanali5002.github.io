@@ -394,20 +394,25 @@ function getLangKey(language: string) {
           </p>
         </div>
 
-        <div class="grid grid-cols-[1fr_1.35fr_1fr] sm:grid-cols-3 gap-2 sm:gap-3 pt-4 border-t border-sumeru-200/40 dark:border-white/[0.08]">
-          <div class="px-2 py-3 sm:p-3.5 rounded-2xl glass-panel text-center flex flex-col justify-center">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-2.5 sm:gap-3 pt-4 border-t border-sumeru-200/40 dark:border-white/[0.08]">
+          <!-- Element Card -->
+          <div class="p-3 sm:p-3.5 rounded-2xl glass-panel text-center flex flex-col justify-center">
             <div class="text-[10px] sm:text-[11px] font-mono text-sumeru-600 dark:text-nahida-mint mb-0.5 whitespace-nowrap" data-i18n="nahida-attr-element-label">ELEMENT</div>
-            <div class="font-display font-bold text-xs min-[380px]:text-sm sm:text-base text-sumeru-950 dark:text-white whitespace-nowrap" data-i18n="nahida-attr-element-val">Dendro</div>
+            <div class="font-display font-bold text-sm sm:text-base text-sumeru-950 dark:text-white whitespace-nowrap" data-i18n="nahida-attr-element-val">Dendro</div>
           </div>
-          <div class="px-1.5 py-3 sm:p-3.5 rounded-2xl glass-panel text-center flex flex-col justify-center">
-            <div class="text-[10px] sm:text-[11px] font-mono text-sumeru-600 dark:text-nahida-mint mb-0.5 whitespace-nowrap" data-i18n="nahida-attr-role-label">ROLE</div>
-            <div class="font-display font-bold text-[10.5px] min-[380px]:text-xs sm:text-sm md:text-base leading-tight text-sumeru-950 dark:text-white" data-i18n="nahida-attr-role-val">
-              <span class="whitespace-nowrap">Support /</span> <br class="sm:hidden" /><span class="whitespace-nowrap">Sub DPS</span>
-            </div>
-          </div>
-          <div class="px-2 py-3 sm:p-3.5 rounded-2xl glass-panel text-center flex flex-col justify-center">
+
+          <!-- Weapon Card: placed beside Element on mobile; on desktop placed in col 3 via md:order-last -->
+          <div class="p-3 sm:p-3.5 rounded-2xl glass-panel text-center flex flex-col justify-center md:order-last">
             <div class="text-[10px] sm:text-[11px] font-mono text-sumeru-600 dark:text-nahida-mint mb-0.5 whitespace-nowrap" data-i18n="nahida-attr-weapon-label">WEAPON</div>
-            <div class="font-display font-bold text-xs min-[380px]:text-sm sm:text-base text-sumeru-950 dark:text-white whitespace-nowrap" data-i18n="nahida-attr-weapon-val">Catalyst</div>
+            <div class="font-display font-bold text-sm sm:text-base text-sumeru-950 dark:text-white whitespace-nowrap" data-i18n="nahida-attr-weapon-val">Catalyst</div>
+          </div>
+
+          <!-- Role Card: spans full width (col-span-2) on mobile; on desktop placed in col 2 via md:col-span-1 md:order-none -->
+          <div class="col-span-2 md:col-span-1 md:order-none p-3 sm:p-3.5 rounded-2xl glass-panel text-center flex flex-col justify-center">
+            <div class="text-[10px] sm:text-[11px] font-mono text-sumeru-600 dark:text-nahida-mint mb-0.5 whitespace-nowrap" data-i18n="nahida-attr-role-label">ROLE</div>
+            <div class="font-display font-bold text-xs sm:text-sm md:text-xs lg:text-sm xl:text-base leading-tight text-sumeru-950 dark:text-white" data-i18n="nahida-attr-role-val">
+              <span class="whitespace-nowrap">Support /</span> <span class="whitespace-nowrap">Sub DPS</span>
+            </div>
           </div>
         </div>
       </div>
