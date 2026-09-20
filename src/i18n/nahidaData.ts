@@ -11,7 +11,7 @@ export const nahidaI18nEn: Record<string, string> = {
   'nahida-attr-element-label': 'ELEMENT',
   'nahida-attr-element-val': 'Dendro',
   'nahida-attr-role-label': 'ROLE',
-  'nahida-attr-role-val': '<span class="whitespace-nowrap">Support /</span> <span class="whitespace-nowrap">Sub DPS</span>',
+  'nahida-attr-role-val': '<span class="whitespace-nowrap">Support /</span> <br class="sm:hidden" /><span class="whitespace-nowrap">Sub DPS</span>',
   'nahida-attr-weapon-label': 'WEAPON',
   'nahida-attr-weapon-val': 'Catalyst',
 
@@ -204,7 +204,7 @@ export const nahidaI18nVn: Record<string, string> = {
   'nahida-attr-element-label': 'NGUYÊN TỐ',
   'nahida-attr-element-val': 'Thảo',
   'nahida-attr-role-label': 'VAI TRÒ',
-  'nahida-attr-role-val': '<span class="whitespace-nowrap">Hỗ trợ /</span> <span class="whitespace-nowrap">Sát thương phụ</span>',
+  'nahida-attr-role-val': '<span class="whitespace-nowrap">Hỗ trợ /</span> <br class="sm:hidden" /><span class="whitespace-nowrap">Sát thương phụ</span>',
   'nahida-attr-weapon-label': 'VŨ KHÍ',
   'nahida-attr-weapon-val': 'Pháp khí',
 
