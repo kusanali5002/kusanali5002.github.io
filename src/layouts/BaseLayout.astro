@@ -65,9 +65,14 @@ const {
           return -1;
         }
 
+        function isPageTranslated(urlPath) {
+          const clean = (urlPath || '').replace(/\/$/, '') || '/';
+          return clean === '/' || clean === '/activities' || clean === '/nahida';
+        }
+
         // Immediate check on initial cold load
         const initialPath = (window.location.pathname || '').replace(/\/$/, '') || '/';
-        if (initialPath !== '/' && localStorage.getItem('site-lang') === 'vn') {
+        if (!isPageTranslated(initialPath) && localStorage.getItem('site-lang') === 'vn') {
           document.documentElement.classList.add('pending-vn-modal');
           document.documentElement.classList.add('hide-page-content');
           localStorage.setItem('site-lang', 'en');
@@ -92,7 +97,7 @@ const {
           // Pre-transition check: show notification before new page content loads
           const toPath = (event.to.pathname || '').replace(/\/$/, '') || '/';
           const isVN = localStorage.getItem('site-lang') === 'vn';
-          if (toPath !== '/' && isVN) {
+          if (!isPageTranslated(toPath) && isVN) {
             localStorage.setItem('site-lang', 'en');
             document.documentElement.classList.add('hide-page-content');
             const banner = document.getElementById('vn-notify-banner');
@@ -127,7 +132,7 @@ const {
 
           const toPath = (window.location.pathname || '').replace(/\/$/, '') || '/';
           const isVN = localStorage.getItem('site-lang') === 'vn';
-          if (toPath !== '/' && isVN) {
+          if (!isPageTranslated(toPath) && isVN) {
             localStorage.setItem('site-lang', 'en');
             event.newDocument.documentElement.classList.add('hide-page-content');
             const banner = document.getElementById('vn-notify-banner');
@@ -137,7 +142,7 @@ const {
         document.addEventListener('astro:after-swap', () => {
           syncTheme();
           const current = (window.location.pathname || '').replace(/\/$/, '') || '/';
-          if (current === '/') {
+          if (isPageTranslated(current)) {
             document.documentElement.classList.remove('hide-page-content');
           }
         });
@@ -250,9 +255,12 @@ const {
 
     <!-- i18n Engine -->
     <script>
+      import { nahidaI18nEn, nahidaI18nVn } from '../i18n/nahidaData';
+
       // ─── Translation dictionary ────────────────────────────────────────────
       const I18N: Record<string, Record<string, string>> = {
         en: {
+          ...nahidaI18nEn,
           'header-subtitle':   "Dun's official webpage",
           'nav-home':          'HOME',
           'nav-activities':    'ACTIVITIES',
@@ -289,9 +297,23 @@ const {
           'footer-nav-about':      'About Dun',
           'footer-nav-contact':    'Contact',
           'footer-backtotop':      'Back to top ↑',
+          'act-page-title':         'Activities Archive',
+          'act-page-desc':          'Analyses of game mechanics, personal stories and stuffs. Filter by category or search instantly.',
+          'act-filter-all':         'All ({n})',
+          'act-cat-life':           'Life',
+          'act-cat-knowledge':      'Knowledge',
+          'act-cat-gaming':         'Gaming',
+          'act-cat-creative':       'Creative',
+          'act-count-display':      '{n} articles',
+          'act-sort-label':         'Sorted by: Most Recent',
+          'act-search-placeholder': 'Search articles by title, tag, or topic...',
+          'act-empty-title':        'No activities found',
+          'act-empty-desc':         'Try adjusting your search query or selecting a different category from the filters above.',
+          'card-reading-time':      '{n} min read',
         },
         vn: {
-          'header-subtitle':   'Trang web chính thức của Dun',
+          ...nahidaI18nVn,
+          'header-subtitle':   '<span class="whitespace-nowrap">Trang web chính thức</span><span class="sm:hidden"><br /></span><span class="hidden sm:inline">&nbsp;</span><span class="whitespace-nowrap">của&nbsp;Dun</span>',
           'nav-home':          'TRANG CHỦ',
           'nav-activities':    'HOẠT ĐỘNG',
           'nav-workspace':     'KHÔNG GIAN SÁNG TẠO',
@@ -327,6 +349,19 @@ const {
           'footer-nav-about':      'Về bản thân Dun',
           'footer-nav-contact':    'Liên hệ',
           'footer-backtotop':      'Quay lại phía trên cùng ↑',
+          'act-page-title':         'Các Hoạt Động',
+          'act-page-desc':          'Những phân tích về cơ chế game, những câu chuyện đời thường của Dun và mấy thứ linh tinh khác. Bạn có thể lọc theo thể loại hoặc tìm ngay bằng tên bài đăng.',
+          'act-filter-all':         'TẤT CẢ  ({n})',
+          'act-cat-life':           'CUỘC SỐNG',
+          'act-cat-knowledge':      'KIẾN THỨC',
+          'act-cat-gaming':         'GAME',
+          'act-cat-creative':       'SÁNG TẠO',
+          'act-count-display':      '{n} bài đăng',
+          'act-sort-label':         'Xếp theo : Gần đây nhất',
+          'act-search-placeholder': 'Tìm kiếm bài viết theo tiêu đề, thẻ, hoặc chủ đề...',
+          'act-empty-title':        'Không tìm thấy hoạt động nào',
+          'act-empty-desc':         'Hãy thử thay đổi từ khóa tìm kiếm hoặc chọn một thể loại khác ở trên.',
+          'card-reading-time':      '{n} phút đọc',
         }
       };
 
@@ -340,7 +375,16 @@ const {
           // Handle {n} placeholder for count-bearing strings
           const count = el.getAttribute('data-count');
           if (count !== null) text = text.replace('{n}', count);
-          el.textContent = text;
+          if (text.includes('<') || text.includes('&')) {
+            el.innerHTML = text;
+          } else {
+            el.textContent = text;
+          }
+        });
+        document.querySelectorAll<HTMLInputElement>('[data-i18n-placeholder]').forEach(el => {
+          const key = el.getAttribute('data-i18n-placeholder')!;
+          const text = dict[key];
+          if (text) el.placeholder = text;
         });
         // Sync toggle label
         const lbl = document.getElementById('lang-toggle-label');
@@ -348,9 +392,9 @@ const {
       }
 
       // ─── Language & Notification State Machine ────────────────────────────
-      function isTranslatedPage() {
-        const path = window.location.pathname.replace(/\/$/, '') || '/';
-        return path === '/';
+      function isTranslatedPage(urlPath?: string) {
+        const path = (urlPath || window.location.pathname).replace(/\/$/, '') || '/';
+        return path === '/' || path === '/activities' || path === '/nahida';
       }
 
       function showVnModal() {

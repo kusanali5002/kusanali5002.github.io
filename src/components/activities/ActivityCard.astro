@@ -25,6 +25,8 @@ const {
 
 const fallbackCover = '/images/Nahida_Icon.webp';
 const coverImage = cover || fallbackCover;
+const minutesMatch = readingTime.match(/\d+/);
+const readingMinutes = minutesMatch ? minutesMatch[0] : '3';
 ---
 
 <article
@@ -49,12 +51,19 @@ const coverImage = cover || fallbackCover;
       <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity"></div>
 
       <!-- Category Pill -->
-      <span class="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase bg-white/90 dark:bg-black/70 text-sumeru-900 dark:text-nahida-mint backdrop-blur-md shadow-sm">
+      <span
+        class="category-pill absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase bg-white/90 dark:bg-black/70 text-sumeru-900 dark:text-nahida-mint backdrop-blur-md shadow-sm"
+        data-i18n={`act-cat-${category.toLowerCase()}`}
+      >
         {category}
       </span>
 
       <!-- Reading time badge -->
-      <span class="absolute bottom-3 right-4 text-xs font-medium text-white/90 drop-shadow-sm font-mono">
+      <span
+        class="absolute bottom-3 right-4 text-xs font-medium text-white/90 drop-shadow-sm font-mono"
+        data-i18n="card-reading-time"
+        data-count={readingMinutes}
+      >
         {readingTime}
       </span>
     </div>

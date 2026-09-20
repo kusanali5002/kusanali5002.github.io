@@ -333,6 +333,14 @@ const voiceActors = [
   { region: 'Japanese', actor: 'Yukari Tamura' },
   { region: 'Korean', actor: 'Park Shi-yoon' }
 ];
+
+function getMatKey(name: string) {
+  return 'mat-' + name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
+}
+
+function getLangKey(language: string) {
+  return 'lang-' + language.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
+}
 ---
 
 <BaseLayout
@@ -345,12 +353,12 @@ const voiceActors = [
     <!-- Hero Header -->
     <div class="text-center max-w-3xl mx-auto mb-16">
       <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono uppercase tracking-widest bg-emerald-500/10 dark:bg-nahida-mint/10 text-emerald-800 dark:text-nahida-mint border border-emerald-500/20 dark:border-nahida-mint/30 mb-3">
-        <span>ARCHON OF DENDRO • LESSER LORD KUSANALI</span>
+        <span data-i18n="nahida-hero-badge">ARCHON OF DENDRO • LESSER LORD KUSANALI</span>
       </div>
-      <h1 class="font-display font-bold text-3xl sm:text-5xl md:text-6xl text-sumeru-950 dark:text-white tracking-tight mb-3">
+      <h1 class="font-display font-bold text-3xl sm:text-5xl md:text-6xl text-sumeru-950 dark:text-white tracking-tight mb-3 [text-wrap:balance]" data-i18n="nahida-hero-title">
         Nahida
       </h1>
-      <p class="text-xs font-mono text-sumeru-600 dark:text-nahida-mint/80">
+      <p class="text-xs font-mono text-sumeru-600 dark:text-nahida-mint/80 [text-wrap:balance]" data-i18n="nahida-hero-post-meta">
         #specialcharacter #genshinimpact | Post day : June 26th 2025
       </p>
     </div>
@@ -366,7 +374,7 @@ const voiceActors = [
           />
           <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
           <div class="absolute bottom-4 left-4 right-4 text-center">
-            <span class="text-xs font-mono text-white/90 drop-shadow-md">
+            <span class="text-xs font-mono text-white/90 drop-shadow-md whitespace-nowrap" data-i18n="nahida-surasthana">
               Sanctuary of Surasthana
             </span>
           </div>
@@ -375,29 +383,29 @@ const voiceActors = [
 
       <div class="md:col-span-7 space-y-6">
         <div class="space-y-4">
-          <h2 class="font-display font-bold text-2xl sm:text-3xl text-sumeru-950 dark:text-white">
+          <h2 class="font-display font-bold text-2xl sm:text-3xl text-sumeru-950 dark:text-white [text-wrap:balance]" data-i18n="nahida-hero-title">
             Nahida
           </h2>
-          <p class="text-base text-sumeru-800/90 dark:text-nahida-light/90 leading-relaxed">
+          <p class="text-base text-sumeru-800/90 dark:text-nahida-light/90 leading-relaxed [text-wrap:pretty]" data-i18n="nahida-story-1">
             Nahida is a playable Dendro character in Genshin Impact (and is my lover ehe).
           </p>
-          <p class="text-base text-sumeru-800/90 dark:text-nahida-light/90 leading-relaxed">
+          <p class="text-base text-sumeru-800/90 dark:text-nahida-light/90 leading-relaxed [text-wrap:pretty]" data-i18n="nahida-story-2">
             As Lesser Lord Kusanali, she strives to have a stronger presence in Sumeru now that she has been freed from her extensive confinement in the Sanctuary of Surasthana.
           </p>
         </div>
 
         <div class="grid grid-cols-3 gap-3 pt-4 border-t border-sumeru-200/40 dark:border-white/[0.08]">
           <div class="p-3.5 rounded-2xl glass-panel text-center">
-            <div class="text-[11px] font-mono text-sumeru-600 dark:text-nahida-mint mb-0.5">ELEMENT</div>
-            <div class="font-display font-bold text-sm sm:text-base text-sumeru-950 dark:text-white">Dendro</div>
+            <div class="text-[11px] font-mono text-sumeru-600 dark:text-nahida-mint mb-0.5 whitespace-nowrap" data-i18n="nahida-attr-element-label">ELEMENT</div>
+            <div class="font-display font-bold text-sm sm:text-base text-sumeru-950 dark:text-white whitespace-nowrap" data-i18n="nahida-attr-element-val">Dendro</div>
           </div>
           <div class="p-3.5 rounded-2xl glass-panel text-center">
-            <div class="text-[11px] font-mono text-sumeru-600 dark:text-nahida-mint mb-0.5">ROLE</div>
-            <div class="font-display font-bold text-xs sm:text-sm md:text-base leading-tight text-sumeru-950 dark:text-white">Support / Sub DPS</div>
+            <div class="text-[11px] font-mono text-sumeru-600 dark:text-nahida-mint mb-0.5 whitespace-nowrap" data-i18n="nahida-attr-role-label">ROLE</div>
+            <div class="font-display font-bold text-xs sm:text-sm md:text-base leading-tight text-sumeru-950 dark:text-white" data-i18n="nahida-attr-role-val">Support / Sub DPS</div>
           </div>
           <div class="p-3.5 rounded-2xl glass-panel text-center">
-            <div class="text-[11px] font-mono text-sumeru-600 dark:text-nahida-mint mb-0.5">WEAPON</div>
-            <div class="font-display font-bold text-sm sm:text-base text-sumeru-950 dark:text-white">Catalyst</div>
+            <div class="text-[11px] font-mono text-sumeru-600 dark:text-nahida-mint mb-0.5 whitespace-nowrap" data-i18n="nahida-attr-weapon-label">WEAPON</div>
+            <div class="font-display font-bold text-sm sm:text-base text-sumeru-950 dark:text-white whitespace-nowrap" data-i18n="nahida-attr-weapon-val">Catalyst</div>
           </div>
         </div>
       </div>
@@ -405,22 +413,22 @@ const voiceActors = [
 
     <!-- Quick Section Navigation Chips -->
     <div class="flex flex-wrap items-center justify-center gap-2 mb-16">
-      <a href="#section-talents" class="px-4 py-2 rounded-full text-xs font-mono bg-sumeru-100 dark:bg-white/5 border border-sumeru-200/60 dark:border-white/10 hover:border-sumeru-400 dark:hover:border-nahida-mint text-sumeru-800 dark:text-nahida-light transition-all">
+      <a href="#section-talents" class="whitespace-nowrap px-4 py-2 rounded-full text-xs font-mono bg-sumeru-100 dark:bg-white/5 border border-sumeru-200/60 dark:border-white/10 hover:border-sumeru-400 dark:hover:border-nahida-mint text-sumeru-800 dark:text-nahida-light transition-all" data-i18n="nahida-nav-talents">
         Talents
       </a>
-      <a href="#section-constellations" class="px-4 py-2 rounded-full text-xs font-mono bg-sumeru-100 dark:bg-white/5 border border-sumeru-200/60 dark:border-white/10 hover:border-amber-400 dark:hover:border-nahida-gold text-sumeru-800 dark:text-nahida-light transition-all">
+      <a href="#section-constellations" class="whitespace-nowrap px-4 py-2 rounded-full text-xs font-mono bg-sumeru-100 dark:bg-white/5 border border-sumeru-200/60 dark:border-white/10 hover:border-amber-400 dark:hover:border-nahida-gold text-sumeru-800 dark:text-nahida-light transition-all" data-i18n="nahida-nav-constellations">
         Constellations
       </a>
-      <a href="#section-ascensions" class="px-4 py-2 rounded-full text-xs font-mono bg-sumeru-100 dark:bg-white/5 border border-sumeru-200/60 dark:border-white/10 hover:border-sumeru-400 dark:hover:border-nahida-mint text-sumeru-800 dark:text-nahida-light transition-all">
+      <a href="#section-ascensions" class="whitespace-nowrap px-4 py-2 rounded-full text-xs font-mono bg-sumeru-100 dark:bg-white/5 border border-sumeru-200/60 dark:border-white/10 hover:border-sumeru-400 dark:hover:border-nahida-mint text-sumeru-800 dark:text-nahida-light transition-all" data-i18n="nahida-nav-ascensions">
         Ascensions & Stats Table
       </a>
-      <a href="#section-talent-costs" class="px-4 py-2 rounded-full text-xs font-mono bg-sumeru-100 dark:bg-white/5 border border-sumeru-200/60 dark:border-white/10 hover:border-sumeru-400 dark:hover:border-nahida-mint text-sumeru-800 dark:text-nahida-light transition-all">
+      <a href="#section-talent-costs" class="whitespace-nowrap px-4 py-2 rounded-full text-xs font-mono bg-sumeru-100 dark:bg-white/5 border border-sumeru-200/60 dark:border-white/10 hover:border-sumeru-400 dark:hover:border-nahida-mint text-sumeru-800 dark:text-nahida-light transition-all" data-i18n="nahida-nav-talent-costs">
         Talent Upgrade Table
       </a>
-      <a href="#section-availability" class="px-4 py-2 rounded-full text-xs font-mono bg-sumeru-100 dark:bg-white/5 border border-sumeru-200/60 dark:border-white/10 hover:border-sumeru-400 dark:hover:border-nahida-mint text-sumeru-800 dark:text-nahida-light transition-all">
+      <a href="#section-availability" class="whitespace-nowrap px-4 py-2 rounded-full text-xs font-mono bg-sumeru-100 dark:bg-white/5 border border-sumeru-200/60 dark:border-white/10 hover:border-sumeru-400 dark:hover:border-nahida-mint text-sumeru-800 dark:text-nahida-light transition-all" data-i18n="nahida-nav-availability">
         Event Wishes
       </a>
-      <a href="#section-languages" class="px-4 py-2 rounded-full text-xs font-mono bg-sumeru-100 dark:bg-white/5 border border-sumeru-200/60 dark:border-white/10 hover:border-sumeru-400 dark:hover:border-nahida-mint text-sumeru-800 dark:text-nahida-light transition-all">
+      <a href="#section-languages" class="whitespace-nowrap px-4 py-2 rounded-full text-xs font-mono bg-sumeru-100 dark:bg-white/5 border border-sumeru-200/60 dark:border-white/10 hover:border-sumeru-400 dark:hover:border-nahida-mint text-sumeru-800 dark:text-nahida-light transition-all" data-i18n="nahida-nav-languages">
         Languages
       </a>
     </div>
@@ -428,29 +436,29 @@ const voiceActors = [
     <!-- 1. Talents Section -->
     <div id="section-talents" class="mb-20 scroll-mt-24">
       <div class="text-center max-w-2xl mx-auto mb-10">
-        <span class="text-xs font-mono uppercase tracking-widest text-sumeru-600 dark:text-nahida-mint mb-2 block">
+        <span class="text-xs font-mono uppercase tracking-widest text-sumeru-600 dark:text-nahida-mint mb-2 block whitespace-nowrap" data-i18n="nahida-talents-sub">
           Gameplay Information
         </span>
-        <h2 class="font-display font-bold text-2xl sm:text-3xl text-sumeru-950 dark:text-white">
+        <h2 class="font-display font-bold text-2xl sm:text-3xl text-sumeru-950 dark:text-white [text-wrap:balance]" data-i18n="nahida-talents-title">
           Talents
         </h2>
       </div>
 
       <!-- Talents Cards Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-        {talents.map((t) => (
+        {talents.map((t, idx) => (
           <div class="reveal-on-scroll p-6 rounded-3xl glass-panel border border-sumeru-200/60 dark:border-white/[0.08] flex flex-col justify-between group hover:border-sumeru-400 dark:hover:border-nahida-mint/40 transition-all shadow-sm">
             <div>
               <div class="w-14 h-14 rounded-2xl bg-sumeru-100 dark:bg-sumeru-900/60 p-2.5 border border-sumeru-200/50 dark:border-nahida-mint/30 mb-4 flex items-center justify-center group-hover:scale-105 transition-transform">
                 <img src={t.icon} alt={t.name} class="w-full h-full object-contain" />
               </div>
-              <span class="text-[11px] font-mono text-sumeru-600 dark:text-nahida-mint uppercase tracking-wider block mb-1">
+              <span class="text-[11px] font-mono text-sumeru-600 dark:text-nahida-mint uppercase tracking-wider block mb-1 whitespace-nowrap" data-i18n={`nahida-talent-type-${idx + 1}`}>
                 {t.type}
               </span>
-              <h3 class="font-display font-bold text-base text-sumeru-950 dark:text-white mb-2">
+              <h3 class="font-display font-bold text-base text-sumeru-950 dark:text-white mb-2 [text-wrap:balance]" data-i18n={`nahida-talent-name-${idx + 1}`}>
                 {t.name}
               </h3>
-              <p class="text-xs text-sumeru-800/80 dark:text-nahida-light/75 leading-relaxed whitespace-pre-line">
+              <p class="text-xs text-sumeru-800/80 dark:text-nahida-light/75 leading-relaxed whitespace-pre-line [text-wrap:pretty]" data-i18n={`nahida-talent-desc-${idx + 1}`}>
                 {t.desc}
               </p>
             </div>
@@ -464,31 +472,31 @@ const voiceActors = [
     <!-- 2. Constellations Section -->
     <div id="section-constellations" class="mb-20 scroll-mt-24">
       <div class="text-center max-w-2xl mx-auto mb-10">
-        <span class="text-xs font-mono uppercase tracking-widest text-amber-700 dark:text-nahida-gold mb-2 block">
+        <span class="text-xs font-mono uppercase tracking-widest text-amber-700 dark:text-nahida-gold mb-2 block whitespace-nowrap" data-i18n="nahida-const-sub">
           Sapientia Oromasdis
         </span>
-        <h2 class="font-display font-bold text-2xl sm:text-3xl text-sumeru-950 dark:text-white">
+        <h2 class="font-display font-bold text-2xl sm:text-3xl text-sumeru-950 dark:text-white [text-wrap:balance]" data-i18n="nahida-const-title">
           Constellations
         </h2>
       </div>
 
       <!-- Constellation Cards Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-        {constellations.map((c) => (
+        {constellations.map((c, idx) => (
           <div class="reveal-on-scroll p-6 rounded-3xl glass-panel border border-sumeru-200/60 dark:border-white/[0.08] flex flex-col justify-between group hover:border-amber-400 dark:hover:border-nahida-gold/40 transition-all shadow-sm">
             <div>
               <div class="flex items-center justify-between mb-4">
                 <div class="w-12 h-12 rounded-2xl bg-sumeru-900/80 p-2 border border-nahida-gold/30 shrink-0 flex items-center justify-center">
                   <img src={c.icon} alt={c.name} class="w-full h-full object-contain" />
                 </div>
-                <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-amber-500/10 dark:bg-nahida-gold/10 text-amber-800 dark:text-nahida-gold border border-amber-500/20 dark:border-nahida-gold/30">
+                <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-amber-500/10 dark:bg-nahida-gold/10 text-amber-800 dark:text-nahida-gold border border-amber-500/20 dark:border-nahida-gold/30 whitespace-nowrap">
                   {c.num}
                 </span>
               </div>
-              <h3 class="font-display font-bold text-base text-sumeru-950 dark:text-white mb-2 leading-snug">
+              <h3 class="font-display font-bold text-base text-sumeru-950 dark:text-white mb-2 leading-snug [text-wrap:balance]" data-i18n={`nahida-const-name-c${idx + 1}`}>
                 {c.name}
               </h3>
-              <p class="text-xs text-sumeru-800/85 dark:text-nahida-light/80 leading-relaxed whitespace-pre-line">
+              <p class="text-xs text-sumeru-800/85 dark:text-nahida-light/80 leading-relaxed whitespace-pre-line [text-wrap:pretty]" data-i18n={`nahida-const-desc-c${idx + 1}`}>
                 {c.desc}
               </p>
             </div>
@@ -502,13 +510,13 @@ const voiceActors = [
     <!-- 3. Ascensions and Stats Section: REAL NATIVE TABLE -->
     <div id="section-ascensions" class="mb-20 scroll-mt-24">
       <div class="text-center max-w-2xl mx-auto mb-10">
-        <span class="text-xs font-mono uppercase tracking-widest text-sumeru-600 dark:text-nahida-mint mb-2 block">
+        <span class="text-xs font-mono uppercase tracking-widest text-sumeru-600 dark:text-nahida-mint mb-2 block whitespace-nowrap" data-i18n="nahida-asc-sub">
           Progression & Attributes
         </span>
-        <h2 class="font-display font-bold text-2xl sm:text-3xl text-sumeru-950 dark:text-white">
+        <h2 class="font-display font-bold text-2xl sm:text-3xl text-sumeru-950 dark:text-white [text-wrap:balance]" data-i18n="nahida-asc-title">
           Ascensions and Stats
         </h2>
-        <p class="text-sm text-sumeru-800/80 dark:text-nahida-light/80 mt-2">
+        <p class="text-sm text-sumeru-800/80 dark:text-nahida-light/80 mt-2 [text-wrap:balance]" data-i18n="nahida-asc-desc">
           Details about Nahida's Ascension Phases, corresponding stats, and required materials.
         </p>
       </div>
@@ -516,11 +524,11 @@ const voiceActors = [
       <!-- Real Interactive Stats Table -->
       <div class="reveal-on-scroll p-4 sm:p-8 rounded-3xl glass-panel border border-sumeru-200/60 dark:border-white/[0.08] shadow-lg mb-8">
         <div class="flex items-center justify-between mb-6 pb-4 border-b border-sumeru-200/50 dark:border-white/[0.08]">
-          <h3 class="font-display font-bold text-lg text-sumeru-950 dark:text-white flex items-center gap-2">
+          <h3 class="font-display font-bold text-lg text-sumeru-950 dark:text-white flex items-center gap-2 [text-wrap:balance]">
             <span class="text-sumeru-600 dark:text-nahida-mint">❖</span>
-            <span>Nahida Base Stats & Progression Matrix</span>
+            <span data-i18n="nahida-asc-table-title">Nahida Base Stats & Progression Matrix</span>
           </h3>
-          <span class="text-xs font-mono px-2.5 py-1 rounded-full bg-sumeru-100 dark:bg-sumeru-900/60 text-sumeru-700 dark:text-nahida-mint border border-sumeru-300/40 dark:border-nahida-mint/30 hidden sm:inline-block">
+          <span class="text-xs font-mono px-2.5 py-1 rounded-full bg-sumeru-100 dark:bg-sumeru-900/60 text-sumeru-700 dark:text-nahida-mint border border-sumeru-300/40 dark:border-nahida-mint/30 hidden sm:inline-block whitespace-nowrap" data-i18n="nahida-asc-table-badge">
             5★ Dendro Catalyst
           </span>
         </div>
@@ -530,13 +538,13 @@ const voiceActors = [
           <table class="w-full text-left text-xs border-collapse">
             <thead>
               <tr class="bg-sumeru-100/90 dark:bg-sumeru-950/70 text-sumeru-900 dark:text-nahida-mint font-mono font-semibold border-b border-sumeru-200 dark:border-white/10 uppercase tracking-wider">
-                <th class="py-3 px-3.5 sm:px-4 text-center">Phase</th>
-                <th class="py-3 px-3.5 sm:px-4">Level</th>
-                <th class="py-3 px-3.5 sm:px-4 text-right">Base HP</th>
-                <th class="py-3 px-3.5 sm:px-4 text-right">Base ATK</th>
-                <th class="py-3 px-3.5 sm:px-4 text-right">Base DEF</th>
-                <th class="py-3 px-3.5 sm:px-4 text-right">Elemental Mastery</th>
-                <th class="py-3 px-3.5 sm:px-4">Ascension Cost</th>
+                <th class="py-3 px-3.5 sm:px-4 text-center whitespace-nowrap" data-i18n="nahida-th-phase">Phase</th>
+                <th class="py-3 px-3.5 sm:px-4 whitespace-nowrap" data-i18n="nahida-th-level">Level</th>
+                <th class="py-3 px-3.5 sm:px-4 text-right whitespace-nowrap" data-i18n="nahida-th-hp">Base HP</th>
+                <th class="py-3 px-3.5 sm:px-4 text-right whitespace-nowrap" data-i18n="nahida-th-atk">Base ATK</th>
+                <th class="py-3 px-3.5 sm:px-4 text-right whitespace-nowrap" data-i18n="nahida-th-def">Base DEF</th>
+                <th class="py-3 px-3.5 sm:px-4 text-right whitespace-nowrap" data-i18n="nahida-th-em">Elemental Mastery</th>
+                <th class="py-3 px-3.5 sm:px-4 whitespace-nowrap" data-i18n="nahida-th-cost">Ascension Cost</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-sumeru-200/50 dark:divide-white/[0.05]">
@@ -544,40 +552,40 @@ const voiceActors = [
                 <>
                   <!-- First Level in Phase -->
                   <tr class="hover:bg-emerald-500/5 dark:hover:bg-nahida-mint/5 transition-colors">
-                    <td rowspan="2" class="py-3 px-3.5 sm:px-4 text-center font-mono font-bold text-sumeru-800 dark:text-nahida-mint bg-black/[0.01] dark:bg-white/[0.01] border-r border-sumeru-200/40 dark:border-white/[0.04]">
+                    <td rowspan="2" class="py-3 px-3.5 sm:px-4 text-center font-mono font-bold text-sumeru-800 dark:text-nahida-mint bg-black/[0.01] dark:bg-white/[0.01] border-r border-sumeru-200/40 dark:border-white/[0.04] whitespace-nowrap">
                       {item.phase}
                     </td>
-                    <td class="py-2.5 px-3.5 sm:px-4 font-mono font-medium text-sumeru-900 dark:text-white">
+                    <td class="py-2.5 px-3.5 sm:px-4 font-mono font-medium text-sumeru-900 dark:text-white whitespace-nowrap">
                       {item.levels[0].lvl}
                     </td>
-                    <td class="py-2.5 px-3.5 sm:px-4 font-mono text-right text-sumeru-800 dark:text-nahida-light/90">
+                    <td class="py-2.5 px-3.5 sm:px-4 font-mono text-right text-sumeru-800 dark:text-nahida-light/90 whitespace-nowrap">
                       {item.levels[0].hp}
                     </td>
-                    <td class="py-2.5 px-3.5 sm:px-4 font-mono text-right text-sumeru-800 dark:text-nahida-light/90">
+                    <td class="py-2.5 px-3.5 sm:px-4 font-mono text-right text-sumeru-800 dark:text-nahida-light/90 whitespace-nowrap">
                       {item.levels[0].atk}
                     </td>
-                    <td class="py-2.5 px-3.5 sm:px-4 font-mono text-right text-sumeru-800 dark:text-nahida-light/90">
+                    <td class="py-2.5 px-3.5 sm:px-4 font-mono text-right text-sumeru-800 dark:text-nahida-light/90 whitespace-nowrap">
                       {item.levels[0].def}
                     </td>
-                    <td class="py-2.5 px-3.5 sm:px-4 font-mono text-right text-emerald-700 dark:text-nahida-mint font-semibold">
+                    <td class="py-2.5 px-3.5 sm:px-4 font-mono text-right text-emerald-700 dark:text-nahida-mint font-semibold whitespace-nowrap">
                       {item.levels[0].em}
                     </td>
                     <td rowspan="2" class="py-3 px-3.5 sm:px-4 border-l border-sumeru-200/40 dark:border-white/[0.04] align-middle">
                       {item.cost ? (
                         <div class="flex flex-wrap items-center gap-1.5 py-1">
-                          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/10 dark:bg-amber-400/10 text-amber-900 dark:text-amber-300 font-mono text-[11px] border border-amber-500/20" title="Mora">
+                          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/10 dark:bg-amber-400/10 text-amber-900 dark:text-amber-300 font-mono text-[11px] border border-amber-500/20 whitespace-nowrap" title="Mora">
                             <img src="/images/mora.webp" alt="Mora" class="w-3.5 h-3.5 object-contain" />
                             <span>{item.cost.mora}</span>
                           </span>
                           {item.cost.materials.map((m) => (
-                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-sumeru-100/80 dark:bg-white/5 text-sumeru-900 dark:text-nahida-light font-mono text-[11px] border border-sumeru-200/60 dark:border-white/10" title={m.name}>
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-sumeru-100/80 dark:bg-white/5 text-sumeru-900 dark:text-nahida-light font-mono text-[11px] border border-sumeru-200/60 dark:border-white/10 whitespace-nowrap" title={m.name}>
                               <img src={m.icon} alt={m.name} class="w-3.5 h-3.5 object-contain" />
                               <span>{m.count}</span>
                             </span>
                           ))}
                         </div>
                       ) : (
-                        <span class="text-[11px] font-mono text-sumeru-500 dark:text-nahida-mint/50 italic">
+                        <span class="text-[11px] font-mono text-sumeru-500 dark:text-nahida-mint/50 italic whitespace-nowrap" data-i18n="nahida-max-level">
                           Max Level
                         </span>
                       )}
@@ -585,19 +593,19 @@ const voiceActors = [
                   </tr>
                   <!-- Second Level in Phase -->
                   <tr class="hover:bg-emerald-500/5 dark:hover:bg-nahida-mint/5 transition-colors border-b-2 border-sumeru-200/60 dark:border-white/[0.08]">
-                    <td class="py-2.5 px-3.5 sm:px-4 font-mono font-medium text-sumeru-900 dark:text-white">
+                    <td class="py-2.5 px-3.5 sm:px-4 font-mono font-medium text-sumeru-900 dark:text-white whitespace-nowrap">
                       {item.levels[1].lvl}
                     </td>
-                    <td class="py-2.5 px-3.5 sm:px-4 font-mono text-right text-sumeru-800 dark:text-nahida-light/90">
+                    <td class="py-2.5 px-3.5 sm:px-4 font-mono text-right text-sumeru-800 dark:text-nahida-light/90 whitespace-nowrap">
                       {item.levels[1].hp}
                     </td>
-                    <td class="py-2.5 px-3.5 sm:px-4 font-mono text-right text-sumeru-800 dark:text-nahida-light/90">
+                    <td class="py-2.5 px-3.5 sm:px-4 font-mono text-right text-sumeru-800 dark:text-nahida-light/90 whitespace-nowrap">
                       {item.levels[1].atk}
                     </td>
-                    <td class="py-2.5 px-3.5 sm:px-4 font-mono text-right text-sumeru-800 dark:text-nahida-light/90">
+                    <td class="py-2.5 px-3.5 sm:px-4 font-mono text-right text-sumeru-800 dark:text-nahida-light/90 whitespace-nowrap">
                       {item.levels[1].def}
                     </td>
-                    <td class="py-2.5 px-3.5 sm:px-4 font-mono text-right text-emerald-700 dark:text-nahida-mint font-semibold">
+                    <td class="py-2.5 px-3.5 sm:px-4 font-mono text-right text-emerald-700 dark:text-nahida-mint font-semibold whitespace-nowrap">
                       {item.levels[1].em}
                     </td>
                   </tr>
@@ -612,10 +620,10 @@ const voiceActors = [
           {ascensionData.map((item) => (
             <div class="p-3.5 rounded-2xl bg-white/70 dark:bg-black/30 border border-sumeru-200/60 dark:border-white/[0.08] shadow-sm">
               <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-sumeru-200/50 dark:border-white/[0.06]">
-                <span class="font-mono font-bold text-xs px-2.5 py-0.5 rounded-full bg-sumeru-100 dark:bg-nahida-mint/15 text-sumeru-800 dark:text-nahida-mint border border-sumeru-300/40 dark:border-nahida-mint/30">
-                  Phase {item.phase}
+                <span class="font-mono font-bold text-xs px-2.5 py-0.5 rounded-full bg-sumeru-100 dark:bg-nahida-mint/15 text-sumeru-800 dark:text-nahida-mint border border-sumeru-300/40 dark:border-nahida-mint/30 whitespace-nowrap">
+                  <span data-i18n="nahida-th-phase">Phase</span> {item.phase}
                 </span>
-                <span class="text-xs font-mono text-sumeru-700 dark:text-nahida-light/80">
+                <span class="text-xs font-mono text-sumeru-700 dark:text-nahida-light/80 whitespace-nowrap">
                   Lv. {item.levels[0].lvl.split('/')[0]} → {item.levels[1].lvl.split('/')[0]}
                 </span>
               </div>
@@ -625,25 +633,25 @@ const voiceActors = [
                 {item.levels.map((lvl) => (
                   <div class="p-2.5 rounded-xl bg-sumeru-50/70 dark:bg-white/[0.03] border border-sumeru-100 dark:border-white/[0.04]">
                     <div class="flex items-center justify-between mb-1.5">
-                      <span class="font-mono font-bold text-xs text-sumeru-950 dark:text-white">
+                      <span class="font-mono font-bold text-xs text-sumeru-950 dark:text-white whitespace-nowrap">
                         Level {lvl.lvl}
                       </span>
-                      <span class="font-mono text-xs font-semibold text-emerald-700 dark:text-nahida-mint">
+                      <span class="font-mono text-xs font-semibold text-emerald-700 dark:text-nahida-mint whitespace-nowrap">
                         EM: {lvl.em}
                       </span>
                     </div>
                     <div class="grid grid-cols-3 gap-1.5 text-center text-[11px] font-mono">
                       <div class="p-1 rounded bg-black/[0.02] dark:bg-white/[0.02]">
-                        <span class="text-[9px] text-sumeru-500 dark:text-nahida-mint/60 block">HP</span>
-                        <span class="font-semibold text-sumeru-900 dark:text-white text-[10px]">{lvl.hp}</span>
+                        <span class="text-[9px] text-sumeru-500 dark:text-nahida-mint/60 block whitespace-nowrap">HP</span>
+                        <span class="font-semibold text-sumeru-900 dark:text-white text-[10px] whitespace-nowrap">{lvl.hp}</span>
                       </div>
                       <div class="p-1 rounded bg-black/[0.02] dark:bg-white/[0.02]">
-                        <span class="text-[9px] text-sumeru-500 dark:text-nahida-mint/60 block">ATK</span>
-                        <span class="font-semibold text-sumeru-900 dark:text-white text-[10px]">{lvl.atk}</span>
+                        <span class="text-[9px] text-sumeru-500 dark:text-nahida-mint/60 block whitespace-nowrap">ATK</span>
+                        <span class="font-semibold text-sumeru-900 dark:text-white text-[10px] whitespace-nowrap">{lvl.atk}</span>
                       </div>
                       <div class="p-1 rounded bg-black/[0.02] dark:bg-white/[0.02]">
-                        <span class="text-[9px] text-sumeru-500 dark:text-nahida-mint/60 block">DEF</span>
-                        <span class="font-semibold text-sumeru-900 dark:text-white text-[10px]">{lvl.def}</span>
+                        <span class="text-[9px] text-sumeru-500 dark:text-nahida-mint/60 block whitespace-nowrap">DEF</span>
+                        <span class="font-semibold text-sumeru-900 dark:text-white text-[10px] whitespace-nowrap">{lvl.def}</span>
                       </div>
                     </div>
                   </div>
@@ -653,24 +661,24 @@ const voiceActors = [
               <!-- Ascension Cost for this Phase -->
               {item.cost ? (
                 <div class="pt-2 border-t border-sumeru-200/40 dark:border-white/[0.05]">
-                  <span class="text-[10px] font-mono uppercase tracking-wider text-sumeru-500 dark:text-nahida-mint/70 block mb-1.5">
+                  <span class="text-[10px] font-mono uppercase tracking-wider text-sumeru-500 dark:text-nahida-mint/70 block mb-1.5 whitespace-nowrap" data-i18n="nahida-mobile-phase-cost">
                     Phase Ascension Cost:
                   </span>
                   <div class="flex flex-wrap items-center gap-1.5">
-                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/10 dark:bg-amber-400/10 text-amber-900 dark:text-amber-300 font-mono text-[11px] border border-amber-500/20">
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/10 dark:bg-amber-400/10 text-amber-900 dark:text-amber-300 font-mono text-[11px] border border-amber-500/20 whitespace-nowrap">
                       <img src="/images/mora.webp" alt="Mora" class="w-3.5 h-3.5 object-contain" />
                       <span>{item.cost.mora}</span>
                     </span>
                     {item.cost.materials.map((m) => (
-                      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-sumeru-100/80 dark:bg-white/5 text-sumeru-900 dark:text-nahida-light font-mono text-[11px] border border-sumeru-200/60 dark:border-white/10">
+                      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-sumeru-100/80 dark:bg-white/5 text-sumeru-900 dark:text-nahida-light font-mono text-[11px] border border-sumeru-200/60 dark:border-white/10 whitespace-nowrap">
                         <img src={m.icon} alt={m.name} class="w-3.5 h-3.5 object-contain" />
-                        <span>{m.count}x {m.name}</span>
+                        <span>{m.count}x <span data-i18n={getMatKey(m.name)}>{m.name}</span></span>
                       </span>
                     ))}
                   </div>
                 </div>
               ) : (
-                <div class="pt-2 border-t border-sumeru-200/40 dark:border-white/[0.05] text-[11px] font-mono text-sumeru-500 dark:text-nahida-mint/60 italic text-center">
+                <div class="pt-2 border-t border-sumeru-200/40 dark:border-white/[0.05] text-[11px] font-mono text-sumeru-500 dark:text-nahida-mint/60 italic text-center [text-wrap:balance]" data-i18n="nahida-mobile-max-phase">
                   Maximum Ascension Phase Reached
                 </div>
               )}
@@ -681,11 +689,11 @@ const voiceActors = [
 
       <!-- Total Cost of Ascensions (Clean Material Chips Grid) -->
       <div class="reveal-on-scroll p-4 sm:p-8 rounded-3xl glass-panel border border-sumeru-200/60 dark:border-white/[0.08] shadow-md mb-8">
-        <h3 class="font-display font-bold text-lg text-sumeru-950 dark:text-white mb-1 flex items-center gap-2">
+        <h3 class="font-display font-bold text-lg text-sumeru-950 dark:text-white mb-1 flex items-center gap-2 [text-wrap:balance]">
           <span class="text-sumeru-600 dark:text-nahida-mint">❖</span>
-          <span>Total Cost of Ascensions (Level 1 → 90)</span>
+          <span data-i18n="nahida-total-asc-title">Total Cost of Ascensions (Level 1 → 90)</span>
         </h3>
-        <p class="text-xs font-mono text-sumeru-600 dark:text-nahida-mint/80 mb-6">
+        <p class="text-xs font-mono text-sumeru-600 dark:text-nahida-mint/80 mb-6 [text-wrap:balance]" data-i18n="nahida-total-asc-desc">
           Total materials required for all Nahida's Ascension Phases
         </p>
 
@@ -696,10 +704,10 @@ const voiceActors = [
                 <img src={mat.icon} alt={mat.name} class="w-full h-full object-contain" />
               </div>
               <div class="min-w-0 flex-1">
-                <div class="font-mono font-bold text-sm sm:text-base text-sumeru-950 dark:text-white leading-tight">
+                <div class="font-mono font-bold text-sm sm:text-base text-sumeru-950 dark:text-white leading-tight whitespace-nowrap">
                   {mat.count}
                 </div>
-                <div class="text-[11px] sm:text-xs text-sumeru-700 dark:text-nahida-light/80 leading-snug mt-0.5 break-words">
+                <div class="text-[11px] sm:text-xs text-sumeru-700 dark:text-nahida-light/80 leading-snug mt-0.5 [text-wrap:pretty]" data-i18n={getMatKey(mat.name)}>
                   {mat.name}
                 </div>
               </div>
@@ -714,13 +722,13 @@ const voiceActors = [
     <!-- 4. Talent Upgrade Materials Section: REAL NATIVE TABLE -->
     <div id="section-talent-costs" class="mb-20 scroll-mt-24">
       <div class="text-center max-w-2xl mx-auto mb-10">
-        <span class="text-xs font-mono uppercase tracking-widest text-sumeru-600 dark:text-nahida-mint mb-2 block">
+        <span class="text-xs font-mono uppercase tracking-widest text-sumeru-600 dark:text-nahida-mint mb-2 block whitespace-nowrap" data-i18n="nahida-talent-cost-sub">
           Talent Investment
         </span>
-        <h2 class="font-display font-bold text-2xl sm:text-3xl text-sumeru-950 dark:text-white">
+        <h2 class="font-display font-bold text-2xl sm:text-3xl text-sumeru-950 dark:text-white [text-wrap:balance]" data-i18n="nahida-talent-cost-title">
           Talent Upgrade
         </h2>
-        <p class="text-sm text-sumeru-800/80 dark:text-nahida-light/80 mt-2">
+        <p class="text-sm text-sumeru-800/80 dark:text-nahida-light/80 mt-2 [text-wrap:balance]" data-i18n="nahida-talent-cost-desc">
           Required materials for upgrading Nahida's talents from Level 1 to 10.
         </p>
       </div>
@@ -728,11 +736,11 @@ const voiceActors = [
       <!-- Real Interactive Talent Upgrade Table -->
       <div class="reveal-on-scroll p-4 sm:p-8 rounded-3xl glass-panel border border-sumeru-200/60 dark:border-white/[0.08] shadow-lg mb-8">
         <div class="flex items-center justify-between mb-6 pb-4 border-b border-sumeru-200/50 dark:border-white/[0.08]">
-          <h3 class="font-display font-bold text-lg text-sumeru-950 dark:text-white flex items-center gap-2">
+          <h3 class="font-display font-bold text-lg text-sumeru-950 dark:text-white flex items-center gap-2 [text-wrap:balance]">
             <span class="text-sumeru-600 dark:text-nahida-mint">❖</span>
-            <span>Talent Level Materials (1 → 10 per Talent)</span>
+            <span data-i18n="nahida-talent-table-title">Talent Level Materials (1 → 10 per Talent)</span>
           </h3>
-          <span class="text-xs font-mono px-2.5 py-1 rounded-full bg-sumeru-100 dark:bg-sumeru-900/60 text-sumeru-700 dark:text-nahida-mint border border-sumeru-300/40 dark:border-nahida-mint/30 hidden sm:inline-block">
+          <span class="text-xs font-mono px-2.5 py-1 rounded-full bg-sumeru-100 dark:bg-sumeru-900/60 text-sumeru-700 dark:text-nahida-mint border border-sumeru-300/40 dark:border-nahida-mint/30 hidden sm:inline-block whitespace-nowrap" data-i18n="nahida-talent-table-badge">
             Ingenuity Series • Sumeru
           </span>
         </div>
@@ -742,58 +750,58 @@ const voiceActors = [
           <table class="w-full text-left text-xs border-collapse">
             <thead>
               <tr class="bg-sumeru-100/90 dark:bg-sumeru-950/70 text-sumeru-900 dark:text-nahida-mint font-mono font-semibold border-b border-sumeru-200 dark:border-white/10 uppercase tracking-wider">
-                <th class="py-3 px-3.5 sm:px-4 text-center">Talent Level</th>
-                <th class="py-3 px-3.5 sm:px-4 text-center">Ascension</th>
-                <th class="py-3 px-3.5 sm:px-4">Mora [Subtotal]</th>
-                <th class="py-3 px-3.5 sm:px-4">Common Material [Subtotal]</th>
-                <th class="py-3 px-3.5 sm:px-4">Talent Book [Subtotal]</th>
-                <th class="py-3 px-3.5 sm:px-4">Weekly Boss Mat</th>
-                <th class="py-3 px-3.5 sm:px-4">Special</th>
+                <th class="py-3 px-3.5 sm:px-4 text-center whitespace-nowrap" data-i18n="nahida-th-talent-lvl">Talent Level</th>
+                <th class="py-3 px-3.5 sm:px-4 text-center whitespace-nowrap" data-i18n="nahida-th-ascension">Ascension</th>
+                <th class="py-3 px-3.5 sm:px-4 whitespace-nowrap" data-i18n="nahida-th-mora">Mora [Subtotal]</th>
+                <th class="py-3 px-3.5 sm:px-4 whitespace-nowrap" data-i18n="nahida-th-common">Common Material [Subtotal]</th>
+                <th class="py-3 px-3.5 sm:px-4 whitespace-nowrap" data-i18n="nahida-th-book">Talent Book [Subtotal]</th>
+                <th class="py-3 px-3.5 sm:px-4 whitespace-nowrap" data-i18n="nahida-th-boss">Weekly Boss Mat</th>
+                <th class="py-3 px-3.5 sm:px-4 whitespace-nowrap" data-i18n="nahida-th-special">Special</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-sumeru-200/50 dark:divide-white/[0.05]">
               {talentUpgradeData.map((row) => (
                 <tr class="hover:bg-emerald-500/5 dark:hover:bg-nahida-mint/5 transition-colors">
-                  <td class="py-3 px-3.5 sm:px-4 font-mono font-bold text-sumeru-950 dark:text-white text-center">
+                  <td class="py-3 px-3.5 sm:px-4 font-mono font-bold text-sumeru-950 dark:text-white text-center whitespace-nowrap">
                     {row.level}
                   </td>
-                  <td class="py-3 px-3.5 sm:px-4 font-mono text-center text-emerald-700 dark:text-nahida-mint font-semibold">
+                  <td class="py-3 px-3.5 sm:px-4 font-mono text-center text-emerald-700 dark:text-nahida-mint font-semibold whitespace-nowrap">
                     {row.ascension}
                   </td>
-                  <td class="py-3 px-3.5 sm:px-4">
-                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/10 dark:bg-amber-400/10 text-amber-900 dark:text-amber-300 font-mono text-[11px]">
+                  <td class="py-3 px-3.5 sm:px-4 whitespace-nowrap">
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/10 dark:bg-amber-400/10 text-amber-900 dark:text-amber-300 font-mono text-[11px] whitespace-nowrap">
                       <img src="/images/mora.webp" alt="Mora" class="w-3.5 h-3.5 object-contain" />
                       <span>{row.mora}</span>
                       <span class="text-amber-700/70 dark:text-amber-300/60 text-[10px]">[{row.subtotalMora}]</span>
                     </span>
                   </td>
-                  <td class="py-3 px-3.5 sm:px-4">
-                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-sumeru-100/80 dark:bg-white/5 text-sumeru-900 dark:text-nahida-light font-mono text-[11px] border border-sumeru-200/60 dark:border-white/10">
+                  <td class="py-3 px-3.5 sm:px-4 whitespace-nowrap">
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-sumeru-100/80 dark:bg-white/5 text-sumeru-900 dark:text-nahida-light font-mono text-[11px] border border-sumeru-200/60 dark:border-white/10 whitespace-nowrap">
                       <img src={row.common.icon} alt={row.common.name} class="w-3.5 h-3.5 object-contain" />
-                      <span>{row.common.count}x {row.common.name}</span>
+                      <span>{row.common.count}x <span data-i18n={getMatKey(row.common.name)}>{row.common.name}</span></span>
                       <span class="opacity-60 text-[10px]">[{row.common.subtotal}]</span>
                     </span>
                   </td>
-                  <td class="py-3 px-3.5 sm:px-4">
-                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-500/10 dark:bg-nahida-mint/10 text-emerald-900 dark:text-nahida-mint font-mono text-[11px] border border-emerald-500/20 dark:border-nahida-mint/20">
-                      <span>{row.book.count}x {row.book.name}</span>
+                  <td class="py-3 px-3.5 sm:px-4 whitespace-nowrap">
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-500/10 dark:bg-nahida-mint/10 text-emerald-900 dark:text-nahida-mint font-mono text-[11px] border border-emerald-500/20 dark:border-nahida-mint/20 whitespace-nowrap">
+                      <span>{row.book.count}x <span data-i18n={getMatKey(row.book.name)}>{row.book.name}</span></span>
                       <span class="opacity-60 text-[10px]">[{row.book.subtotal}]</span>
                     </span>
                   </td>
-                  <td class="py-3 px-3.5 sm:px-4">
+                  <td class="py-3 px-3.5 sm:px-4 whitespace-nowrap">
                     {row.boss ? (
-                      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-purple-500/10 dark:bg-purple-400/10 text-purple-900 dark:text-purple-300 font-mono text-[11px] border border-purple-500/20">
-                        <span>{row.boss.count}x {row.boss.name}</span>
+                      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-purple-500/10 dark:bg-purple-400/10 text-purple-900 dark:text-purple-300 font-mono text-[11px] border border-purple-500/20 whitespace-nowrap">
+                        <span>{row.boss.count}x <span data-i18n={getMatKey(row.boss.name)}>{row.boss.name}</span></span>
                         <span class="opacity-60 text-[10px]">[{row.boss.subtotal}]</span>
                       </span>
                     ) : (
                       <span class="text-sumeru-400 dark:text-white/20">—</span>
                     )}
                   </td>
-                  <td class="py-3 px-3.5 sm:px-4">
+                  <td class="py-3 px-3.5 sm:px-4 whitespace-nowrap">
                     {row.crown ? (
-                      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/15 dark:bg-nahida-gold/15 text-amber-900 dark:text-nahida-gold font-mono text-[11px] font-bold border border-amber-500/30">
-                        <span>👑 {row.crown.count}x {row.crown.name}</span>
+                      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/15 dark:bg-nahida-gold/15 text-amber-900 dark:text-nahida-gold font-mono text-[11px] font-bold border border-amber-500/30 whitespace-nowrap">
+                        <span>👑 {row.crown.count}x <span data-i18n={getMatKey(row.crown.name)}>{row.crown.name}</span></span>
                       </span>
                     ) : (
                       <span class="text-sumeru-400 dark:text-white/20">—</span>
@@ -812,14 +820,14 @@ const voiceActors = [
               <!-- Header: Level & Phase -->
               <div class="flex items-center justify-between pb-2 mb-2.5 border-b border-sumeru-200/40 dark:border-white/[0.06]">
                 <div class="flex items-center gap-2">
-                  <span class="px-2 py-0.5 rounded-md bg-emerald-500/15 dark:bg-nahida-mint/15 text-emerald-800 dark:text-nahida-mint font-mono font-bold text-xs">
+                  <span class="px-2 py-0.5 rounded-md bg-emerald-500/15 dark:bg-nahida-mint/15 text-emerald-800 dark:text-nahida-mint font-mono font-bold text-xs whitespace-nowrap">
                     Lv. {row.level}
                   </span>
-                  <span class="text-[11px] font-mono text-sumeru-700 dark:text-nahida-light/80">
-                    Phase <strong class="text-emerald-700 dark:text-nahida-mint font-bold">{row.ascension}</strong>
+                  <span class="text-[11px] font-mono text-sumeru-700 dark:text-nahida-light/80 whitespace-nowrap">
+                    <span data-i18n="nahida-th-ascension">Phase</span> <strong class="text-emerald-700 dark:text-nahida-mint font-bold">{row.ascension}</strong>
                   </span>
                 </div>
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/10 dark:bg-amber-400/10 text-amber-900 dark:text-amber-300 font-mono text-[11px] font-semibold">
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/10 dark:bg-amber-400/10 text-amber-900 dark:text-amber-300 font-mono text-[11px] font-semibold whitespace-nowrap">
                   <img src="/images/mora.webp" alt="Mora" class="w-3.5 h-3.5 object-contain" />
                   <span>{row.mora}</span>
                 </span>
@@ -828,27 +836,27 @@ const voiceActors = [
               <!-- Required Materials Chips (Wrapped for 100% Mobile Screen Width) -->
               <div class="flex flex-wrap gap-1.5 items-center">
                 <!-- Common Material -->
-                <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-sumeru-100/80 dark:bg-white/5 text-sumeru-900 dark:text-nahida-light font-mono text-[11px] border border-sumeru-200/60 dark:border-white/10">
+                <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-sumeru-100/80 dark:bg-white/5 text-sumeru-900 dark:text-nahida-light font-mono text-[11px] border border-sumeru-200/60 dark:border-white/10 whitespace-nowrap">
                   <img src={row.common.icon} alt={row.common.name} class="w-3.5 h-3.5 object-contain" />
-                  <span>{row.common.count}x {row.common.name}</span>
+                  <span>{row.common.count}x <span data-i18n={getMatKey(row.common.name)}>{row.common.name}</span></span>
                 </span>
 
                 <!-- Talent Book -->
-                <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-500/10 dark:bg-nahida-mint/10 text-emerald-900 dark:text-nahida-mint font-mono text-[11px] border border-emerald-500/20 dark:border-nahida-mint/20">
-                  <span>📜 {row.book.count}x {row.book.name}</span>
+                <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-500/10 dark:bg-nahida-mint/10 text-emerald-900 dark:text-nahida-mint font-mono text-[11px] border border-emerald-500/20 dark:border-nahida-mint/20 whitespace-nowrap">
+                  <span>📜 {row.book.count}x <span data-i18n={getMatKey(row.book.name)}>{row.book.name}</span></span>
                 </span>
 
                 <!-- Boss Material if any -->
                 {row.boss && (
-                  <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-purple-500/10 dark:bg-purple-400/10 text-purple-900 dark:text-purple-300 font-mono text-[11px] border border-purple-500/20">
-                    <span>⚡ {row.boss.count}x {row.boss.name}</span>
+                  <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-purple-500/10 dark:bg-purple-400/10 text-purple-900 dark:text-purple-300 font-mono text-[11px] border border-purple-500/20 whitespace-nowrap">
+                    <span>⚡ {row.boss.count}x <span data-i18n={getMatKey(row.boss.name)}>{row.boss.name}</span></span>
                   </span>
                 )}
 
                 <!-- Crown if any -->
                 {row.crown && (
-                  <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-amber-500/15 dark:bg-nahida-gold/15 text-amber-900 dark:text-nahida-gold font-mono text-[11px] font-bold border border-amber-500/30">
-                    <span>👑 {row.crown.count}x {row.crown.name}</span>
+                  <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-amber-500/15 dark:bg-nahida-gold/15 text-amber-900 dark:text-nahida-gold font-mono text-[11px] font-bold border border-amber-500/30 whitespace-nowrap">
+                    <span>👑 {row.crown.count}x <span data-i18n={getMatKey(row.crown.name)}>{row.crown.name}</span></span>
                   </span>
                 )}
               </div>
@@ -859,11 +867,11 @@ const voiceActors = [
 
       <!-- Total Cost for One Talent (1 -> 10) Grid -->
       <div class="reveal-on-scroll p-4 sm:p-8 rounded-3xl glass-panel border border-sumeru-200/60 dark:border-white/[0.08] shadow-md mb-8">
-        <h3 class="font-display font-bold text-lg text-sumeru-950 dark:text-white mb-1 flex items-center gap-2">
+        <h3 class="font-display font-bold text-lg text-sumeru-950 dark:text-white mb-1 flex items-center gap-2 [text-wrap:balance]">
           <span class="text-sumeru-600 dark:text-nahida-mint">❖</span>
-          <span>Total Cost (1 → 10 for One Talent)</span>
+          <span data-i18n="nahida-total-talent-title">Total Cost (1 → 10 for One Talent)</span>
         </h3>
-        <p class="text-xs font-mono text-sumeru-600 dark:text-nahida-mint/80 mb-6">
+        <p class="text-xs font-mono text-sumeru-600 dark:text-nahida-mint/80 mb-6 [text-wrap:balance]" data-i18n="nahida-total-talent-desc">
           Multiply by 3 to triple-crown all of Nahida's talents
         </p>
 
@@ -880,10 +888,10 @@ const voiceActors = [
                 )}
               </div>
               <div class="min-w-0 flex-1">
-                <div class="font-mono font-bold text-sm sm:text-base text-sumeru-950 dark:text-white leading-tight">
+                <div class="font-mono font-bold text-sm sm:text-base text-sumeru-950 dark:text-white leading-tight whitespace-nowrap">
                   {mat.count}
                 </div>
-                <div class="text-[11px] sm:text-xs text-sumeru-700 dark:text-nahida-light/80 leading-snug mt-0.5 break-words">
+                <div class="text-[11px] sm:text-xs text-sumeru-700 dark:text-nahida-light/80 leading-snug mt-0.5 [text-wrap:pretty]" data-i18n={getMatKey(mat.name)}>
                   {mat.name}
                 </div>
               </div>
@@ -898,10 +906,10 @@ const voiceActors = [
     <!-- 5. Availability Section -->
     <div id="section-availability" class="mb-20 scroll-mt-24">
       <div class="text-center max-w-2xl mx-auto mb-10">
-        <span class="text-xs font-mono uppercase tracking-widest text-sumeru-600 dark:text-nahida-mint mb-2 block">
+        <span class="text-xs font-mono uppercase tracking-widest text-sumeru-600 dark:text-nahida-mint mb-2 block whitespace-nowrap" data-i18n="nahida-avail-sub">
           Event Wishes
         </span>
-        <h2 class="font-display font-bold text-2xl sm:text-3xl text-sumeru-950 dark:text-white">
+        <h2 class="font-display font-bold text-2xl sm:text-3xl text-sumeru-950 dark:text-white [text-wrap:balance]" data-i18n="nahida-avail-title">
           Availability
         </h2>
       </div>
@@ -909,11 +917,11 @@ const voiceActors = [
       <div class="space-y-8">
         <!-- Event Wishes Card -->
         <div class="reveal-on-scroll p-6 sm:p-8 rounded-3xl glass-panel border border-sumeru-200/60 dark:border-white/[0.08] shadow-md">
-          <h3 class="font-display font-bold text-lg text-sumeru-950 dark:text-white mb-2 flex items-center gap-2">
+          <h3 class="font-display font-bold text-lg text-sumeru-950 dark:text-white mb-2 flex items-center gap-2 [text-wrap:balance]">
             <span class="text-sumeru-600 dark:text-nahida-mint">❖</span>
-            <span>Character Event Wishes</span>
+            <span data-i18n="nahida-event-wishes-title">Character Event Wishes</span>
           </h3>
-          <p class="text-sm text-sumeru-800/80 dark:text-nahida-light/80 mb-6">
+          <p class="text-sm text-sumeru-800/80 dark:text-nahida-light/80 mb-6 [text-wrap:balance]" data-i18n="nahida-event-wishes-desc">
             Nahida has been promoted or featured with a drop-rate boost in 5 Event Wishes:
           </p>
           <div class="rounded-2xl overflow-hidden bg-black/5 dark:bg-black/40 p-3 sm:p-6 flex items-center justify-center border border-sumeru-200/40 dark:border-white/5">
@@ -924,18 +932,18 @@ const voiceActors = [
               loading="lazy"
             />
           </div>
-          <figcaption class="text-xs italic text-center text-sumeru-600 dark:text-nahida-mint/70 mt-3 font-mono">
+          <figcaption class="text-xs italic text-center text-sumeru-600 dark:text-nahida-mint/70 mt-3 font-mono [text-wrap:balance]" data-i18n="nahida-banner-caption">
             All Nahida banners up to now.
           </figcaption>
         </div>
 
         <!-- Chronicled Wishes Card -->
         <div class="reveal-on-scroll p-6 rounded-3xl glass-panel border border-sumeru-200/60 dark:border-white/[0.08]">
-          <h3 class="font-display font-bold text-base text-sumeru-950 dark:text-white mb-1.5 flex items-center gap-2">
+          <h3 class="font-display font-bold text-base text-sumeru-950 dark:text-white mb-1.5 flex items-center gap-2 [text-wrap:balance]">
             <span class="text-sumeru-600 dark:text-nahida-mint">❖</span>
-            <span>Chronicled Wishes</span>
+            <span data-i18n="nahida-chronicled-title">Chronicled Wishes</span>
           </h3>
-          <p class="text-sm text-sumeru-800/80 dark:text-nahida-light/80">
+          <p class="text-sm text-sumeru-800/80 dark:text-nahida-light/80 [text-wrap:pretty]" data-i18n="nahida-chronicled-desc">
             Nahida has not been included in any Chronicled Wishes.
           </p>
         </div>
@@ -945,13 +953,13 @@ const voiceActors = [
     <!-- 6. Languages Section: REAL TABLE -->
     <div id="section-languages" class="mb-20 scroll-mt-24">
       <div class="text-center max-w-2xl mx-auto mb-10">
-        <span class="text-xs font-mono uppercase tracking-widest text-sumeru-600 dark:text-nahida-mint mb-2 block">
+        <span class="text-xs font-mono uppercase tracking-widest text-sumeru-600 dark:text-nahida-mint mb-2 block whitespace-nowrap" data-i18n="nahida-lang-sub">
           Localization & Voice Cast
         </span>
-        <h2 class="font-display font-bold text-2xl sm:text-3xl text-sumeru-950 dark:text-white">
+        <h2 class="font-display font-bold text-2xl sm:text-3xl text-sumeru-950 dark:text-white [text-wrap:balance]" data-i18n="nahida-lang-title">
           Languages
         </h2>
-        <p class="text-sm text-sumeru-800/80 dark:text-nahida-light/80 mt-2">
+        <p class="text-sm text-sumeru-800/80 dark:text-nahida-light/80 mt-2 [text-wrap:balance]" data-i18n="nahida-lang-desc">
           Official character names and localization across all supported game languages.
         </p>
       </div>
@@ -960,11 +968,11 @@ const voiceActors = [
         <!-- Official Names Real Table -->
         <div class="lg:col-span-8 reveal-on-scroll p-4 sm:p-8 rounded-3xl glass-panel border border-sumeru-200/60 dark:border-white/[0.08] shadow-lg">
           <div class="flex items-center justify-between mb-6 pb-4 border-b border-sumeru-200/50 dark:border-white/[0.08]">
-            <h3 class="font-display font-bold text-lg text-sumeru-950 dark:text-white flex items-center gap-2">
+            <h3 class="font-display font-bold text-lg text-sumeru-950 dark:text-white flex items-center gap-2 [text-wrap:balance]">
               <span class="text-sumeru-600 dark:text-nahida-mint">❖</span>
-              <span>Official Localization Names</span>
+              <span data-i18n="nahida-lang-table-title">Official Localization Names</span>
             </h3>
-            <span class="text-xs font-mono text-sumeru-600 dark:text-nahida-mint/80">
+            <span class="text-xs font-mono text-sumeru-600 dark:text-nahida-mint/80 whitespace-nowrap" data-i18n="nahida-lang-table-badge">
               15 Languages
             </span>
           </div>
@@ -974,21 +982,21 @@ const voiceActors = [
             <table class="w-full text-left text-xs border-collapse">
               <thead>
                 <tr class="bg-sumeru-100/90 dark:bg-sumeru-950/70 text-sumeru-900 dark:text-nahida-mint font-mono font-semibold border-b border-sumeru-200 dark:border-white/10 uppercase tracking-wider">
-                  <th class="py-3 px-4">Language</th>
-                  <th class="py-3 px-4">Official Name</th>
-                  <th class="py-3 px-4">Romanization / Script</th>
+                  <th class="py-3 px-4 whitespace-nowrap" data-i18n="nahida-th-language">Language</th>
+                  <th class="py-3 px-4 whitespace-nowrap" data-i18n="nahida-th-name">Official Name</th>
+                  <th class="py-3 px-4 whitespace-nowrap" data-i18n="nahida-th-romanization">Romanization / Script</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-sumeru-200/50 dark:divide-white/[0.05]">
                 {languagesData.map((item) => (
                   <tr class="hover:bg-emerald-500/5 dark:hover:bg-nahida-mint/5 transition-colors">
-                    <td class="py-2.5 px-4 font-mono font-medium text-sumeru-900 dark:text-white">
+                    <td class="py-2.5 px-4 font-mono font-medium text-sumeru-900 dark:text-white whitespace-nowrap" data-i18n={getLangKey(item.language)}>
                       {item.language}
                     </td>
-                    <td class="py-2.5 px-4 font-display font-semibold text-sm text-sumeru-950 dark:text-white">
+                    <td class="py-2.5 px-4 font-display font-semibold text-sm text-sumeru-950 dark:text-white whitespace-nowrap">
                       {item.name}
                     </td>
-                    <td class="py-2.5 px-4 font-mono text-xs text-emerald-700 dark:text-nahida-mint">
+                    <td class="py-2.5 px-4 font-mono text-xs text-emerald-700 dark:text-nahida-mint whitespace-nowrap">
                       {item.romanization ? item.romanization : <span class="text-sumeru-400 dark:text-white/20">—</span>}
                     </td>
                   </tr>
@@ -1002,15 +1010,15 @@ const voiceActors = [
             {languagesData.map((item) => (
               <div class="p-3 rounded-2xl bg-white/70 dark:bg-black/30 border border-sumeru-200/60 dark:border-white/[0.06] flex items-center justify-between">
                 <div class="min-w-0 pr-2">
-                  <span class="text-[10px] font-mono uppercase tracking-wider text-sumeru-500 dark:text-nahida-mint/70 block">
+                  <span class="text-[10px] font-mono uppercase tracking-wider text-sumeru-500 dark:text-nahida-mint/70 block whitespace-nowrap" data-i18n={getLangKey(item.language)}>
                     {item.language}
                   </span>
-                  <span class="font-display font-semibold text-sm text-sumeru-950 dark:text-white block mt-0.5">
+                  <span class="font-display font-semibold text-sm text-sumeru-950 dark:text-white block mt-0.5 [text-wrap:balance]">
                     {item.name}
                   </span>
                 </div>
                 {item.romanization ? (
-                  <span class="text-[11px] font-mono px-2 py-0.5 rounded-md bg-emerald-500/10 dark:bg-nahida-mint/10 text-emerald-800 dark:text-nahida-mint shrink-0">
+                  <span class="text-[11px] font-mono px-2 py-0.5 rounded-md bg-emerald-500/10 dark:bg-nahida-mint/10 text-emerald-800 dark:text-nahida-mint shrink-0 whitespace-nowrap">
                     {item.romanization}
                   </span>
                 ) : (
@@ -1026,13 +1034,13 @@ const voiceActors = [
         <!-- Voice Actors Side Card -->
         <div class="lg:col-span-4 reveal-on-scroll p-6 rounded-3xl glass-panel border border-sumeru-200/60 dark:border-white/[0.08] shadow-md space-y-6">
           <div>
-            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono bg-sumeru-100 dark:bg-nahida-mint/10 text-sumeru-800 dark:text-nahida-mint mb-2">
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono bg-sumeru-100 dark:bg-nahida-mint/10 text-sumeru-800 dark:text-nahida-mint mb-2 whitespace-nowrap" data-i18n="nahida-va-badge">
               CASTING
             </div>
-            <h3 class="font-display font-bold text-lg text-sumeru-950 dark:text-white">
+            <h3 class="font-display font-bold text-lg text-sumeru-950 dark:text-white [text-wrap:balance]" data-i18n="nahida-va-title">
               Official Voice Actors
             </h3>
-            <p class="text-xs text-sumeru-700 dark:text-nahida-light/75 mt-1 leading-relaxed">
+            <p class="text-xs text-sumeru-700 dark:text-nahida-light/75 mt-1 leading-relaxed [text-wrap:pretty]" data-i18n="nahida-va-desc">
               The vocal talents bringing Lesser Lord Kusanali to life across major game voiceovers.
             </p>
           </div>
@@ -1041,10 +1049,10 @@ const voiceActors = [
             {voiceActors.map((va) => (
               <div class="p-3.5 rounded-2xl bg-white/60 dark:bg-black/25 border border-sumeru-200/50 dark:border-white/[0.06] flex items-center justify-between">
                 <div>
-                  <span class="text-[10px] font-mono text-sumeru-500 dark:text-nahida-mint/70 uppercase tracking-wider block">
+                  <span class="text-[10px] font-mono text-sumeru-500 dark:text-nahida-mint/70 uppercase tracking-wider block whitespace-nowrap" data-i18n={`va-region-${va.region.toLowerCase()}`}>
                     {va.region}
                   </span>
-                  <div class="font-display font-semibold text-sm text-sumeru-950 dark:text-white mt-0.5">
+                  <div class="font-display font-semibold text-sm text-sumeru-950 dark:text-white mt-0.5 [text-wrap:balance] whitespace-nowrap">
                     {va.actor}
                   </div>
                 </div>
@@ -1058,14 +1066,14 @@ const voiceActors = [
 
     <!-- Quote Banner -->
     <div class="rounded-3xl p-8 sm:p-10 glass-panel border border-sumeru-300/50 dark:border-nahida-mint/20 text-center relative overflow-hidden">
-      <div class="relative z-10 max-w-2xl mx-auto space-y-4">
+      <div class="relative z-10 max-w-4xl mx-auto space-y-4">
         <div class="w-10 h-10 mx-auto text-sumeru-600 dark:text-nahida-mint opacity-60">
           <svg fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
         </div>
-        <p class="font-display text-lg sm:text-xl text-sumeru-950 dark:text-white italic leading-relaxed">
-          "The world will forget me... but wisdom, once shared, lives on forever in the stories of those who learn."
+        <p class="font-display text-lg sm:text-xl text-sumeru-950 dark:text-white italic leading-relaxed [text-wrap:balance]" data-i18n="nahida-quote-text">
+          "The world will forget me... but wisdom, once shared,<br class="hidden sm:inline" /> lives on forever in the stories of those who learn."
         </p>
-        <span class="text-xs font-mono text-sumeru-600 dark:text-nahida-mint/80 uppercase tracking-widest block">
+        <span class="text-xs font-mono text-sumeru-600 dark:text-nahida-mint/80 uppercase tracking-widest block" data-i18n="nahida-quote-author">
           — Greater Lord Rukkhadevata & Nahida
         </span>
       </div>

@@ -20,6 +20,7 @@ const { categories, totalPosts } = Astro.props;
       type="search"
       id="activities-search-input"
       placeholder="Search articles by title, tag, or topic..."
+      data-i18n-placeholder="act-search-placeholder"
       class="w-full pl-12 pr-10 py-3.5 rounded-2xl bg-white/80 dark:bg-black/40 border border-sumeru-200/80 dark:border-white/10 text-sm text-sumeru-950 dark:text-white placeholder-sumeru-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sumeru-500/50 dark:focus:ring-nahida-mint/50 backdrop-blur-md transition-all duration-200 shadow-sm"
       autocomplete="off"
     />
@@ -41,6 +42,8 @@ const { categories, totalPosts } = Astro.props;
     <button
       type="button"
       data-category="all"
+      data-i18n="act-filter-all"
+      data-count={totalPosts}
       class="category-chip active px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-200 bg-sumeru-600 dark:bg-nahida-mint text-white dark:text-sumeru-950 shadow-sm"
     >
       All ({totalPosts})
@@ -49,6 +52,7 @@ const { categories, totalPosts } = Astro.props;
       <button
         type="button"
         data-category={cat.toLowerCase()}
+        data-i18n={`act-cat-${cat.toLowerCase()}`}
         class="category-chip px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-200 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 text-sumeru-800 dark:text-nahida-light/80 border border-transparent hover:border-sumeru-300 dark:hover:border-nahida-mint/30"
       >
         {cat}
@@ -112,7 +116,13 @@ const { categories, totalPosts } = Astro.props;
       }
 
       if (countDisplay) {
-        countDisplay.textContent = `${visibleCount} article${visibleCount === 1 ? '' : 's'}`;
+        countDisplay.setAttribute('data-count', String(visibleCount));
+        const currentLang = localStorage.getItem('site-lang') || 'en';
+        if (currentLang === 'vn') {
+          countDisplay.textContent = `${visibleCount} bài đăng`;
+        } else {
+          countDisplay.textContent = `${visibleCount} article${visibleCount === 1 ? '' : 's'}`;
+        }
       }
     }
 
