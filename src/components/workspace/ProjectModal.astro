@@ -161,6 +161,141 @@
     stage.appendChild(wrapper);
   }
 
+  function getYouTubeIdFromUrl(rawUrl: string): string | null {
+    try {
+      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+      const match = rawUrl.match(regExp);
+      return match && match[2].length === 11 ? match[2] : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function renderMediaSliderModal(stage: HTMLElement, slides: Array<any>, title: string, isVertical = false) {
+    const container = document.createElement('div');
+    container.className = 'media-slider-modal relative w-full h-full overflow-hidden bg-black select-none flex flex-col items-center justify-center';
+
+    const track = document.createElement('div');
+    track.className = 'slider-track w-full h-full flex transition-transform duration-500 ease-out will-change-transform';
+
+    slides.forEach((slide, idx) => {
+      const slideEl = document.createElement('div');
+      slideEl.className = 'slider-slide w-full h-full flex-shrink-0 relative flex items-center justify-center bg-black overflow-hidden p-2 sm:p-4';
+      slideEl.setAttribute('data-slide-index', String(idx));
+
+      if (slide.type === 'youtube') {
+        const ytId = getYouTubeIdFromUrl(slide.url);
+        if (ytId) {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'w-full h-full relative aspect-video flex items-center justify-center max-w-full max-h-full';
+          const iframe = document.createElement('iframe');
+          iframe.src = `https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1`;
+          iframe.className = 'w-full h-full border-0 absolute inset-0 rounded-xl';
+          iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+          iframe.setAttribute('allowfullscreen', 'true');
+          iframe.setAttribute('title', slide.title || title);
+          wrapper.appendChild(iframe);
+          slideEl.appendChild(wrapper);
+        }
+      } else if (slide.type === 'video') {
+        const video = document.createElement('video');
+        video.src = slide.url;
+        if (slide.poster) video.poster = slide.poster;
+        video.controls = true;
+        video.playsInline = true;
+        video.className = 'max-h-full max-w-full w-auto h-auto object-contain rounded-xl shadow-2xl';
+        slideEl.appendChild(video);
+      } else {
+        const img = document.createElement('img');
+        img.src = slide.url;
+        img.alt = slide.title || `${title} - slide ${idx + 1}`;
+        img.className = 'max-h-full max-w-full w-auto h-auto object-contain rounded-xl shadow-2xl';
+        img.loading = idx === 0 ? 'eager' : 'lazy';
+        slideEl.appendChild(img);
+      }
+
+      // Top label badge
+      const label = document.createElement('div');
+      label.className = 'absolute top-3 left-3 z-10 px-3 py-1 rounded-full text-[11px] font-mono bg-black/65 backdrop-blur-md text-white/90 border border-white/10 pointer-events-none flex items-center gap-1.5 shadow-md';
+      label.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-nahida-mint animate-pulse"></span><span>${idx + 1}/${slides.length} • ${slide.title || `Slide ${idx + 1}`}</span>`;
+      slideEl.appendChild(label);
+
+      track.appendChild(slideEl);
+    });
+
+    container.appendChild(track);
+
+    // Prev Button
+    const prevBtn = document.createElement('button');
+    prevBtn.type = 'button';
+    prevBtn.className = 'absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black/65 hover:bg-black/90 text-white flex items-center justify-center border border-white/20 backdrop-blur-md transition-all shadow-xl hover:scale-110 active:scale-95 cursor-pointer';
+    prevBtn.setAttribute('aria-label', 'Previous slide');
+    prevBtn.innerHTML = '<svg class="w-5 h-5 -ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>';
+    container.appendChild(prevBtn);
+
+    // Next Button
+    const nextBtn = document.createElement('button');
+    nextBtn.type = 'button';
+    nextBtn.className = 'absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black/65 hover:bg-black/90 text-white flex items-center justify-center border border-white/20 backdrop-blur-md transition-all shadow-xl hover:scale-110 active:scale-95 cursor-pointer';
+    nextBtn.setAttribute('aria-label', 'Next slide');
+    nextBtn.innerHTML = '<svg class="w-5 h-5 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>';
+    container.appendChild(nextBtn);
+
+    // Bottom Horizontal Slide Control Tabs
+    const tabsContainer = document.createElement('div');
+    tabsContainer.className = 'absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 p-1 rounded-full bg-black/80 backdrop-blur-md border border-white/15 max-w-[94%] overflow-x-auto shadow-2xl';
+
+    const tabElements: HTMLButtonElement[] = [];
+
+    slides.forEach((slide, idx) => {
+      const tabBtn = document.createElement('button');
+      tabBtn.type = 'button';
+      tabBtn.className = 'px-3 py-1 rounded-full text-[10px] sm:text-xs font-mono tracking-wider transition-all duration-300 flex items-center gap-1.5 cursor-pointer whitespace-nowrap text-white/70 hover:text-white hover:bg-white/10';
+      tabBtn.setAttribute('aria-label', `Go to slide ${idx + 1}: ${slide.title || 'Slide'}`);
+      tabBtn.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-current opacity-70"></span><span class="truncate max-w-[100px] sm:max-w-[140px]">${slide.title || `Slide ${idx + 1}`}</span>`;
+      tabElements.push(tabBtn);
+      tabsContainer.appendChild(tabBtn);
+    });
+
+    container.appendChild(tabsContainer);
+    stage.appendChild(container);
+
+    let currentIndex = 0;
+    const totalSlides = slides.length;
+
+    function updateModalSlider(index: number) {
+      currentIndex = (index + totalSlides) % totalSlides;
+      track.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+      tabElements.forEach((tab, idx) => {
+        if (idx === currentIndex) {
+          tab.className = 'px-3 py-1 rounded-full text-[10px] sm:text-xs font-mono tracking-wider transition-all duration-300 flex items-center gap-1.5 cursor-pointer whitespace-nowrap bg-sumeru-600 dark:bg-nahida-mint text-white dark:text-sumeru-950 font-semibold shadow-md';
+        } else {
+          tab.className = 'px-3 py-1 rounded-full text-[10px] sm:text-xs font-mono tracking-wider transition-all duration-300 flex items-center gap-1.5 cursor-pointer whitespace-nowrap text-white/70 hover:text-white hover:bg-white/10';
+        }
+      });
+    }
+
+    prevBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      updateModalSlider(currentIndex - 1);
+    });
+
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      updateModalSlider(currentIndex + 1);
+    });
+
+    tabElements.forEach((tab, idx) => {
+      tab.addEventListener('click', (e) => {
+        e.stopPropagation();
+        updateModalSlider(idx);
+      });
+    });
+
+    updateModalSlider(0);
+  }
+
   function openModal(card: HTMLElement) {
     const {
       modal,
@@ -251,9 +386,18 @@
     // Render Stage Content Based on Type
     stage.innerHTML = '';
 
+    let projectSlides: Array<any> = [];
+    try {
+      projectSlides = JSON.parse(card.getAttribute('data-slides') || '[]');
+    } catch {
+      projectSlides = [];
+    }
+
     const tiktokId = getTikTokVideoId(url) || getTikTokVideoId(externalUrl);
 
-    if (type === 'video' || fallbackVideo) {
+    if (projectSlides && projectSlides.length > 0) {
+      renderMediaSliderModal(stage, projectSlides, title, isVertical);
+    } else if (type === 'video' || fallbackVideo) {
       const shell = document.createElement('div');
       shell.className = isVertical ? 'player-shell vertical shadow-2xl' : 'player-shell shadow-2xl';
       const video = document.createElement('video');

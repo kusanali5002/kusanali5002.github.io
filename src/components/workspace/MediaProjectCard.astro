@@ -14,6 +14,12 @@ export interface Props {
   poster?: string;
   fallbackVideo?: string;
   images?: string[];
+  slides?: Array<{
+    type: 'image' | 'video' | 'youtube';
+    url: string;
+    title?: string;
+    poster?: string;
+  }>;
   source?: {
     platform: string;
     url: string;
@@ -37,13 +43,14 @@ const {
   poster,
   fallbackVideo,
   images = [],
+  slides = [],
   source,
   tags = [],
   featured = false,
   aspectRatio = '16:9',
 } = Astro.props;
 
-const previewImage = thumbnail || poster || (images.length > 0 ? images[0] : '/images/Nahida_Icon.webp');
+const previewImage = thumbnail || poster || (slides.length > 0 ? slides[0].url : (images.length > 0 ? images[0] : '/images/Nahida_Icon.webp'));
 
 // Type labels and badges
 const typeBadgeConfig: Record<string, { label: string; icon: string; colorClass: string }> = {
@@ -102,6 +109,7 @@ const badge = typeBadgeConfig[type] || typeBadgeConfig.project;
   data-fallback-video={fallbackVideo || ''}
   data-aspect-ratio={aspectRatio}
   data-gallery-images={JSON.stringify(images)}
+  data-slides={JSON.stringify(slides)}
   data-slug={slug}
   data-project-date={formatDate(date)}
   data-project-tags={JSON.stringify(tags)}
@@ -133,6 +141,16 @@ const badge = typeBadgeConfig[type] || typeBadgeConfig.project;
         <span>{badge.label}</span>
       </span>
     </div>
+
+    <!-- Multi-Slide Count Badge -->
+    {slides.length > 0 && (
+      <div class="absolute top-4 right-4">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-mono font-medium tracking-wider bg-black/60 backdrop-blur-md text-white border border-white/20 shadow-md">
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"/></svg>
+          <span>{slides.length} Slides</span>
+        </span>
+      </div>
+    )}
 
     <!-- Quick Preview / Play Action Icon -->
     <div class="absolute inset-0 flex items-center justify-center pointer-events-none">

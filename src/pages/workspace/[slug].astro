@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import SocialEmbed from '../../components/workspace/SocialEmbed.astro';
 import VideoPlayer from '../../components/workspace/VideoPlayer.astro';
 import ImageGallery from '../../components/workspace/ImageGallery.astro';
+import MediaSlider from '../../components/workspace/MediaSlider.astro';
 import { formatDate } from '../../utils/formatters';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 
@@ -65,7 +66,13 @@ const previewImage = project.data.thumbnail || project.data.poster || '/images/N
       <!-- Left Column: Product Video or Image Display -->
       <div class="lg:col-span-7 xl:col-span-7 lg:sticky lg:top-24">
         <div class="rounded-3xl overflow-hidden glass-panel border border-sumeru-200/60 dark:border-white/[0.08] shadow-2xl bg-black/40 flex items-center justify-center">
-          {project.data.type === 'video' && project.data.media ? (
+          {project.data.slides && project.data.slides.length > 0 ? (
+            <MediaSlider
+              slides={project.data.slides}
+              title={project.data.title}
+              aspectRatio={project.data.aspectRatio}
+            />
+          ) : project.data.type === 'video' && project.data.media ? (
             <VideoPlayer
               media={project.data.media}
               poster={project.data.poster}

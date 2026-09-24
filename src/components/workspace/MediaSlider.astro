@@ -1,0 +1,227 @@
+---
+export interface SlideItem {
+  type: 'image' | 'video' | 'youtube';
+  url: string;
+  title?: string;
+  poster?: string;
+}
+
+export interface Props {
+  slides: SlideItem[];
+  title: string;
+  aspectRatio?: string;
+}
+
+const { slides = [], title, aspectRatio = '16:9' } = Astro.props;
+
+function getYouTubeId(rawUrl: string): string | null {
+  try {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = rawUrl.match(regExp);
+    return match && match[2].length === 11 ? match[2] : null;
+  } catch {
+    return null;
+  }
+}
+
+const sliderId = `slider-${Math.random().toString(36).substring(2, 9)}`;
+---
+
+<div
+  id={sliderId}
+  class:list={[
+    'media-slider-container relative w-full overflow-hidden bg-black select-none rounded-3xl shadow-2xl flex flex-col',
+    aspectRatio === '9:16' ? 'aspect-[9/16]' : 'aspect-video'
+  ]}
+  role="region"
+  aria-label={`Media showcase for ${title}`}
+  tabindex="0"
+>
+  <!-- Slide Track -->
+  <div class="slider-track w-full h-full flex transition-transform duration-500 ease-out will-change-transform">
+    {slides.map((slide, idx) => {
+      const ytId = slide.type === 'youtube' ? getYouTubeId(slide.url) : null;
+      return (
+        <div
+          class="slider-slide w-full h-full flex-shrink-0 relative flex items-center justify-center bg-black overflow-hidden"
+          data-slide-index={idx}
+          data-slide-type={slide.type}
+        >
+          {slide.type === 'youtube' && ytId ? (
+            <div class="w-full h-full relative aspect-video flex items-center justify-center">
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${ytId}?enablejsapi=1&rel=0&playsinline=1`}
+                class="w-full h-full border-0 absolute inset-0 youtube-iframe"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+                title={slide.title || `${title} - Video`}
+              ></iframe>
+            </div>
+          ) : slide.type === 'video' ? (
+            <video
+              src={slide.url}
+              poster={slide.poster}
+              controls
+              playsinline
+              preload="metadata"
+              class="w-full h-full object-contain"
+            >
+              Your browser does not support HTML5 video.
+            </video>
+          ) : (
+            <img
+              src={slide.url}
+              alt={slide.title || `${title} - slide ${idx + 1}`}
+              class="w-full h-full object-contain cursor-zoom-in"
+              loading={idx === 0 ? 'eager' : 'lazy'}
+            />
+          )}
+
+          <!-- Slide Top-Left Label -->
+          <div class="absolute top-3 sm:top-4 left-3 sm:left-4 z-10 px-3 py-1 rounded-full text-xs font-mono bg-black/60 backdrop-blur-md text-white/90 border border-white/10 pointer-events-none flex items-center gap-1.5 shadow-md">
+            <span class="w-2 h-2 rounded-full bg-nahida-mint animate-pulse"></span>
+            <span>{idx + 1}/{slides.length} • {slide.title || `Slide ${idx + 1}`}</span>
+          </div>
+        </div>
+      );
+    })}
+  </div>
+
+  <!-- Left / Right Nav Arrows -->
+  <button
+    type="button"
+    class="slider-prev-btn absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/60 hover:bg-black/85 text-white flex items-center justify-center border border-white/20 backdrop-blur-md transition-all shadow-xl hover:scale-110 active:scale-95 cursor-pointer"
+    aria-label="Previous slide"
+  >
+    <svg class="w-5 h-5 -ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+    </svg>
+  </button>
+
+  <button
+    type="button"
+    class="slider-next-btn absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/60 hover:bg-black/85 text-white flex items-center justify-center border border-white/20 backdrop-blur-md transition-all shadow-xl hover:scale-110 active:scale-95 cursor-pointer"
+    aria-label="Next slide"
+  >
+    <svg class="w-5 h-5 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+    </svg>
+  </button>
+
+  <!-- Horizontal Slide-Control Bar (Bottom Tabs) -->
+  <div class="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 sm:gap-2 p-1.5 rounded-full bg-black/75 backdrop-blur-md border border-white/15 max-w-[94%] overflow-x-auto shadow-2xl">
+    {slides.map((slide, idx) => (
+      <button
+        type="button"
+        class="slider-nav-tab px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-mono tracking-wider transition-all duration-300 flex items-center gap-1.5 cursor-pointer whitespace-nowrap text-white/70 hover:text-white hover:bg-white/10"
+        data-slide-index={idx}
+        aria-label={`Go to slide ${idx + 1}: ${slide.title || 'Slide'}`}
+      >
+        <span class="tab-indicator w-1.5 h-1.5 rounded-full bg-current opacity-70"></span>
+        <span class="truncate max-w-[120px] sm:max-w-[160px]">{slide.title || `Slide ${idx + 1}`}</span>
+      </button>
+    ))}
+  </div>
+</div>
+
+<script>
+  function setupMediaSliders() {
+    document.querySelectorAll<HTMLElement>('.media-slider-container').forEach((slider) => {
+      if ((slider as any).__initialized) return;
+      (slider as any).__initialized = true;
+
+      const track = slider.querySelector<HTMLElement>('.slider-track');
+      const slides = slider.querySelectorAll<HTMLElement>('.slider-slide');
+      const prevBtn = slider.querySelector<HTMLButtonElement>('.slider-prev-btn');
+      const nextBtn = slider.querySelector<HTMLButtonElement>('.slider-next-btn');
+      const tabs = slider.querySelectorAll<HTMLButtonElement>('.slider-nav-tab');
+
+      if (!track || !slides.length) return;
+
+      let currentIndex = 0;
+      const totalSlides = slides.length;
+
+      function updateSlider(index: number) {
+        currentIndex = (index + totalSlides) % totalSlides;
+        track!.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+        // Update tabs active state
+        tabs.forEach((tab, idx) => {
+          if (idx === currentIndex) {
+            tab.classList.add('bg-sumeru-600', 'dark:bg-nahida-mint', 'text-white', 'dark:text-sumeru-950', 'font-semibold', 'shadow-md');
+            tab.classList.remove('text-white/70', 'hover:bg-white/10');
+          } else {
+            tab.classList.remove('bg-sumeru-600', 'dark:bg-nahida-mint', 'text-white', 'dark:text-sumeru-950', 'font-semibold', 'shadow-md');
+            tab.classList.add('text-white/70', 'hover:bg-white/10');
+          }
+        });
+
+        // Pause other videos if moving away from an iframe
+        slides.forEach((slide, idx) => {
+          if (idx !== currentIndex) {
+            const iframe = slide.querySelector<HTMLIFrameElement>('iframe');
+            if (iframe && iframe.contentWindow) {
+              iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+            }
+            const video = slide.querySelector<HTMLVideoElement>('video');
+            if (video && !video.paused) {
+              video.pause();
+            }
+          }
+        });
+      }
+
+      prevBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        updateSlider(currentIndex - 1);
+      });
+
+      nextBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        updateSlider(currentIndex + 1);
+      });
+
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const targetIdx = parseInt(tab.getAttribute('data-slide-index') || '0', 10);
+          updateSlider(targetIdx);
+        });
+      });
+
+      // Keyboard left/right arrows navigation
+      slider.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          updateSlider(currentIndex - 1);
+        } else if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          updateSlider(currentIndex + 1);
+        }
+      });
+
+      // Touch swipe support
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      slider.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+
+      slider.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        const diff = touchStartX - touchEndX;
+        if (Math.abs(diff) > 40) {
+          if (diff > 0) updateSlider(currentIndex + 1);
+          else updateSlider(currentIndex - 1);
+        }
+      }, { passive: true });
+
+      // Initialize first slide active state
+      updateSlider(0);
+    });
+  }
+
+  setupMediaSliders();
+  document.addEventListener('astro:page-load', setupMediaSliders);
+</script>

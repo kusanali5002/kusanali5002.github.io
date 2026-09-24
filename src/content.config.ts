@@ -30,6 +30,12 @@ const workspaceCollection = defineCollection({
     poster: z.string().optional(),
     fallbackVideo: z.string().optional(),
     images: z.array(z.string()).optional(),
+    slides: z.array(z.object({
+      type: z.enum(['image', 'video', 'youtube']),
+      url: z.string(),
+      title: z.string().optional(),
+      poster: z.string().optional(),
+    })).optional(),
     source: z.object({
       platform: z.string(),
       url: z.string(),
