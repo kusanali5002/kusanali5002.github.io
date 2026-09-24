@@ -80,9 +80,9 @@ const typeBadgeConfig: Record<string, { label: string; icon: string; colorClass:
     colorClass: 'bg-sky-500/10 text-sky-700 dark:text-sky-400 border-sky-500/20',
   },
   project: {
-    label: 'CREATIVE WORKSPACE',
-    icon: '★',
-    colorClass: 'bg-purple-500/10 text-purple-700 dark:text-purple-400 border-purple-500/20',
+    label: 'LOCAL WORK',
+    icon: '✦',
+    colorClass: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20',
   },
 };
 
@@ -90,10 +90,7 @@ const badge = typeBadgeConfig[type] || typeBadgeConfig.project;
 ---
 
 <div
-  class:list={[
-    'workspace-card group interactive-card glass-panel rounded-3xl overflow-hidden flex flex-col justify-between border border-sumeru-200/50 dark:border-white/[0.08] transition-all duration-300',
-    featured ? 'md:col-span-2' : 'col-span-1'
-  ]}
+  class="workspace-card group interactive-card glass-panel rounded-3xl overflow-hidden flex flex-col h-full border border-sumeru-200/50 dark:border-white/[0.08] transition-all duration-300 cursor-pointer"
   data-title={title.toLowerCase()}
   data-type={type === 'image' ? 'local work' : type}
   data-platform={platform || (type === 'image' ? 'local work' : 'none')}
@@ -114,12 +111,9 @@ const badge = typeBadgeConfig[type] || typeBadgeConfig.project;
   data-project-date={formatDate(date)}
   data-project-tags={JSON.stringify(tags)}
 >
-  <!-- Card Media Viewport -->
+  <!-- Card Media Viewport (Uniform 16:9 aspect ratio across all post boxes) -->
   <div
-    class:list={[
-      'relative w-full overflow-hidden bg-sumeru-950/20 cursor-pointer project-card-trigger focus:outline-none focus-visible:ring-2 focus-visible:ring-sumeru-500',
-      aspectRatio === '9:16' ? 'aspect-[9/16] max-h-[420px]' : (featured ? 'aspect-[16/9] sm:aspect-[21/9]' : 'aspect-video')
-    ]}
+    class="relative w-full aspect-video flex-shrink-0 overflow-hidden bg-sumeru-950/20 cursor-pointer project-card-trigger focus:outline-none focus-visible:ring-2 focus-visible:ring-sumeru-500"
     role="button"
     tabindex="0"
     aria-haspopup="dialog"
@@ -129,7 +123,7 @@ const badge = typeBadgeConfig[type] || typeBadgeConfig.project;
       src={previewImage}
       alt={title}
       loading="lazy"
-      class="w-full h-full object-cover sm:group-hover:scale-105 sm:transition-transform sm:duration-500 sm:ease-out"
+      class="w-full h-full object-cover object-center sm:group-hover:scale-105 sm:transition-transform sm:duration-500 sm:ease-out"
       onerror="this.src='/images/Nahida_Icon.webp'"
     />
     <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent opacity-75 sm:group-hover:opacity-60 sm:transition-opacity"></div>
@@ -172,15 +166,15 @@ const badge = typeBadgeConfig[type] || typeBadgeConfig.project;
   </div>
 
   <!-- Card Info Content -->
-  <div class="p-6 flex flex-col flex-grow justify-between">
-    <div>
-      <h3 class="font-display font-semibold text-lg text-sumeru-950 dark:text-nahida-light group-hover:text-sumeru-600 dark:group-hover:text-nahida-mint transition-colors line-clamp-2 leading-snug mb-2">
+  <div class="p-5 sm:p-6 flex flex-col flex-1 justify-between">
+    <div class="flex-1">
+      <h3 class="font-display font-semibold text-base sm:text-lg text-sumeru-950 dark:text-nahida-light group-hover:text-sumeru-600 dark:group-hover:text-nahida-mint transition-colors line-clamp-2 leading-snug mb-2 min-h-[2.75rem] sm:min-h-[3.25rem]">
         {title}
       </h3>
-      <p class="text-sm text-sumeru-800/80 dark:text-nahida-light/70 line-clamp-2 leading-relaxed mb-4" set:html={description} />
+      <p class="text-xs sm:text-sm text-sumeru-800/80 dark:text-nahida-light/70 line-clamp-2 leading-relaxed mb-4 min-h-[2.5rem]" set:html={description} />
     </div>
 
-    <div class="pt-4 border-t border-sumeru-200/40 dark:border-white/[0.05] flex items-center justify-between gap-2">
+    <div class="pt-4 border-t border-sumeru-200/40 dark:border-white/[0.05] flex items-center justify-between gap-2 mt-auto">
       <!-- Tags -->
       <div class="flex flex-wrap gap-1.5 items-center">
         {tags.slice(0, 2).map(tag => (

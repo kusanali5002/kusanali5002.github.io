@@ -89,10 +89,10 @@ const allTags = Array.from(new Set(allProjects.flatMap(p => p.data.tags)));
       <span>Click any project card to open in lightbox viewer</span>
     </div>
 
-    <!-- Asymmetric Editorial Grid -->
-    <div id="workspace-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+    <!-- Workspace Grid: Uniform Post Boxes -->
+    <div id="workspace-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
       {sortedProjects.map((project) => (
-        <div class="reveal-on-scroll" style="content-visibility: auto; contain-intrinsic-size: 0 400px;">
+        <div class="reveal-on-scroll h-full flex flex-col" style="content-visibility: auto; contain-intrinsic-size: 0 400px;">
           <MediaProjectCard
             title={project.data.title}
             description={project.data.description}

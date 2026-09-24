@@ -29,10 +29,10 @@ const { projects } = Astro.props;
     </a>
   </div>
 
-  <!-- Editorial Asymmetric Grid -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+  <!-- Workspace Preview Grid: Uniform Post Boxes -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch">
     {projects.slice(0, 3).map((proj) => (
-      <div class="reveal-on-scroll">
+      <div class="reveal-on-scroll h-full flex flex-col">
         <MediaProjectCard
           title={proj.data.title}
           description={proj.data.description}

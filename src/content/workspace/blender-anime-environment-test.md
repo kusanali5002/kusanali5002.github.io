@@ -2,8 +2,7 @@
 title: "Blender Anime Environment Test ( Cycle)"
 description: "I remade an anime scene I watched. My first time so total time is a bit long"
 date: "2026-09-24T18:40:00"
-type: "project"
-platform: "youtube"
+type: "image"
 url: "https://youtu.be/oENS9u4CqQA"
 thumbnail: "/images/Fullscene.jpg"
 poster: "/images/Fullscene.jpg"
@@ -18,6 +17,7 @@ slides:
     url: "https://youtu.be/oENS9u4CqQA"
     title: "Animation Video"
 tags:
+  - "Local Work"
   - "Blender"
   - "3D"
   - "Anime"

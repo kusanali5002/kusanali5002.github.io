@@ -78,11 +78,14 @@ const { types, tags, totalProjects } = Astro.props;
           platform.includes(query) ||
           type.includes(query);
 
+        const wrapper = (card as HTMLElement).closest('.reveal-on-scroll') as HTMLElement | null;
         if (matchesType && matchesQuery) {
           (card as HTMLElement).style.display = '';
+          if (wrapper) wrapper.style.display = '';
           visibleCount++;
         } else {
           (card as HTMLElement).style.display = 'none';
+          if (wrapper) wrapper.style.display = 'none';
         }
       });
 

@@ -491,16 +491,20 @@
       const target = e.target as HTMLElement | null;
       if (!target) return;
 
-      const trigger = target.closest('.project-card-trigger');
-      if (trigger) {
-        e.preventDefault();
-        const card = trigger.closest('.workspace-card') as HTMLElement;
-        if (card) openModal(card);
+      if (target.closest('#modal-close-btn') || target.closest('#modal-backdrop')) {
+        closeModal();
         return;
       }
 
-      if (target.closest('#modal-close-btn') || target.closest('#modal-backdrop')) {
-        closeModal();
+      const card = target.closest('.workspace-card') as HTMLElement | null;
+      if (card) {
+        const link = target.closest('a, button');
+        if (link && !target.closest('.project-card-trigger')) {
+          return;
+        }
+        e.preventDefault();
+        openModal(card);
+        return;
       }
     });
 
@@ -514,11 +518,10 @@
 
       if (e.key === 'Enter' || e.key === ' ') {
         const target = e.target as HTMLElement | null;
-        const trigger = target?.closest('.project-card-trigger');
-        if (trigger) {
+        const card = target?.closest('.workspace-card') as HTMLElement | null;
+        if (card && (!target?.closest('a') || target?.closest('.project-card-trigger'))) {
           e.preventDefault();
-          const card = trigger.closest('.workspace-card') as HTMLElement;
-          if (card) openModal(card);
+          openModal(card);
         }
       }
     });
