@@ -189,7 +189,7 @@
           const wrapper = document.createElement('div');
           wrapper.className = 'w-full h-full relative aspect-video flex items-center justify-center max-w-full max-h-full';
           const iframe = document.createElement('iframe');
-          iframe.src = `https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1`;
+          iframe.src = `https://www.youtube-nocookie.com/embed/${ytId}?enablejsapi=1&rel=0&playsinline=1`;
           iframe.className = 'w-full h-full border-0 absolute inset-0 rounded-xl';
           iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
           iframe.setAttribute('allowfullscreen', 'true');
@@ -272,6 +272,21 @@
           tab.className = 'px-3 py-1 rounded-full text-[10px] sm:text-xs font-mono tracking-wider transition-all duration-300 flex items-center gap-1.5 cursor-pointer whitespace-nowrap bg-sumeru-600 dark:bg-nahida-mint text-white dark:text-sumeru-950 font-semibold shadow-md';
         } else {
           tab.className = 'px-3 py-1 rounded-full text-[10px] sm:text-xs font-mono tracking-wider transition-all duration-300 flex items-center gap-1.5 cursor-pointer whitespace-nowrap text-white/70 hover:text-white hover:bg-white/10';
+        }
+      });
+
+      // Pause any playing YouTube or HTML5 video on non-active slides
+      const slideEls = track.querySelectorAll('.slider-slide');
+      slideEls.forEach((slideEl, idx) => {
+        if (idx !== currentIndex) {
+          const ytIframe = slideEl.querySelector<HTMLIFrameElement>('iframe');
+          if (ytIframe && ytIframe.contentWindow) {
+            ytIframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+          }
+          const htmlVideo = slideEl.querySelector<HTMLVideoElement>('video');
+          if (htmlVideo && !htmlVideo.paused) {
+            htmlVideo.pause();
+          }
         }
       });
     }
@@ -469,7 +484,7 @@
     document.body.style.overflow = 'hidden';
   }
 
-  function closeModal() {
+  function closeModal(immediate = false) {
     const { modal, panel, stage } = getModalElements();
     if (!modal || !panel) return;
 
@@ -478,9 +493,16 @@
     panel.classList.add('scale-95');
     panel.classList.remove('scale-100');
     document.body.style.overflow = '';
-    setTimeout(() => {
+
+    if (immediate) {
       if (stage) stage.innerHTML = '';
-    }, 300);
+    } else {
+      setTimeout(() => {
+        if (stage && modal.classList.contains('opacity-0')) {
+          stage.innerHTML = '';
+        }
+      }, 300);
+    }
   }
 
   function initGlobalProjectModalHandlers() {
@@ -490,6 +512,11 @@
     document.addEventListener('click', (e) => {
       const target = e.target as HTMLElement | null;
       if (!target) return;
+
+      if (target.closest('#modal-detail-link')) {
+        closeModal(true);
+        return;
+      }
 
       if (target.closest('#modal-close-btn') || target.closest('#modal-backdrop')) {
         closeModal();
@@ -529,10 +556,11 @@
 
   initGlobalProjectModalHandlers();
   document.addEventListener('astro:page-load', initGlobalProjectModalHandlers);
+  document.addEventListener('astro:before-preparation', () => {
+    closeModal(true);
+  });
   document.addEventListener('astro:after-swap', () => {
-    const { modal } = getModalElements();
-    if (!modal || modal.classList.contains('opacity-0')) {
-      document.body.style.overflow = '';
-    }
+    closeModal(true);
+    document.body.style.overflow = '';
   });
 </script>
