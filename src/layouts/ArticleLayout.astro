@@ -120,7 +120,7 @@ const coverImage = cover || fallbackCover;
       {prevPost ? (
         <a
           href={`/activities/${prevPost.slug}/`}
-          class="p-5 rounded-2xl glass-panel border border-sumeru-200/60 dark:border-white/[0.08] hover:border-sumeru-400 dark:hover:border-nahida-mint/40 transition-all flex flex-col group"
+          class="p-5 rounded-[11px] glass-panel border border-sumeru-200/60 dark:border-white/[0.08] hover:border-sumeru-400 dark:hover:border-nahida-mint/40 transition-all flex flex-col group"
         >
           <span class="text-xs text-sumeru-600 dark:text-nahida-mint/70 font-mono mb-1">← Previous Article</span>
           <span class="font-display font-semibold text-sm text-sumeru-950 dark:text-white group-hover:text-sumeru-600 dark:group-hover:text-nahida-mint transition-colors line-clamp-2">
@@ -132,7 +132,7 @@ const coverImage = cover || fallbackCover;
       {nextPost ? (
         <a
           href={`/activities/${nextPost.slug}/`}
-          class="p-5 rounded-2xl glass-panel border border-sumeru-200/60 dark:border-white/[0.08] hover:border-sumeru-400 dark:hover:border-nahida-mint/40 transition-all flex flex-col items-end text-right group"
+          class="p-5 rounded-[11px] glass-panel border border-sumeru-200/60 dark:border-white/[0.08] hover:border-sumeru-400 dark:hover:border-nahida-mint/40 transition-all flex flex-col items-end text-right group"
         >
           <span class="text-xs text-sumeru-600 dark:text-nahida-mint/70 font-mono mb-1">Next Article →</span>
           <span class="font-display font-semibold text-sm text-sumeru-950 dark:text-white group-hover:text-sumeru-600 dark:group-hover:text-nahida-mint transition-colors line-clamp-2">
@@ -152,7 +152,7 @@ const coverImage = cover || fallbackCover;
           {relatedPosts.map((rel) => (
             <a
               href={`/activities/${rel.slug}/`}
-              class="group p-4 rounded-2xl glass-panel border border-sumeru-200/50 dark:border-white/[0.06] hover:border-sumeru-400 dark:hover:border-nahida-mint/30 transition-all flex flex-col justify-between"
+              class="group p-4 rounded-[11px] glass-panel border border-sumeru-200/50 dark:border-white/[0.06] hover:border-sumeru-400 dark:hover:border-nahida-mint/30 transition-all flex flex-col justify-between"
             >
               <div>
                 <time class="text-[11px] font-mono text-sumeru-600 dark:text-nahida-mint/70 mb-1.5 block">

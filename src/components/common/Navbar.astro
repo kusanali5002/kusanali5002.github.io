@@ -24,7 +24,7 @@ function isActive(itemHref: string) {
 <header
   id="site-header"
   transition:persist="site-header"
-  class="site-header fixed top-0 left-0 right-0 z-40 transition-all duration-300 ease-out backdrop-blur-md bg-white/70 dark:bg-[#09110d]/75 border-b border-black/[0.06] dark:border-white/[0.08]"
+  class="site-header fixed top-0 left-0 right-0 z-40 transition-all duration-300 ease-out backdrop-blur-md bg-white/25 dark:bg-[#09110d]/45 border-b border-black/[0.05] dark:border-white/[0.08]"
 >
   <div
     id="header-inner"
@@ -78,7 +78,7 @@ function isActive(itemHref: string) {
       })}
     </nav>
 
-    <!-- Header Actions (Theme Toggle, Language Toggle & Mobile Menu Button) -->
+    <!-- Header Actions (Language Toggle, Theme Toggle & Mobile Menu Button) -->
     <div class="flex items-center gap-2">
       <LanguageToggle />
       <ThemeToggle />
@@ -109,13 +109,13 @@ function isActive(itemHref: string) {
   }
 
   .site-header.transformed {
-    background-color: rgba(255, 255, 255, 0.88);
+    background-color: rgba(255, 255, 255, 0.45);
     border-bottom-color: rgba(0, 0, 0, 0.08);
     box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
   }
 
   html.dark .site-header.transformed {
-    background-color: rgba(9, 17, 13, 0.88);
+    background-color: rgba(9, 17, 13, 0.68);
     border-bottom-color: rgba(255, 255, 255, 0.09);
     box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.4), 0 2px 8px -1px rgba(0, 0, 0, 0.3);
   }

@@ -51,11 +51,14 @@ const allTags = Array.from(new Set(allProjects.flatMap(p => p.data.tags)));
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
     <!-- Section Header -->
-    <div class="text-center max-w-3xl lg:max-w-none mx-auto mb-10">
+    <div class="text-center max-w-3xl mx-auto mb-10">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono uppercase tracking-widest bg-amber-500/10 dark:bg-nahida-gold/15 text-amber-800 dark:text-nahida-gold border border-amber-500/20 dark:border-nahida-gold/30 mb-4">
+        <span>MAKE • CREATE • EXPERIMENT</span>
+      </div>
       <h1 class="font-display font-bold text-3xl sm:text-5xl text-sumeru-950 dark:text-white tracking-tight mb-4">
         Creative Workspace
       </h1>
-      <p class="text-base sm:text-lg text-sumeru-800/80 dark:text-nahida-light/80 leading-relaxed lg:whitespace-nowrap">
+      <p class="text-base sm:text-lg text-sumeru-800/80 dark:text-nahida-light/80 leading-relaxed">
         A personal workspace where motion graphics, TikTok reels, and graphic design come to life.
       </p>
     </div>
@@ -89,10 +92,10 @@ const allTags = Array.from(new Set(allProjects.flatMap(p => p.data.tags)));
       <span>Click any project card to open in lightbox viewer</span>
     </div>
 
-    <!-- Workspace Grid: Uniform Post Boxes -->
-    <div id="workspace-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
+    <!-- Asymmetric Editorial Grid -->
+    <div id="workspace-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-8">
       {sortedProjects.map((project) => (
-        <div class="reveal-on-scroll h-full flex flex-col" style="content-visibility: auto; contain-intrinsic-size: 0 400px;">
+        <div class="reveal-on-scroll">
           <MediaProjectCard
             title={project.data.title}
             description={project.data.description}
@@ -110,7 +113,6 @@ const allTags = Array.from(new Set(allProjects.flatMap(p => p.data.tags)));
             tags={project.data.tags}
             featured={project.data.featured}
             aspectRatio={project.data.aspectRatio}
-            slides={project.data.slides}
           />
         </div>
       ))}

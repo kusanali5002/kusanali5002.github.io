@@ -1,5 +1,6 @@
 ---
 import { formatDate } from '../../utils/formatters';
+import { isPortraitImage } from '../../utils/imageOrientation';
 
 export interface Props {
   title: string;
@@ -14,12 +15,6 @@ export interface Props {
   poster?: string;
   fallbackVideo?: string;
   images?: string[];
-  slides?: Array<{
-    type: 'image' | 'video' | 'youtube';
-    url: string;
-    title?: string;
-    poster?: string;
-  }>;
   source?: {
     platform: string;
     url: string;
@@ -28,6 +23,7 @@ export interface Props {
   tags: string[];
   featured?: boolean;
   aspectRatio?: string;
+  variant?: 'default' | 'spotlight' | 'compact';
 }
 
 const {
@@ -43,14 +39,15 @@ const {
   poster,
   fallbackVideo,
   images = [],
-  slides = [],
   source,
   tags = [],
   featured = false,
   aspectRatio = '16:9',
+  variant = 'default',
 } = Astro.props;
 
-const previewImage = thumbnail || poster || (slides.length > 0 ? slides[0].url : (images.length > 0 ? images[0] : '/images/Nahida_Icon.webp'));
+const previewImage = thumbnail || poster || (images.length > 0 ? images[0] : '/images/Nahida_Icon.webp');
+const isPortrait = variant === 'compact' ? isPortraitImage(previewImage, aspectRatio) : false;
 
 // Type labels and badges
 const typeBadgeConfig: Record<string, { label: string; icon: string; colorClass: string }> = {
@@ -80,9 +77,9 @@ const typeBadgeConfig: Record<string, { label: string; icon: string; colorClass:
     colorClass: 'bg-sky-500/10 text-sky-700 dark:text-sky-400 border-sky-500/20',
   },
   project: {
-    label: 'LOCAL WORK',
-    icon: '✦',
-    colorClass: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20',
+    label: 'CREATIVE WORKSPACE',
+    icon: '★',
+    colorClass: 'bg-purple-500/10 text-purple-700 dark:text-purple-400 border-purple-500/20',
   },
 };
 
@@ -90,7 +87,16 @@ const badge = typeBadgeConfig[type] || typeBadgeConfig.project;
 ---
 
 <div
-  class="workspace-card group interactive-card glass-panel rounded-3xl overflow-hidden flex flex-col h-full border border-sumeru-200/50 dark:border-white/[0.08] transition-all duration-300 cursor-pointer"
+  class:list={[
+    'workspace-card group interactive-card glass-panel overflow-hidden flex justify-between border border-sumeru-200/50 dark:border-white/[0.08] transition-all duration-300',
+    variant === 'compact' ? 'rounded-none lg:rounded-[11px]' : 'rounded-[11px]',
+    variant === 'compact'
+      ? (isPortrait
+          ? 'flex-row h-[310px] sm:h-[400px] lg:h-[var(--hero-sync-h,570px)]'
+          : 'relative flex-col h-[310px] sm:h-[400px] lg:h-[var(--hero-sync-h,570px)]')
+      : 'flex-col h-full',
+    variant === 'default' && (featured ? 'md:col-span-2' : 'col-span-1')
+  ]}
   data-title={title.toLowerCase()}
   data-type={type === 'image' ? 'local work' : type}
   data-platform={platform || (type === 'image' ? 'local work' : 'none')}
@@ -106,49 +112,44 @@ const badge = typeBadgeConfig[type] || typeBadgeConfig.project;
   data-fallback-video={fallbackVideo || ''}
   data-aspect-ratio={aspectRatio}
   data-gallery-images={JSON.stringify(images)}
-  data-slides={JSON.stringify(slides)}
   data-slug={slug}
-  data-project-date={formatDate(date)}
-  data-project-tags={JSON.stringify(tags)}
 >
-  <!-- Card Media Viewport (Uniform 16:9 aspect ratio across all post boxes) -->
-  <div
-    class="relative w-full aspect-video flex-shrink-0 overflow-hidden bg-sumeru-950/20 cursor-pointer project-card-trigger focus:outline-none focus-visible:ring-2 focus-visible:ring-sumeru-500"
-    role="button"
-    tabindex="0"
-    aria-haspopup="dialog"
-    aria-label={`Open media preview for ${title}`}
-  >
+  <!-- Card Media Viewport -->
+  <div class:list={[
+    'overflow-hidden bg-sumeru-950/20 cursor-pointer project-card-trigger shrink-0',
+    variant === 'spotlight'
+      ? 'relative w-full h-44 sm:h-52 lg:h-auto lg:flex-1 lg:min-h-[340px]'
+      : variant === 'compact'
+        ? (isPortrait ? 'relative w-[40%] h-full' : 'absolute inset-0 w-full h-full')
+        : ['relative w-full', aspectRatio === '9:16' ? 'aspect-[4/3] sm:aspect-[9/16] max-h-[260px] sm:max-h-[420px]' : (featured ? 'aspect-video sm:aspect-[16/9] md:aspect-[21/9]' : 'aspect-video')]
+  ]}>
     <img
       src={previewImage}
       alt={title}
       loading="lazy"
-      class="w-full h-full object-cover object-center sm:group-hover:scale-105 sm:transition-transform sm:duration-500 sm:ease-out"
+      class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 ease-out"
       onerror="this.src='/images/Nahida_Icon.webp'"
     />
-    <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent opacity-75 sm:group-hover:opacity-60 sm:transition-opacity"></div>
+    <div
+      class:list={[
+        'absolute inset-0 transition-opacity',
+        variant === 'compact' && !isPortrait
+          ? 'bg-gradient-to-t from-black/90 via-black/45 to-black/15'
+          : 'bg-gradient-to-t from-black/75 via-black/20 to-transparent opacity-75 group-hover:opacity-60'
+      ]}
+    ></div>
 
     <!-- Type Badge -->
-    <div class="absolute top-4 left-4">
-      <span class:list={['inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider sm:backdrop-blur-md border shadow-sm', badge.colorClass]}>
+    <div class="absolute top-3 left-3 sm:top-4 sm:left-4 z-10">
+      <span class:list={['inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider backdrop-blur-md border shadow-sm', badge.colorClass]}>
         <span>{badge.icon}</span>
         <span>{badge.label}</span>
       </span>
     </div>
 
-    <!-- Multi-Slide Count Badge -->
-    {slides.length > 0 && (
-      <div class="absolute top-4 right-4">
-        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-mono font-medium tracking-wider bg-black/60 backdrop-blur-md text-white border border-white/20 shadow-md">
-          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"/></svg>
-          <span>{slides.length} Slides</span>
-        </span>
-      </div>
-    )}
-
     <!-- Quick Preview / Play Action Icon -->
     <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-      <div class="w-12 h-12 rounded-full bg-white/80 dark:bg-black/70 text-sumeru-950 dark:text-nahida-mint flex items-center justify-center opacity-90 sm:opacity-0 sm:group-hover:opacity-100 sm:backdrop-blur-md shadow-lg">
+      <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/80 dark:bg-black/70 text-sumeru-950 dark:text-nahida-mint flex items-center justify-center opacity-0 group-hover:opacity-100 transform scale-75 group-hover:scale-100 transition-all duration-300 backdrop-blur-md shadow-lg">
         {type === 'video' || (type === 'social' && platform === 'youtube') ? (
           <svg class="w-5 h-5 ml-0.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
         ) : type === 'gallery' ? (
@@ -160,35 +161,89 @@ const badge = typeBadgeConfig[type] || typeBadgeConfig.project;
     </div>
 
     <!-- Date Overlay on Card Media -->
-    <span class="absolute bottom-3 right-4 text-xs font-mono text-white/90 drop-shadow-sm">
-      {formatDate(date)}
-    </span>
+    {(variant !== 'compact' || isPortrait) && (
+      <span class="absolute bottom-2.5 right-3 sm:bottom-3 sm:right-3.5 text-[10px] sm:text-xs font-mono text-white/90 drop-shadow-sm">
+        {formatDate(date)}
+      </span>
+    )}
   </div>
 
   <!-- Card Info Content -->
-  <div class="p-5 sm:p-6 flex flex-col flex-1 justify-between">
-    <div class="flex-1">
-      <h3 class="font-display font-semibold text-base sm:text-lg text-sumeru-950 dark:text-nahida-light group-hover:text-sumeru-600 dark:group-hover:text-nahida-mint transition-colors line-clamp-2 leading-snug mb-2 min-h-[2.75rem] sm:min-h-[3.25rem]">
+  <div class:list={[
+    'flex flex-col justify-between min-w-0',
+    variant === 'default'
+      ? 'flex-grow p-4 sm:p-6'
+      : isPortrait
+        ? 'flex-grow w-[60%] p-3.5 sm:p-5 lg:p-8'
+        : 'relative z-10 mt-auto w-full p-3.5 sm:p-6 lg:p-8 text-white pointer-events-none'
+  ]}>
+    <div>
+      {variant === 'compact' && !isPortrait && (
+        <span class="block text-[10px] lg:text-xs font-mono text-nahida-mint/95 mb-1 lg:mb-2 drop-shadow-sm">
+          {formatDate(date)}
+        </span>
+      )}
+      <h3
+        class:list={[
+          'font-display font-semibold transition-colors line-clamp-2 leading-snug',
+          variant === 'default'
+            ? 'text-base sm:text-lg mb-1.5 sm:mb-2 text-sumeru-950 dark:text-nahida-light group-hover:text-sumeru-600 dark:group-hover:text-nahida-mint'
+            : isPortrait
+              ? 'text-sm sm:text-lg lg:text-2xl mb-1.5 lg:mb-3 text-sumeru-950 dark:text-nahida-light group-hover:text-sumeru-600 dark:group-hover:text-nahida-mint'
+              : 'text-base sm:text-xl lg:text-2xl xl:text-[1.75rem] mb-1 lg:mb-2 text-white group-hover:text-nahida-mint drop-shadow-sm'
+        ]}
+      >
         {title}
       </h3>
-      <p class="text-xs sm:text-sm text-sumeru-800/80 dark:text-nahida-light/70 line-clamp-2 leading-relaxed mb-4 min-h-[2.5rem]" set:html={description} />
+      <p
+        class:list={[
+          'leading-relaxed',
+          variant === 'default'
+            ? 'text-xs sm:text-sm line-clamp-2 mb-3 sm:mb-4 text-sumeru-800/80 dark:text-nahida-light/70'
+            : isPortrait
+              ? 'text-[11px] sm:text-xs lg:text-base line-clamp-3 lg:line-clamp-4 mb-2 text-sumeru-800/80 dark:text-nahida-light/75'
+              : 'text-[11px] sm:text-xs lg:text-sm line-clamp-2 max-w-2xl mb-2.5 lg:mb-3.5 text-white/85 drop-shadow-sm'
+        ]}
+        set:html={description}
+      />
     </div>
 
-    <div class="pt-4 border-t border-sumeru-200/40 dark:border-white/[0.05] flex items-center justify-between gap-2 mt-auto">
+    <div
+      class:list={[
+        'flex items-center justify-between gap-2 pointer-events-auto',
+        variant === 'default'
+          ? 'pt-3 sm:pt-4 border-t border-sumeru-200/40 dark:border-white/[0.05]'
+          : isPortrait
+            ? 'pt-2.5 lg:pt-4 border-t border-sumeru-200/40 dark:border-white/[0.05]'
+            : 'pt-1'
+      ]}
+    >
       <!-- Tags -->
       <div class="flex flex-wrap gap-1.5 items-center">
         {tags.slice(0, 2).map(tag => (
-          <span class="px-2 py-0.5 rounded-lg text-[10px] font-medium bg-sumeru-100/70 dark:bg-sumeru-900/40 text-sumeru-800 dark:text-nahida-mint/90">
+          <span
+            class:list={[
+              'px-2 py-0.5 rounded-lg text-[10px] lg:text-xs font-medium',
+              variant === 'compact' && !isPortrait
+                ? 'bg-white/15 text-white border border-white/25 backdrop-blur-sm'
+                : 'bg-sumeru-100/70 dark:bg-sumeru-900/40 text-sumeru-800 dark:text-nahida-mint/90'
+            ]}
+          >
             #{tag}
           </span>
         ))}
       </div>
 
       <!-- Action Link / Detail Link -->
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 ml-auto">
         <a
           href={`/workspace/${slug}/`}
-          class="text-xs font-semibold text-sumeru-700 dark:text-nahida-mint hover:underline inline-flex items-center gap-1"
+          class:list={[
+            'text-xs font-semibold hover:underline inline-flex items-center gap-1',
+            variant === 'compact' && !isPortrait
+              ? 'text-nahida-mint'
+              : 'text-sumeru-700 dark:text-nahida-mint'
+          ]}
         >
           <span>Explore</span>
           <span>→</span>

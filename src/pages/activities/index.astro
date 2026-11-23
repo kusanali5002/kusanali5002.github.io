@@ -8,16 +8,8 @@ import { getCollection } from 'astro:content';
 const allPosts = await getCollection('activities');
 const sortedPosts = allPosts.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 
-// Discover unique categories from Markdown metadata in user-specified order
-const categoryOrder = ['Life', 'Knowledge', 'Gaming', 'Creative'];
-const categories = Array.from(new Set(allPosts.map((p) => p.data.category)))
-  .filter(Boolean)
-  .sort((a, b) => {
-    const idxA = categoryOrder.indexOf(a);
-    const idxB = categoryOrder.indexOf(b);
-    if (idxA !== -1 && idxB !== -1) return idxA - idxB;
-    return a.localeCompare(b);
-  });
+// Discover unique categories from Markdown metadata
+const categories = Array.from(new Set(allPosts.map((p) => p.data.category))).filter(Boolean);
 ---
 
 <BaseLayout
@@ -28,11 +20,14 @@ const categories = Array.from(new Set(allPosts.map((p) => p.data.category)))
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
     <!-- Section Header -->
     <div class="text-center max-w-3xl mx-auto mb-10">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono uppercase tracking-widest bg-sumeru-100 dark:bg-nahida-mint/10 text-sumeru-800 dark:text-nahida-mint border border-sumeru-300/40 dark:border-nahida-mint/20 mb-4">
+        <span>READ • LEARN • THINK</span>
+      </div>
       <h1 class="font-display font-bold text-3xl sm:text-5xl text-sumeru-950 dark:text-white tracking-tight mb-4" data-i18n="act-page-title">
         Activities Archive
       </h1>
       <p class="text-base sm:text-lg text-sumeru-800/80 dark:text-nahida-light/80 leading-relaxed" data-i18n="act-page-desc">
-        Analyses of game mechanics, personal stories and stuffs. Filter by category or search instantly.
+        A repository mathematical analyses of game mechanics, personal stories and stuffs. Filter by category or search instantly.
       </p>
     </div>
 
@@ -41,14 +36,12 @@ const categories = Array.from(new Set(allPosts.map((p) => p.data.category)))
 
     <!-- Results Count Bar -->
     <div class="flex items-center justify-between mb-8 px-2 text-xs font-mono text-sumeru-600 dark:text-nahida-mint/70 border-b border-sumeru-200/40 dark:border-white/[0.05] pb-3">
-      <span id="activities-count-display" data-i18n="act-count-display" data-count={sortedPosts.length}>
-        Showing {sortedPosts.length} articles
-      </span>
+      <span id="activities-count-display" data-i18n="act-count-display" data-count={sortedPosts.length}>Showing {sortedPosts.length} articles</span>
       <span data-i18n="act-sort-label">Sorted by: Most Recent</span>
     </div>
 
     <!-- Articles Grid -->
-    <div id="activities-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+    <div id="activities-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-8">
       {sortedPosts.map((post) => (
         <div class="reveal-on-scroll">
           <ActivityCard

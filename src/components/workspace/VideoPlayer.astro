@@ -15,7 +15,7 @@ const { media, poster, title, source, aspectRatio = '16:9' } = Astro.props;
 const fallbackPoster = '/images/Nahida_Icon.webp';
 ---
 
-<div class="video-player-container relative w-full rounded-2xl overflow-hidden glass-panel border border-sumeru-200/50 dark:border-white/[0.08] flex flex-col group">
+<div class="video-player-container relative w-full rounded-[11px] overflow-hidden glass-panel border border-sumeru-200/50 dark:border-white/[0.08] flex flex-col group">
   <!-- Video Frame -->
   <div class:list={['relative w-full bg-black/90 overflow-hidden flex items-center justify-center', aspectRatio === '9:16' ? 'aspect-[9/16] max-h-[560px]' : 'aspect-video']}>
     <video

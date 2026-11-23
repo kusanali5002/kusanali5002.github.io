@@ -21,7 +21,7 @@ const { types, tags, totalProjects } = Astro.props;
       type="search"
       id="workspace-search-input"
       placeholder="Search creative projects by title, tool, or platform..."
-      class="w-full pl-12 pr-10 py-3.5 rounded-2xl bg-white/80 dark:bg-black/40 border border-sumeru-200/80 dark:border-white/10 text-sm text-sumeru-950 dark:text-white placeholder-sumeru-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sumeru-500/50 dark:focus:ring-nahida-mint/50 backdrop-blur-md transition-all duration-200 shadow-sm"
+      class="w-full pl-12 pr-10 py-3.5 rounded-[11px] bg-white/80 dark:bg-black/40 border border-sumeru-200/80 dark:border-white/10 text-sm text-sumeru-950 dark:text-white placeholder-sumeru-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sumeru-500/50 dark:focus:ring-nahida-mint/50 backdrop-blur-md transition-all duration-200 shadow-sm"
       autocomplete="off"
     />
   </div>
@@ -78,14 +78,11 @@ const { types, tags, totalProjects } = Astro.props;
           platform.includes(query) ||
           type.includes(query);
 
-        const wrapper = (card as HTMLElement).closest('.reveal-on-scroll') as HTMLElement | null;
         if (matchesType && matchesQuery) {
           (card as HTMLElement).style.display = '';
-          if (wrapper) wrapper.style.display = '';
           visibleCount++;
         } else {
           (card as HTMLElement).style.display = 'none';
-          if (wrapper) wrapper.style.display = 'none';
         }
       });
 

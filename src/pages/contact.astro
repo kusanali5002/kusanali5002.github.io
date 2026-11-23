@@ -26,7 +26,14 @@ const contactChannels = [
     icon: '❖',
     badge: 'Social & Community',
   },
-
+  {
+    name: 'GitHub',
+    handle: 'kusanali5002',
+    desc: 'My personal archives',
+    url: 'https://github.com/kusanali5002',
+    icon: '★',
+    badge: 'Archives',
+  },
 ];
 ---
 
@@ -50,17 +57,17 @@ const contactChannels = [
     </div>
 
     <!-- Contact Cards Grid -->
-    <div class="contact-grid grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
       {contactChannels.map((item) => (
         <a
           href={item.url}
           target="_blank"
           rel="noopener noreferrer"
-          class="group reveal-on-scroll p-6 rounded-3xl glass-panel border border-sumeru-200/60 dark:border-white/[0.08] hover:border-sumeru-400 dark:hover:border-nahida-mint/40 transition-all flex flex-col justify-between w-full"
+          class="group reveal-on-scroll p-6 rounded-[11px] glass-panel border border-sumeru-200/60 dark:border-white/[0.08] hover:border-sumeru-400 dark:hover:border-nahida-mint/40 transition-all flex flex-col justify-between"
         >
           <div>
             <div class="flex items-center justify-between mb-4">
-              <span class="w-10 h-10 rounded-2xl bg-sumeru-100 dark:bg-sumeru-900/60 flex items-center justify-center text-lg text-sumeru-900 dark:text-nahida-mint border border-sumeru-200/50 dark:border-nahida-mint/20">
+              <span class="w-10 h-10 rounded-[11px] bg-sumeru-100 dark:bg-sumeru-900/60 flex items-center justify-center text-lg text-sumeru-900 dark:text-nahida-mint border border-sumeru-200/50 dark:border-nahida-mint/20">
                 {item.icon}
               </span>
               <span class="text-[11px] font-mono px-2.5 py-1 rounded-full bg-sumeru-50 dark:bg-sumeru-950/70 text-sumeru-700 dark:text-nahida-mint/80 border border-sumeru-200/40 dark:border-nahida-mint/20">
@@ -88,7 +95,7 @@ const contactChannels = [
     </div>
 
     <!-- Direct Note & Email Box -->
-    <div class="glass-panel rounded-3xl p-8 border border-sumeru-200/60 dark:border-white/[0.08] text-center max-w-xl mx-auto">
+    <div class="glass-panel rounded-[11px] p-8 border border-sumeru-200/60 dark:border-white/[0.08] text-center max-w-xl mx-auto">
       <h3 class="font-display font-bold text-lg text-sumeru-950 dark:text-white mb-2">
         Direct Email Contact
       </h3>
@@ -107,14 +114,3 @@ const contactChannels = [
     </div>
   </div>
 </BaseLayout>
-
-<style>
-  /* Center the last card when it's alone on a row (odd total in a 2-col grid) */
-  @media (min-width: 768px) {
-    .contact-grid > a:last-child:nth-child(odd) {
-      grid-column: 1 / -1;
-      max-width: calc(50% - 12px);
-      margin-inline: auto;
-    }
-  }
-</style>

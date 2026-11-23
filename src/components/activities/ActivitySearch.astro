@@ -21,7 +21,7 @@ const { categories, totalPosts } = Astro.props;
       id="activities-search-input"
       placeholder="Search articles by title, tag, or topic..."
       data-i18n-placeholder="act-search-placeholder"
-      class="w-full pl-12 pr-10 py-3.5 rounded-2xl bg-white/80 dark:bg-black/40 border border-sumeru-200/80 dark:border-white/10 text-sm text-sumeru-950 dark:text-white placeholder-sumeru-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sumeru-500/50 dark:focus:ring-nahida-mint/50 backdrop-blur-md transition-all duration-200 shadow-sm"
+      class="w-full pl-12 pr-10 py-3.5 rounded-[11px] bg-white/80 dark:bg-black/40 border border-sumeru-200/80 dark:border-white/10 text-sm text-sumeru-950 dark:text-white placeholder-sumeru-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sumeru-500/50 dark:focus:ring-nahida-mint/50 backdrop-blur-md transition-all duration-200 shadow-sm"
       autocomplete="off"
     />
     <button
@@ -116,13 +116,7 @@ const { categories, totalPosts } = Astro.props;
       }
 
       if (countDisplay) {
-        countDisplay.setAttribute('data-count', String(visibleCount));
-        const currentLang = localStorage.getItem('site-lang') || 'en';
-        if (currentLang === 'vn') {
-          countDisplay.textContent = `${visibleCount} bài đăng`;
-        } else {
-          countDisplay.textContent = `${visibleCount} article${visibleCount === 1 ? '' : 's'}`;
-        }
+        countDisplay.textContent = `${visibleCount} article${visibleCount === 1 ? '' : 's'}`;
       }
     }
 

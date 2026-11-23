@@ -15,11 +15,54 @@ const sortedProjects = allProjects.sort((a, b) => new Date(b.data.date).getTime(
 
 <BaseLayout
   title="The Kusanali - Personal Blog & Creative Workspace"
-  description="A personal blogs and creative workspace inspired by Nahida theme. Maintained by Dun."
+  description="A personal blogs and creative laboratory inspired by Nahida theme. Maintained by Dun."
   section="home"
 >
-  <Hero />
-  <Introduction />
-  <LatestActivities posts={sortedPosts} />
-  <WorkspacePreview projects={sortedProjects} />
+  <!-- Homepage Layout: Left 8-col Stream (Hero + Slides) + Right 4-col Sticky Sidebar (Desktop Only) -->
+  <div id="home-layout-root" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-12 sm:pt-8 sm:pb-16 lg:pb-24">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+      <!-- Left Column: Hero + Featured Posts + Workspace Slides (exact matching width & height on desktop) -->
+      <div class="lg:col-span-8 min-w-0 space-y-10 sm:space-y-12 lg:space-y-14">
+        <div class="lg:h-[var(--hero-sync-h,570px)]">
+          <Hero />
+        </div>
+        <LatestActivities posts={sortedPosts} />
+        <WorkspacePreview projects={sortedProjects} />
+      </div>
+
+      <!-- Right Sticky Sidebar (Desktop Only, natural height synced to Hero & slides) -->
+      <aside id="home-sticky-sidebar" class="hidden lg:block lg:col-span-4 lg:sticky lg:top-24">
+        <Introduction />
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    function syncHomeHeroHeight() {
+      const root = document.getElementById('home-layout-root');
+      const sidebar = document.getElementById('home-sticky-sidebar');
+      if (!root || !sidebar) return;
+
+      const update = () => {
+        if (window.innerWidth >= 1024) {
+          const h = Math.round(sidebar.getBoundingClientRect().height);
+          if (h > 0) root.style.setProperty('--hero-sync-h', `${h}px`);
+        } else {
+          root.style.removeProperty('--hero-sync-h');
+        }
+      };
+
+      update();
+      const ro = new ResizeObserver(update);
+      ro.observe(sidebar);
+      window.addEventListener('resize', update, { passive: true });
+      document.addEventListener('astro:before-swap', () => {
+        ro.disconnect();
+        window.removeEventListener('resize', update);
+      }, { once: true });
+    }
+
+    syncHomeHeroHeight();
+    document.addEventListener('astro:after-swap', syncHomeHeroHeight);
+  </script>
 </BaseLayout>

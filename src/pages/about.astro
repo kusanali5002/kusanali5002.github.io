@@ -3,22 +3,32 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout
-  title="About Dun - Author Profile"
-  description="Personal profile, journey from computer science to video editing and graphic design, tools, and creative interests."
+  title="About Dun - The Real Kusanali"
+  description="Personal profile, computer science journey at HUS, creative experiments in motion design, and game development lessons."
   section="about"
 >
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
-    <!-- Header Badge -->
-    <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
-      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono uppercase tracking-widest bg-sumeru-100 dark:bg-nahida-mint/10 text-sumeru-800 dark:text-nahida-mint border border-sumeru-300/40 dark:border-nahida-mint/20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+    <!-- Header Badge & Title -->
+    <div class="text-center max-w-2xl mx-auto mb-12 sm:mb-14">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono uppercase tracking-widest bg-sumeru-100 dark:bg-nahida-mint/10 text-sumeru-800 dark:text-nahida-mint border border-sumeru-300/40 dark:border-nahida-mint/20 mb-4">
         <span data-i18n="about-badge">AUTHOR PROFILE</span>
       </div>
+      <h1 class="font-display font-bold text-3xl sm:text-5xl text-sumeru-950 dark:text-white tracking-tight mb-4">
+        The Real Kusanali
+      </h1>
+      <p class="text-base sm:text-lg text-sumeru-800/80 dark:text-nahida-light/80">
+        Behind the sanctuary walls and Dendro aesthetics: a candid look at who I am, what I struggle with, and what I love to build.
+      </p>
     </div>
 
-    <!-- Personal Intro Card -->
-    <div class="glass-panel rounded-3xl p-8 sm:p-12 border border-sumeru-200/60 dark:border-white/[0.08] mb-12 space-y-8">
-      <div class="flex flex-col sm:flex-row items-center gap-8 pb-8 border-b border-sumeru-200/40 dark:border-white/[0.06]">
-        <div class="relative w-36 h-36 sm:w-44 sm:h-44 rounded-3xl overflow-hidden border-2 border-sumeru-300/60 dark:border-nahida-mint/30 shadow-xl shrink-0">
+    <!-- Main 12-Col Layout: Left 8-Col Story Narrative + Right 4-Col Sticky Intro Box (Desktop) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+      <!-- Left Column (8 cols on desktop): Full Story Narrative -->
+      <div class="lg:col-span-8 min-w-0">
+        <!-- Personal Story Card (contains inline Intro on Mobile only) -->
+        <div class="glass-panel rounded-[11px] p-6 sm:p-10 lg:p-12 border border-sumeru-200/60 dark:border-white/[0.08] space-y-8">
+      <div class="flex lg:hidden flex-col sm:flex-row items-center gap-8 pb-8 border-b border-sumeru-200/40 dark:border-white/[0.06]">
+        <div class="relative w-36 h-36 sm:w-44 sm:h-44 rounded-[11px] overflow-hidden border-2 border-sumeru-300/60 dark:border-nahida-mint/30 shadow-xl shrink-0">
           <img
             src="/images/about-me-image.jpg"
             alt="Ha Manh Dung (Dun)"
@@ -28,113 +38,107 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
 
         <div class="text-center sm:text-left space-y-2">
-          <h1 class="font-display font-bold text-2xl sm:text-3xl text-sumeru-950 dark:text-white" data-i18n="about-name">
+          <h2 class="font-display font-bold text-2xl sm:text-3xl text-sumeru-950 dark:text-white" data-i18n="about-name">
             Ha Manh Dung
-          </h1>
-          <div class="text-xs font-mono text-sumeru-600 dark:text-nahida-mint tracking-wider uppercase" data-i18n="about-role-sub">
-            KNOWN AS DUN / EUPHORIA · VIDEO EDITOR / GRAPHIC DESIGNER
+          </h2>
+          <div class="text-xs font-mono text-sumeru-600 dark:text-nahida-mint tracking-wider uppercase" data-i18n="about-role-badge">
+            Video Editor / Graphic Designer
           </div>
-          <p class="text-sm text-sumeru-800/85 dark:text-nahida-light/80 leading-relaxed pt-2 italic" data-i18n="about-quote">
-            “My personality can be quite moody. Sometimes I’m talkative and full of energy, while at other times I become rather quiet and withdrawn. Honestly, I’m still figuring myself out. But working on and creating things, as well as observing everything around me, always brings me a great deal of joy.”
+          <p class="text-sm text-sumeru-800/85 dark:text-nahida-light/80 leading-relaxed pt-2" data-i18n="about-quote">
+            "My personality can be quite moody. Sometimes I'm talkative and full of energy, while at other times I become rather quiet and withdrawn. Honestly, I'm still figuring myself out. But working on and creating things, as well as observing everything around me, always brings me a great deal of joy."
           </p>
         </div>
       </div>
 
       <!-- Story Narrative -->
       <div class="space-y-8 text-sm sm:text-base text-sumeru-800/85 dark:text-nahida-light/80 leading-relaxed">
-        <!-- Welcome to my personal blog! -->
+        <!-- Welcome -->
         <div class="space-y-4">
-          <h2 class="font-display font-bold text-xl sm:text-2xl text-sumeru-950 dark:text-white" data-i18n="about-welcome-title">
+          <h3 class="font-display font-bold text-xl sm:text-2xl text-sumeru-950 dark:text-white" data-i18n="about-welcome-title">
             Welcome to my personal blog!
-          </h2>
+          </h3>
           <p data-i18n="about-welcome-p1">
-            Nahida is feeling sleepy right now, so I’ll be here to fill in for her for a little while.
+            Nahida is feeling sleepy right now, so I'll be here to fill in for her for a little while.
           </p>
           <p data-i18n="about-welcome-p2">
             My full name is <strong>Ha Manh Dung</strong>. I go by <strong>Dun</strong> or <strong>Euphoria</strong>.
           </p>
           <p data-i18n="about-welcome-p3">
-            I’ve just completed the first semester of my third year, majoring in Computer Science at <strong>VNU University of Science - Vietnam National University, Hanoi</strong>. However, I decided to leave university, and I’m currently working as a <strong>video editor</strong>.
+            I've just completed the first semester of my third year, majoring in Computer Science at <strong>VNU University of Science - Vietnam National University, Hanoi</strong>. However, I decided to leave university, and I'm currently working as a <strong>video editor</strong>.
           </p>
           <p data-i18n="about-welcome-p4">
-            My personality can be quite moody. Sometimes I’m talkative and full of energy, while at other times I’m rather quiet and reserved. To be honest, even I’m not entirely sure what kind of person I am.
+            My personality can be quite moody. Sometimes I'm talkative and full of energy, while at other times I'm rather quiet and reserved. To be honest, even I'm not entirely sure what kind of person I am.
           </p>
           <p data-i18n="about-welcome-p5">
-            I’m quite passionate about game development, but for a few reasons, I wasn’t able to focus on my studies from the beginning. As a result, I’m not particularly good at coding, despite it being the major I was studying. I’m also quite busy managing a small YouTube and TikTok channel, as well as a small shop on Shopee - hmm... you could say I really enjoy spending time in front of a computer screen.
+            I'm quite passionate about <strong>game development</strong>, but for a few reasons, I wasn't able to focus on my studies from the beginning. As a result, I'm not particularly good at coding, despite it being the major I was studying. I'm also quite busy managing a small <strong>YouTube and TikTok channel</strong>, as well as a small shop on <strong>Shopee</strong> - hmm... you could say I really enjoy spending time in front of a computer screen.
           </p>
           <p data-i18n="about-welcome-p6">
-            During my time at university, I gradually realized that my initial choice of study was becoming increasingly wrong for me. I learned quite slowly despite trying my best. At school, even though my grades in specialized major subjects were fairly decent, my total accumulated credits fell far behind my peers because I didn’t dare register for as many credits as others. By the end of my sophomore year, I was placed on academic warning due to insufficient credit progress. I opened up to my family about this and received encouragement to keep going even if it meant graduating late. However, looking at my family’s current situation, our finances in the coming years simply wouldn’t be able to support me.
+            During my time at university, I gradually realized that my initial choice of study was becoming increasingly wrong for me. I learned quite slowly despite trying my best. At school, even though my grades in specialized major subjects were fairly decent, my total accumulated credits fell far behind my peers because I didn't dare register for as many credits as others. By the end of my sophomore year, I was placed on academic warning due to insufficient credit progress. I opened up to my family about this and received encouragement to keep going even if it meant graduating late. However, looking at my family's current situation, our finances in the coming years simply wouldn't be able to support me.
           </p>
           <p data-i18n="about-welcome-p7">
-            I made a pretty crazy decision at that point - stopping attending classes on campus and staying home to learn video editing and 3D creation. I intended to discuss formally leaving university with my family after the first semester of my third year. During that semester, I set a strict personal goal to master industry-standard editing software, specifically Adobe’s duo: After Effects and Premiere Pro.
+            I made a pretty crazy decision at that point - stopping attending classes on campus and staying home to learn video editing and 3D creation. I intended to discuss formally leaving university with my family after the first semester of my third year. During that semester, I set a strict personal goal to master industry-standard editing software, specifically Adobe's duo: After Effects and Premiere Pro.
           </p>
           <p data-i18n="about-welcome-p8">
-            As for why I chose video editing rather than something else, it was a strange twist of fate. I met a Russian girl through gaming, and she was exceptionally talented at editing. While wondering how I would make a living after leaving university, I remembered the videos she had made. I thought, "Hmm, this is definitely worth a shot," and reached out to ask if she could mentor me. Compared to other paths, I chose editing because I already had the necessary hardware - a pretty capable laptop at the time - and she guided me very enthusiastically. Thanks to that, after more than four months of intensive self-study, I became proficient in After Effects. I am deeply grateful to her. To show my sincere appreciation, I used my savings to purchase and ship a warm scarf all the way to Russia for her. I asked if she liked it, and she told me that while it wasn’t cold enough in Russia just yet, she would definitely wear it once winter set in.
+            As for why I chose video editing rather than something else, it was a strange twist of fate. I met a Russian girl through gaming, and she was exceptionally talented at editing. While wondering how I would make a living after leaving university, I remembered the videos she had made. I thought, "Hmm, this is definitely worth a shot," and reached out to ask if she could mentor me. Compared to other paths, I chose editing because I already had the necessary hardware - a pretty capable laptop at the time - and she guided me very enthusiastically. Thanks to that, after more than four months of intensive self-study, I became proficient in After Effects. I am deeply grateful to her. To show my sincere appreciation, I used my savings to purchase and ship a warm scarf all the way to Russia for her. I asked if she liked it, and she told me that while it wasn't cold enough in Russia just yet, she would definitely wear it once winter set in.
           </p>
           <p data-i18n="about-welcome-p9">
             I asked her whether my skills were ready for job applications. She suggested that I should also become proficient in Premiere Pro, but my one-semester deadline was nearly up. Before telling my family about my decision to drop out, I felt I had to secure a job first. Fortunately, the very first time I posted my portfolio on social media, a company hired me. That very same week, I returned to my hometown, shared news of my new job and future plans with my family, and received their full blessing and approval.
           </p>
-          <p class="font-semibold text-sumeru-900 dark:text-nahida-mint" data-i18n="about-welcome-p10">
-            At the moment, I work as a semi-professional video editor and graphic designer.
+          <p data-i18n="about-welcome-p10">
+            <strong>At the moment, I work as a semi-professional video editor and graphic designer.</strong>
           </p>
           <p data-i18n="about-welcome-p11">
             However, I have no intention of giving up on my unfinished academic path. I plan to work for about two years to invest in equipment and save enough for tuition, before studying and retaking exams for a different university.
           </p>
         </div>
 
-        <!-- WORKSPACE -->
+        <!-- Workspace -->
         <div class="space-y-4 pt-6 border-t border-sumeru-200/40 dark:border-white/[0.06]">
-          <h2 class="font-display font-bold text-xl sm:text-2xl text-sumeru-950 dark:text-white" data-i18n="about-ws-title">
-            WORKSPACE
-          </h2>
+          <h3 class="font-display font-bold text-xl sm:text-2xl text-sumeru-950 dark:text-white" data-i18n="about-ws-title">
+            Workspace
+          </h3>
           <p data-i18n="about-ws-desc">
             Currently, I mainly work with the following tools:
           </p>
-          <ul class="space-y-3 pl-4 list-disc marker:text-sumeru-500 dark:marker:text-nahida-mint">
-            <li data-i18n="about-ws-capcut">
-              <strong>CapCut PC</strong>: A suitable tool for short-form videos that don’t require many complex effects (though, to be honest, I really hate CapCut).
-            </li>
-            <li data-i18n="about-ws-ae">
-              <strong>Adobe After Effects</strong>: My favorite editing software and also the first one I learned. I mainly use it for complex post-production effects, especially motion graphics - an area where CapCut cannot do particularly well.
-            </li>
-            <li data-i18n="about-ws-ps">
-              <strong>Adobe Photoshop</strong>: An image-editing and GFX design software that I really love. Although I started learning it quite late and my skill level is still fairly beginner, it remains my preferred choice over other software.
-            </li>
+          <ul class="space-y-2.5 pl-4 list-disc marker:text-sumeru-500 dark:marker:text-nahida-mint">
+            <li data-i18n="about-ws-capcut"><strong>CapCut PC</strong>: A suitable tool for short-form videos that don't require many complex effects (though, to be honest, I really hate CapCut).</li>
+            <li data-i18n="about-ws-ae"><strong>Adobe After Effects</strong>: My favorite editing software and also the first one I learned. I mainly use it for complex post-production effects, especially motion graphics - an area where CapCut cannot do particularly well.</li>
+            <li data-i18n="about-ws-ps"><strong>Adobe Photoshop</strong>: An image-editing and GFX design software that I really love. Although I started learning it quite late and my skill level is still fairly beginner, it remains my preferred choice over other software.</li>
           </ul>
         </div>
 
-        <!-- INTERESTS -->
-        <div class="space-y-5 pt-6 border-t border-sumeru-200/40 dark:border-white/[0.06]">
-          <h2 class="font-display font-bold text-xl sm:text-2xl text-sumeru-950 dark:text-white" data-i18n="about-interests-title">
-            INTERESTS
-          </h2>
+        <!-- Interests -->
+        <div class="space-y-4 pt-6 border-t border-sumeru-200/40 dark:border-white/[0.06]">
+          <h3 class="font-display font-bold text-xl sm:text-2xl text-sumeru-950 dark:text-white" data-i18n="about-interests-title">
+            Interests
+          </h3>
 
           <div class="space-y-4">
             <div>
-              <h3 class="font-display font-semibold text-base sm:text-lg text-sumeru-900 dark:text-nahida-mint mb-1 flex items-center gap-2" data-i18n="about-interest-game-title">
-                <span>Gaming</span> 🎮
-              </h3>
+              <h4 class="font-display font-semibold text-base text-sumeru-900 dark:text-nahida-mint mb-1" data-i18n="about-interest-game-title">
+                Gaming
+              </h4>
               <p data-i18n="about-interest-game-desc">
-                The games I currently play most often are <strong>Genshin Impact, Arena of Valor</strong>, and <strong>Honor of Kings</strong>. I especially love Genshin - my girlfriend is in there &lt;3
+                The games I currently play most often are <strong>Genshin Impact</strong>, <strong>Arena of Valor</strong>, and <strong>Honor of Kings</strong>. I especially love Genshin - my girlfriend is in there &lt;3
               </p>
             </div>
 
-            <div>
-              <h3 class="font-display font-semibold text-base sm:text-lg text-sumeru-900 dark:text-nahida-mint mb-1 flex items-center gap-2" data-i18n="about-interest-media-title">
-                <span>Watching Videos / Movies</span> 📺
-              </h3>
+            <div class="space-y-2">
+              <h4 class="font-display font-semibold text-base text-sumeru-900 dark:text-nahida-mint mb-1" data-i18n="about-interest-media-title">
+                Watching Videos / Movies
+              </h4>
               <p data-i18n="about-interest-media-p1">
-                I really enjoy watching esports tournaments (even for games I don’t play myself), such as <strong>Arena of Valor Premier League, AOV International Championship, Honor of Kings Pro League, PUBG Global Series, ...</strong>
+                I really enjoy watching <strong>esports tournaments</strong> (even for games I don't play myself), such as Arena of Valor Premier League, AOV International Championship, Honor of Kings Pro League, PUBG Global Series, ...
               </p>
-              <p class="mt-2" data-i18n="about-interest-media-p2">
+              <p data-i18n="about-interest-media-p2">
                 As for movies, I enjoy adventure and rom-com anime, as well as science-fiction films.
               </p>
             </div>
 
             <div>
-              <h3 class="font-display font-semibold text-base sm:text-lg text-sumeru-900 dark:text-nahida-mint mb-1 flex items-center gap-2" data-i18n="about-interest-music-title">
-                <span>Music</span> 🎶
-              </h3>
+              <h4 class="font-display font-semibold text-base text-sumeru-900 dark:text-nahida-mint mb-1" data-i18n="about-interest-music-title">
+                Music
+              </h4>
               <p data-i18n="about-interest-music-desc">
                 Instrumental Music and EDM
               </p>
@@ -145,15 +149,55 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
       <!-- Quick Facts / Tags -->
       <div class="pt-8 border-t border-sumeru-200/40 dark:border-white/[0.06] grid grid-cols-2 gap-4 text-center">
-        <div class="p-3.5 rounded-2xl bg-sumeru-50/80 dark:bg-sumeru-950/50 border border-sumeru-200/50 dark:border-white/[0.06]">
-          <div class="text-[11px] font-mono text-sumeru-600 dark:text-nahida-mint mb-1 uppercase tracking-wider" data-i18n="about-fact-loc-label">LOCATION</div>
+        <div class="p-3.5 rounded-[11px] bg-sumeru-50 dark:bg-sumeru-950/50">
+          <div class="text-[11px] font-mono text-sumeru-600 dark:text-nahida-mint mb-1" data-i18n="about-fact-loc-label">LOCATION</div>
           <div class="font-semibold text-xs sm:text-sm text-sumeru-950 dark:text-white" data-i18n="about-fact-loc-val">Thanh Hoa, Vietnam</div>
         </div>
-        <div class="p-3.5 rounded-2xl bg-sumeru-50/80 dark:bg-sumeru-950/50 border border-sumeru-200/50 dark:border-white/[0.06]">
-          <div class="text-[11px] font-mono text-sumeru-600 dark:text-nahida-mint mb-1 uppercase tracking-wider" data-i18n="about-fact-work-label">MAIN CREATIVE WORK</div>
+        <div class="p-3.5 rounded-[11px] bg-sumeru-50 dark:bg-sumeru-950/50">
+          <div class="text-[11px] font-mono text-sumeru-600 dark:text-nahida-mint mb-1" data-i18n="about-fact-work-label">MAIN CREATIVE WORK</div>
           <div class="font-semibold text-xs sm:text-sm text-sumeru-950 dark:text-white" data-i18n="about-fact-work-val">Video Editing & 3D</div>
         </div>
       </div>
+        </div>
+      </div>
+
+      <!-- Right Sticky Sidebar: Personal Introduction Box (Desktop Only, fits viewport height) -->
+      <aside class="hidden lg:block lg:col-span-4 lg:sticky lg:top-24">
+        <div class="glass-panel rounded-[11px] p-5 border border-sumeru-300/50 dark:border-nahida-mint/20 relative overflow-hidden group shadow-xl h-[calc(100vh-7.5rem)] max-h-[760px] flex flex-col">
+          <!-- Atmospheric ambient glow -->
+          <div class="absolute -right-16 -top-16 w-56 h-56 rounded-full bg-nahida-mint/20 dark:bg-nahida-mint/10 blur-3xl pointer-events-none group-hover:scale-110 transition-transform duration-700"></div>
+
+          <div class="relative z-10 flex flex-col flex-1 min-h-0 gap-4">
+            <!-- Portrait Frame (Flex-fills remaining viewport height cleanly) -->
+            <div class="relative w-full flex-1 min-h-0 rounded-[11px] overflow-hidden border border-sumeru-300/60 dark:border-nahida-mint/40 shadow-lg group-hover:shadow-xl transition-shadow">
+              <img
+                src="/images/about-me-image.jpg"
+                alt="Ha Manh Dung (Dun)"
+                class="w-full h-full object-cover object-top transform group-hover:scale-105 transition-transform duration-700"
+                onerror="this.src='/images/Nahida_Icon.webp'"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent pointer-events-none"></div>
+            </div>
+
+            <!-- Text & Identity (Always fully visible at bottom) -->
+            <div class="shrink-0 space-y-2.5 text-left">
+              <div>
+                <span class="inline-block px-3 py-1 rounded-[12px] text-[11px] font-mono font-semibold uppercase tracking-wider bg-sumeru-100 dark:bg-sumeru-900/60 text-sumeru-800 dark:text-nahida-mint border border-sumeru-200/50 dark:border-nahida-mint/20 mb-2" data-i18n="about-role-badge">
+                  Video Editor / Graphic Designer
+                </span>
+
+                <h2 class="font-display font-bold text-2xl xl:text-3xl text-sumeru-950 dark:text-white tracking-tight leading-tight" data-i18n="about-name">
+                  Ha Manh Dung
+                </h2>
+              </div>
+
+              <p class="text-xs xl:text-sm text-sumeru-800/85 dark:text-nahida-light/85 leading-relaxed" data-i18n="about-quote">
+                "My personality can be quite moody. Sometimes I'm talkative and full of energy, while at other times I become rather quiet and withdrawn. Honestly, I'm still figuring myself out. But working on and creating things, as well as observing everything around me, always brings me a great deal of joy."
+              </p>
+            </div>
+          </div>
+        </div>
+      </aside>
     </div>
   </div>
 </BaseLayout>

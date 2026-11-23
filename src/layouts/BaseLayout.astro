@@ -70,8 +70,6 @@ const {
           return clean === '/' || clean === '/activities' || clean === '/nahida' || clean === '/about';
         }
 
-        // Immediate check on initial cold load:
-        // Ensure that on first visit / new session, language always defaults to English (ENG)
         if (!sessionStorage.getItem('site-session')) {
           sessionStorage.setItem('site-session', '1');
           localStorage.setItem('site-lang', 'en');
@@ -100,19 +98,14 @@ const {
             document.documentElement.dataset.slideDirection = 'fade';
           }
 
-          // Pre-transition check: show notification before new page content loads
           const toPath = (event.to.pathname || '').replace(/\/$/, '') || '/';
           const isVN = localStorage.getItem('site-lang') === 'vn';
           if (!isPageTranslated(toPath) && isVN) {
             localStorage.setItem('site-lang', 'en');
             document.documentElement.classList.add('hide-page-content');
             const banner = document.getElementById('vn-notify-banner');
-            if (banner) {
-              banner.style.display = 'flex';
-            }
-            if (typeof window.applyLang === 'function') {
-              window.applyLang('en');
-            }
+            if (banner) banner.style.display = 'flex';
+            if (typeof window.applyLang === 'function') window.applyLang('en');
           }
         });
 
@@ -170,7 +163,7 @@ const {
     <Navbar />
     <MobileNav />
 
-    <!-- Lightbox Modal (Elevated root level above header, persistent across transitions) -->
+    <!-- Lightbox Modal (Elevated root level above header) -->
     <div transition:persist="project-lightbox">
       <ProjectModal />
     </div>
@@ -186,7 +179,7 @@ const {
         aria-label="Thông báo bản dịch"
       >
         <div
-          class="relative w-full max-w-md sm:max-w-lg p-6 sm:p-8 rounded-3xl bg-white/95 dark:bg-[#122419]/95 border-2 border-sumeru-400 dark:border-nahida-mint/50 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.4)] dark:shadow-[0_0_60px_rgba(126,232,176,0.22)] backdrop-blur-2xl text-center flex flex-col items-center gap-5 vn-modal-card"
+          class="relative w-full max-w-md sm:max-w-lg p-6 sm:p-8 rounded-[11px] bg-white/95 dark:bg-[#122419]/95 border-2 border-sumeru-400 dark:border-nahida-mint/50 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.4)] dark:shadow-[0_0_60px_rgba(126,232,176,0.22)] backdrop-blur-2xl text-center flex flex-col items-center gap-5 vn-modal-card"
         >
           <!-- Sleeping Nahida animated GIF -->
           <div class="w-28 h-28 sm:w-32 sm:h-32 flex items-center justify-center flex-shrink-0">
@@ -204,7 +197,7 @@ const {
 
           <button
             id="vn-notify-ok"
-            class="w-full sm:w-auto px-10 py-3 rounded-2xl text-sm font-bold uppercase tracking-wider bg-sumeru-600 dark:bg-nahida-mint text-white dark:text-sumeru-950 hover:bg-sumeru-700 dark:hover:bg-white hover:scale-105 active:scale-95 transition-all shadow-lg cursor-pointer"
+            class="w-full sm:w-auto px-10 py-3 rounded-[11px] text-sm font-bold uppercase tracking-wider bg-sumeru-600 dark:bg-nahida-mint text-white dark:text-sumeru-950 hover:bg-sumeru-700 dark:hover:bg-white hover:scale-105 active:scale-95 transition-all shadow-lg cursor-pointer"
           >
             OK
           </button>
@@ -250,21 +243,228 @@ const {
         elements.forEach(el => observer.observe(el));
       }
 
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', setupScrollReveal);
-      } else {
-        setupScrollReveal();
+      let carouselCleanups = [];
+
+      function cleanupSwipeCarousels() {
+        carouselCleanups.forEach((fn) => fn());
+        carouselCleanups = [];
       }
 
-      document.addEventListener('astro:after-swap', setupScrollReveal);
+      function setupSwipeCarousels() {
+        cleanupSwipeCarousels();
+        const carousels = document.querySelectorAll('.swipe-carousel');
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const SVG_NS = 'http://www.w3.org/2000/svg';
+
+        carousels.forEach((carousel) => {
+          let scrollBarTimer;
+          let scrollEndTimer;
+          let activeIndex = 0;
+          let isVisible = false;
+          let isHolding = false;
+          let activeOverlay = null;
+          let activeRect = null;
+
+          const slides = Array.from(carousel.querySelectorAll('.swipe-slide'));
+          const durationMs = parseInt(carousel.dataset.autoAdvance || '0', 10);
+          const section = carousel.closest('[data-carousel-section]');
+          const prevBtn = section ? section.querySelector('[data-carousel-prev]') : null;
+          const nextBtn = section ? section.querySelector('[data-carousel-next]') : null;
+
+          const isCarouselActive = () => slides.length > 1;
+
+          function clearBorder() {
+            if (activeOverlay && activeOverlay.parentNode) {
+              activeOverlay.remove();
+            }
+            activeOverlay = null;
+            activeRect = null;
+          }
+
+          function getCurrentSlideIndex() {
+            const width = carousel.clientWidth;
+            if (!width) return 0;
+            return Math.max(0, Math.min(slides.length - 1, Math.round(carousel.scrollLeft / width)));
+          }
+
+          function goToSlide(targetIndex) {
+            const wrapped = (targetIndex + slides.length) % slides.length;
+            activeIndex = wrapped;
+            clearBorder();
+            carousel.scrollTo({
+              left: wrapped * carousel.clientWidth,
+              behavior: 'smooth',
+            });
+            clearTimeout(scrollEndTimer);
+            scrollEndTimer = setTimeout(() => {
+              activeIndex = getCurrentSlideIndex();
+              startCircuitForSlide(activeIndex);
+            }, 450);
+          }
+
+          function startCircuitForSlide(index) {
+            clearBorder();
+            if (!durationMs || prefersReducedMotion || !isCarouselActive() || !isVisible) return;
+
+            const slide = slides[index];
+            if (!slide) return;
+            const w = slide.offsetWidth;
+            const h = slide.offsetHeight;
+            if (!w || !h) return;
+
+            const svg = document.createElementNS(SVG_NS, 'svg');
+            svg.setAttribute('class', 'swipe-border-overlay');
+            svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+            svg.setAttribute('aria-hidden', 'true');
+
+            const rect = document.createElementNS(SVG_NS, 'rect');
+            rect.setAttribute('class', 'swipe-border-rect');
+            rect.setAttribute('x', '1.5');
+            rect.setAttribute('y', '1.5');
+            rect.setAttribute('width', String(Math.max(0, w - 3)));
+            rect.setAttribute('height', String(Math.max(0, h - 3)));
+            const radius = window.matchMedia('(min-width: 1024px)').matches ? '11' : '0';
+            rect.setAttribute('rx', radius);
+            rect.setAttribute('ry', radius);
+            rect.setAttribute('pathLength', '100');
+            rect.style.animationDuration = `${durationMs}ms`;
+
+            rect.addEventListener('animationend', () => {
+              if (!isVisible || !isCarouselActive()) return;
+              goToSlide(activeIndex + 1);
+            }, { once: true });
+
+            svg.appendChild(rect);
+            slide.appendChild(svg);
+            activeOverlay = svg;
+            activeRect = rect;
+
+            // Force reflow so animation starts cleanly from 100 -> 0 at top-left
+            void rect.getBoundingClientRect();
+            rect.classList.add('is-running');
+            if (isHolding) {
+              rect.classList.add('is-paused');
+            }
+          }
+
+          const onScroll = () => {
+            carousel.classList.add('is-scrolling');
+            clearTimeout(scrollBarTimer);
+            scrollBarTimer = setTimeout(() => {
+              carousel.classList.remove('is-scrolling');
+            }, 700);
+
+            if (!durationMs || prefersReducedMotion || !isCarouselActive()) return;
+            clearTimeout(scrollEndTimer);
+            scrollEndTimer = setTimeout(() => {
+              const newIndex = getCurrentSlideIndex();
+              if (newIndex !== activeIndex || !activeOverlay) {
+                activeIndex = newIndex;
+                startCircuitForSlide(activeIndex);
+              }
+            }, 180);
+          };
+
+          const onPause = () => {
+            isHolding = true;
+            if (activeRect) activeRect.classList.add('is-paused');
+          };
+
+          const onResume = () => {
+            isHolding = false;
+            if (activeRect) activeRect.classList.remove('is-paused');
+          };
+
+          const hoverTarget = carousel.closest('[data-carousel-wrap]') || carousel;
+
+          const onPrev = (e) => {
+            e.stopPropagation();
+            goToSlide(activeIndex - 1);
+          };
+          const onNext = (e) => {
+            e.stopPropagation();
+            goToSlide(activeIndex + 1);
+          };
+
+          const onResize = () => {
+            if (!isCarouselActive()) {
+              clearBorder();
+            } else if (isVisible) {
+              activeIndex = getCurrentSlideIndex();
+              startCircuitForSlide(activeIndex);
+            }
+          };
+
+          carousel.addEventListener('scroll', onScroll, { passive: true });
+          hoverTarget.addEventListener('mouseenter', onPause, { passive: true });
+          hoverTarget.addEventListener('mouseleave', onResume, { passive: true });
+          carousel.addEventListener('touchstart', onPause, { passive: true });
+          carousel.addEventListener('touchend', onResume, { passive: true });
+          carousel.addEventListener('touchcancel', onResume, { passive: true });
+          carousel.addEventListener('pointerdown', onPause, { passive: true });
+          carousel.addEventListener('pointerup', onResume, { passive: true });
+          carousel.addEventListener('pointercancel', onResume, { passive: true });
+          prevBtn?.addEventListener('click', onPrev);
+          nextBtn?.addEventListener('click', onNext);
+          window.addEventListener('resize', onResize, { passive: true });
+
+          const visibilityObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              isVisible = entry.isIntersecting;
+              if (isVisible && isCarouselActive()) {
+                activeIndex = getCurrentSlideIndex();
+                startCircuitForSlide(activeIndex);
+              } else {
+                clearBorder();
+              }
+            });
+          }, { threshold: 0.4 });
+
+          visibilityObserver.observe(carousel);
+
+          carouselCleanups.push(() => {
+            clearTimeout(scrollBarTimer);
+            clearTimeout(scrollEndTimer);
+            clearBorder();
+            visibilityObserver.disconnect();
+            carousel.removeEventListener('scroll', onScroll);
+            hoverTarget.removeEventListener('mouseenter', onPause);
+            hoverTarget.removeEventListener('mouseleave', onResume);
+            carousel.removeEventListener('touchstart', onPause);
+            carousel.removeEventListener('touchend', onResume);
+            carousel.removeEventListener('touchcancel', onResume);
+            carousel.removeEventListener('pointerdown', onPause);
+            carousel.removeEventListener('pointerup', onResume);
+            carousel.removeEventListener('pointercancel', onResume);
+            prevBtn?.removeEventListener('click', onPrev);
+            nextBtn?.removeEventListener('click', onNext);
+            window.removeEventListener('resize', onResize);
+          });
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+          setupScrollReveal();
+          setupSwipeCarousels();
+        });
+      } else {
+        setupScrollReveal();
+        setupSwipeCarousels();
+      }
+
+      document.addEventListener('astro:before-swap', cleanupSwipeCarousels);
+      document.addEventListener('astro:after-swap', () => {
+        setupScrollReveal();
+        setupSwipeCarousels();
+      });
     </script>
 
-    <!-- i18n Engine -->
+    <!-- i18n Engine (English / Vietnamese) -->
     <script>
       import { nahidaI18nEn, nahidaI18nVn } from '../i18n/nahidaData';
       import { aboutI18nEn, aboutI18nVn } from '../i18n/aboutData';
 
-      // ─── Translation dictionary ────────────────────────────────────────────
       const I18N: Record<string, Record<string, string>> = {
         en: {
           ...nahidaI18nEn,
@@ -276,11 +476,11 @@ const {
           'nav-nahida':        'NAHIDA',
           'nav-about':         'ABOUT ME',
           'nav-contact':       'CONTACT',
-          'hero-badge':        'PHYSIC OF PURITY',
+          'hero-badge':        'THE MUSE OF SUMERU',
           'hero-title':        'Lesser Lord Kusanali',
           'hero-quote':        '"Hello, I\'m the Lesser Lord Kusanali or commonly known as Nahida, is Sumeru\'s current Dendro Archon. This is Dun\'s blog but when he is absent, I will be manager. Let\'s take a look around and you can find something interesting about him :3"',
           'hero-btn-nahida':   'Visit Nahida Shrine',
-          'hero-btn-about':    'About Dun',
+          'hero-btn-about':    'About The Author',
           'intro-act-badge':   'Game analysis & Daily Life',
           'intro-act-title':   'Activities',
           'intro-act-desc':    'The written chronicle. Short analyses on game design, statistical studies on gacha mechanics, esports commentary, and candid reflections from university and daily life.',
@@ -289,11 +489,11 @@ const {
           'intro-ws-title':    'Workspace',
           'intro-ws-desc':     'The creative workshop. Motion graphics reels, TikTok clips and GFX arts.',
           'intro-ws-link':     'Explore The Workspace',
-          'latest-label':      'Archive',
-          'latest-title':      'Featured posts',
+          'latest-label':      'Knowledge Archive',
+          'latest-title':      'Latest Inquiries & Reflections',
           'latest-viewall':    'View All Activities ({n})',
           'ws-label':          'Creative Workspace',
-          'ws-title':          'ALL PROJECTS',
+          'ws-title':          'All Social & Local Works',
           'ws-viewall':        'Open Workspace ({n})',
           'footer-desc':       'A personal blog and creative workspace inspired by Nahida theme. Maintained by Dun (Ha Manh Dung).',
           'footer-nav-label':  'Navigation',
@@ -306,18 +506,21 @@ const {
           'footer-nav-contact':    'Contact',
           'footer-backtotop':      'Back to top ↑',
           'act-page-title':         'Activities Archive',
-          'act-page-desc':          'Analyses of game mechanics, personal stories and stuffs. Filter by category or search instantly.',
+          'act-page-desc':          'A repository mathematical analyses of game mechanics, personal stories and stuffs. Filter by category or search instantly.',
           'act-filter-all':         'All ({n})',
           'act-cat-life':           'Life',
           'act-cat-knowledge':      'Knowledge',
           'act-cat-gaming':         'Gaming',
           'act-cat-creative':       'Creative',
-          'act-count-display':      '{n} articles',
+          'act-count-display':      'Showing {n} articles',
           'act-sort-label':         'Sorted by: Most Recent',
           'act-search-placeholder': 'Search articles by title, tag, or topic...',
           'act-empty-title':        'No activities found',
           'act-empty-desc':         'Try adjusting your search query or selecting a different category from the filters above.',
           'card-reading-time':      '{n} min read',
+          'about-role-badge':       'Video Editor / Graphic Designer',
+          'nahida-toc-title':       'Table of Contents',
+          'nahida-toc-overview':    'Overview',
         },
         vn: {
           ...nahidaI18nVn,
@@ -360,7 +563,7 @@ const {
           'footer-backtotop':      'Quay lại phía trên cùng ↑',
           'act-page-title':         'Các Hoạt Động',
           'act-page-desc':          'Những phân tích về cơ chế game, những câu chuyện đời thường của Dun và mấy thứ linh tinh khác. Bạn có thể lọc theo thể loại hoặc tìm ngay bằng tên bài đăng.',
-          'act-filter-all':         'TẤT CẢ  ({n})',
+          'act-filter-all':         'TẤT CẢ ({n})',
           'act-cat-life':           'CUỘC SỐNG',
           'act-cat-knowledge':      'KIẾN THỨC',
           'act-cat-gaming':         'GAME',
@@ -371,17 +574,18 @@ const {
           'act-empty-title':        'Không tìm thấy hoạt động nào',
           'act-empty-desc':         'Hãy thử thay đổi từ khóa tìm kiếm hoặc chọn một thể loại khác ở trên.',
           'card-reading-time':      '{n} phút đọc',
+          'about-role-badge':       'Video Editor / Graphic Designer',
+          'nahida-toc-title':       'Mục lục',
+          'nahida-toc-overview':    'Tổng quan',
         }
       };
 
-      // ─── Apply translations to all [data-i18n] elements ──────────────────
       function applyLang(lang: string) {
         const dict = I18N[lang] || I18N.en;
         document.querySelectorAll<HTMLElement>('[data-i18n]').forEach(el => {
           const key = el.getAttribute('data-i18n')!;
           let text = dict[key];
           if (!text) return;
-          // Handle {n} placeholder for count-bearing strings
           const count = el.getAttribute('data-count');
           if (count !== null) text = text.replace('{n}', count);
           if (text.includes('<') || text.includes('&')) {
@@ -395,12 +599,10 @@ const {
           const text = dict[key];
           if (text) el.placeholder = text;
         });
-        // Sync toggle label
         const lbl = document.getElementById('lang-toggle-label');
         if (lbl) lbl.textContent = lang === 'vn' ? 'VN' : 'ENG';
       }
 
-      // ─── Language & Notification State Machine ────────────────────────────
       function isTranslatedPage(urlPath?: string) {
         const path = (urlPath || window.location.pathname).replace(/\/$/, '') || '/';
         return path === '/' || path === '/activities' || path === '/nahida' || path === '/about';
@@ -408,39 +610,31 @@ const {
 
       function showVnModal() {
         const banner = document.getElementById('vn-notify-banner');
-        if (banner) {
-          banner.style.display = 'flex';
-        }
+        if (banner) banner.style.display = 'flex';
       }
 
       function closeVnModal() {
         document.documentElement.classList.remove('pending-vn-modal');
         document.documentElement.classList.remove('hide-page-content');
         const banner = document.getElementById('vn-notify-banner');
-        if (banner) {
-          banner.style.display = 'none';
-        }
+        if (banner) banner.style.display = 'none';
       }
 
       function handleLangToggle() {
         const currentLang = localStorage.getItem('site-lang') || 'en';
-        const isHome = isTranslatedPage();
+        const isTranslated = isTranslatedPage();
 
         if (currentLang === 'en') {
-          // User is trying to switch to VN
-          if (isHome) {
-            // Home has full VN translation -> switch smoothly
+          if (isTranslated) {
             localStorage.setItem('site-lang', 'vn');
             applyLang('vn');
           } else {
-            // Untranslated page: hide content, show modal, keep in English
             document.documentElement.classList.add('hide-page-content');
             localStorage.setItem('site-lang', 'en');
             applyLang('en');
             showVnModal();
           }
         } else {
-          // Currently in VN (on Home), switch back to English
           localStorage.setItem('site-lang', 'en');
           applyLang('en');
         }
@@ -464,7 +658,6 @@ const {
         });
       }
 
-      // ─── Boot on every page load & navigation ─────────────────────────────
       function bootI18n() {
         setupVnModalEvents();
 
@@ -474,20 +667,17 @@ const {
         }
 
         const currentLang = localStorage.getItem('site-lang') || 'en';
-        const isHome = isTranslatedPage();
+        const isTranslated = isTranslatedPage();
 
-        if (isHome) {
+        if (isTranslated) {
           document.documentElement.classList.remove('hide-page-content');
           applyLang(currentLang);
         } else if (currentLang === 'vn') {
-          // User navigated from VN page (Home) to an untranslated page:
-          // Keep content hidden until user clicks OK on the notification!
           document.documentElement.classList.add('hide-page-content');
           localStorage.setItem('site-lang', 'en');
           applyLang('en');
           showVnModal();
         } else {
-          // Normal load in ENG
           const banner = document.getElementById('vn-notify-banner');
           const isModalOpen = banner && banner.style.display === 'flex';
           if (!isModalOpen) {
@@ -497,7 +687,6 @@ const {
         }
       }
 
-      // Expose globally so LanguageToggle and any link can call them
       (window as any).applyLang = applyLang;
       (window as any).handleLangToggle = handleLangToggle;
       (window as any).showVnModal = showVnModal;

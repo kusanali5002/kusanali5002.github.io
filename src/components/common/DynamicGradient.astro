@@ -1,12 +1,47 @@
 ---
 ---
 <div class="ambient-gradient-canvas" aria-hidden="true">
+  <!-- Light Mode Nahida Live Wallpaper Background -->
+  <video
+    id="light-mode-bg-video"
+    src="/images/nahida-live-wallpaper.mp4"
+    autoplay
+    loop
+    muted
+    playsinline
+    preload="auto"
+    class="absolute inset-0 w-full h-full object-cover opacity-50 dark:opacity-0 transition-opacity duration-500 pointer-events-none"
+    style="filter: contrast(0.82) saturate(0.9) brightness(1.04);"
+  ></video>
   <div id="ambient-mesh" class="ambient-gradient-mesh"></div>
 </div>
 <div class="ambient-noise" aria-hidden="true"></div>
 
 <script>
+  function syncBgVideoPlayback() {
+    const video = document.getElementById('light-mode-bg-video') as HTMLVideoElement | null;
+    if (!video) return;
+
+    const isDark = document.documentElement.classList.contains('dark');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (isDark || reducedMotion) {
+      video.pause();
+    } else {
+      video.play().catch(() => {});
+    }
+  }
+
   function setupDynamicGradient() {
+    syncBgVideoPlayback();
+
+    // Watch light/dark theme toggles to pause/resume video automatically
+    if (!(window as any).__bgVideoThemeObserver) {
+      const themeObs = new MutationObserver(syncBgVideoPlayback);
+      themeObs.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+      (window as any).__bgVideoThemeObserver = themeObs;
+    }
+
     // Check reduced motion preference
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       return;
@@ -71,18 +106,12 @@
       ticking = false;
     }
 
-    // Only animate gradient position on pointer devices — on touch, every
-    // scroll frame triggers a style recalculation that compounds with other
-    // layout work and causes jank.
-    const isPointerDevice = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    if (isPointerDevice) {
-      window.addEventListener('scroll', () => {
-        if (!ticking) {
-          requestAnimationFrame(updateGradient);
-          ticking = true;
-        }
-      }, { passive: true });
-    }
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(updateGradient);
+        ticking = true;
+      }
+    }, { passive: true });
 
     // Section Observer to smoothly tune color mood
     const sections = document.querySelectorAll('section[data-section]');
