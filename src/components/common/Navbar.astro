@@ -147,15 +147,24 @@ function isActive(itemHref: string) {
     const header = document.getElementById('site-header');
     if (!header) return;
 
+    if ((window as any).__headerScrollInit) {
+      (window as any).__updateHeader?.();
+      return;
+    }
+    (window as any).__headerScrollInit = true;
+
+    let isTransformed = false;
     function updateHeader() {
-      const scrollY = window.scrollY || document.documentElement.scrollTop;
-      if (scrollY > 15) {
-        header.classList.add('transformed');
-      } else {
-        header.classList.remove('transformed');
+      const h = document.getElementById('site-header');
+      if (!h) return;
+      const shouldTransform = (window.scrollY || document.documentElement.scrollTop) > 15;
+      if (shouldTransform !== isTransformed) {
+        isTransformed = shouldTransform;
+        h.classList.toggle('transformed', shouldTransform);
       }
     }
 
+    (window as any).__updateHeader = updateHeader;
     window.addEventListener('scroll', updateHeader, { passive: true });
     updateHeader();
   }

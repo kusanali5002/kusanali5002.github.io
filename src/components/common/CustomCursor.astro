@@ -1,8 +1,8 @@
 ---
 ---
-<div id="custom-cursor" class="custom-cursor pointer-events-none fixed top-0 left-0 z-50 -translate-x-1/2 -translate-y-1/2 rounded-full hidden md:block transition-transform duration-75 ease-out" aria-hidden="true">
+<div id="custom-cursor" class="custom-cursor pointer-events-none fixed top-0 left-0 z-50 -translate-x-1/2 -translate-y-1/2 rounded-full hidden md:block opacity-0 will-change-transform" aria-hidden="true">
   <div class="cursor-dot w-2 h-2 rounded-full bg-sumeru-600 dark:bg-nahida-mint opacity-80 transition-transform duration-200"></div>
-  <div class="cursor-ring -top-3 -left-3 w-8 h-8 rounded-full border border-sumeru-500/40 dark:border-nahida-mint/40 absolute transition-all duration-300"></div>
+  <div class="cursor-ring -top-3 -left-3 w-8 h-8 rounded-full border border-sumeru-500/40 dark:border-nahida-mint/40 absolute transition-[transform,border-color,background-color] duration-200"></div>
 </div>
 
 <style>

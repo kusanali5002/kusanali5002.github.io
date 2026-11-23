@@ -1,87 +1,33 @@
-/* Staggered entrance and scroll reveal utility classes */
+/* Scroll reveal utility classes */
 .reveal-on-scroll {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(24px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
 
 .reveal-on-scroll.is-revealed {
   opacity: 1;
   transform: translateY(0);
-}
-
-/* Stagger delay children */
-.stagger-group > *:nth-child(1) { transition-delay: 0.05s; }
-.stagger-group > *:nth-child(2) { transition-delay: 0.12s; }
-.stagger-group > *:nth-child(3) { transition-delay: 0.19s; }
-.stagger-group > *:nth-child(4) { transition-delay: 0.26s; }
-.stagger-group > *:nth-child(5) { transition-delay: 0.33s; }
-.stagger-group > *:nth-child(6) { transition-delay: 0.40s; }
-.stagger-group > *:nth-child(7) { transition-delay: 0.47s; }
-.stagger-group > *:nth-child(8) { transition-delay: 0.54s; }
-
-/* Subtle floating leaf/petal effects */
-@keyframes leafSway {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  33% {
-    transform: translateY(-6px) rotate(2deg);
-  }
-  66% {
-    transform: translateY(3px) rotate(-1deg);
-  }
-}
-
-.animate-sway {
-  animation: leafSway 7s ease-in-out infinite;
-}
-
-.animate-sway-slow {
-  animation: leafSway 11s ease-in-out infinite;
-}
-
-/* Shimmer effect for badges and borders */
-@keyframes softShimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-.shimmer-text {
-  background: linear-gradient(90deg, var(--text-primary) 0%, var(--accent-mint) 50%, var(--text-primary) 100%);
-  background-size: 200% auto;
-  color: transparent;
-  -webkit-background-clip: text;
-  background-clip: text;
-  animation: softShimmer 8s linear infinite;
+  will-change: auto;
 }
 
 /* Interactive Card Hover effects */
 .interactive-card {
   position: relative;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.35s ease;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s ease;
 }
 
 .interactive-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
   box-shadow: 0 16px 36px -8px rgba(36, 74, 51, 0.14);
 }
 
 .dark .interactive-card:hover {
   box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.5);
-}
-
-/* Botanical Glow */
-.botanical-glow {
-  box-shadow: 0 0 35px -5px rgba(78, 160, 110, 0.25);
-}
-
-.dark .botanical-glow {
-  box-shadow: 0 0 45px -5px rgba(126, 232, 176, 0.2);
 }
 
 /* ==========================================================================
