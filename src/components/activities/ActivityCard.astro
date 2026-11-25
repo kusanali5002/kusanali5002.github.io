@@ -40,7 +40,7 @@ const readMinutes = parseInt(readingTime, 10) || 3;
   data-title={title.toLowerCase()}
   data-description={description.toLowerCase()}
   data-category={category.toLowerCase()}
-  data-tags={tags.join(' ').toLowerCase()}
+  data-tags={tags.map(t => t.toLowerCase()).join('|')}
 >
   {variant === 'compact' ? (
     isPortrait ? (

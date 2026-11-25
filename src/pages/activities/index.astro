@@ -8,8 +8,10 @@ import { getCollection } from 'astro:content';
 const allPosts = await getCollection('activities');
 const sortedPosts = allPosts.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 
-// Discover unique categories from Markdown metadata
-const categories = Array.from(new Set(allPosts.map((p) => p.data.category))).filter(Boolean);
+// Discover unique tags sorted by frequency then alphabetically
+const tagCounts = new Map<string, number>();
+allPosts.forEach((p) => (p.data.tags || []).forEach((t) => tagCounts.set(t, (tagCounts.get(t) || 0) + 1)));
+const allTags = Array.from(tagCounts.keys()).sort((a, b) => (tagCounts.get(b)! - tagCounts.get(a)!) || a.localeCompare(b));
 ---
 
 <BaseLayout
@@ -31,8 +33,8 @@ const categories = Array.from(new Set(allPosts.map((p) => p.data.category))).fil
       </p>
     </div>
 
-    <!-- Search & Filter Controls -->
-    <ActivitySearch categories={categories} totalPosts={sortedPosts.length} />
+    <!-- Search & Tag Filter Controls -->
+    <ActivitySearch tags={allTags} totalPosts={sortedPosts.length} />
 
     <!-- Results Count Bar -->
     <div class="flex items-center justify-between mb-8 px-2 text-xs font-mono text-sumeru-600 dark:text-nahida-mint/70 border-b border-sumeru-200/40 dark:border-white/[0.05] pb-3">

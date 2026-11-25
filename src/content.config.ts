@@ -13,6 +13,7 @@ const activitiesCollection = defineCollection({
     author: z.string().default('Ha Manh Dung (Dun)'),
     featured: z.boolean().default(false),
     isComingSoon: z.boolean().default(false),
+    wideLayout: z.boolean().default(false),
   }),
 });
 

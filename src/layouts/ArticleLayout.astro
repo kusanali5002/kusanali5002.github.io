@@ -14,6 +14,7 @@ export interface Props {
   prevPost?: { title: string; slug: string } | null;
   nextPost?: { title: string; slug: string } | null;
   relatedPosts?: Array<{ title: string; slug: string; date: string; cover?: string }>;
+  wideLayout?: boolean;
 }
 
 const {
@@ -28,6 +29,7 @@ const {
   prevPost,
   nextPost,
   relatedPosts = [],
+  wideLayout = false,
 } = Astro.props;
 
 const fallbackCover = '/images/Nahida_Icon.webp';
@@ -42,7 +44,7 @@ const coverImage = cover || fallbackCover;
   publishedTime={date}
   section="activities"
 >
-  <article id="article-root" class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 transition-all duration-300">
+  <article id="article-root" class:list={[wideLayout ? 'max-w-7xl' : 'max-w-4xl', 'mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 transition-all duration-300']}>
     <!-- Back to Activities Navigation Link -->
     <div class="mb-8">
       <a
@@ -287,6 +289,42 @@ const coverImage = cover || fallbackCover;
     font-weight: 600;
   }
 
+  /* 3-Column PC Build Layout Overrides */
+  .article-prose .pc-build-grid table {
+    margin: 0 !important;
+    font-size: 0.875rem;
+    line-height: 1.45;
+  }
+
+  .article-prose .pc-build-grid th,
+  .article-prose .pc-build-grid td {
+    padding: 0.5rem 0.85rem;
+    text-align: left;
+  }
+
+  .article-prose .pc-build-grid th {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .article-prose .pc-build-grid td:first-child {
+    font-weight: 600;
+    color: var(--text-primary);
+    width: 42%;
+  }
+
+  .article-prose .pc-build-grid img {
+    margin: 0 auto !important;
+    box-shadow: none !important;
+  }
+
+  .article-prose .pc-build-grid h2,
+  .article-prose .pc-build-grid h3,
+  .article-prose .pc-build-grid p {
+    margin-top: 0;
+  }
+
   /* Table of Contents Modern Styling */
   .table-of-contents {
     background: rgba(255, 255, 255, 0.7);
@@ -398,6 +436,24 @@ const coverImage = cover || fallbackCover;
   .article-prose h3,
   .article-prose h4 {
     scroll-margin-top: 5.5rem;
+  }
+
+  /* Light-mode only: crisp pure black body, caption, and meta text across all blog posts */
+  html:not(.dark) #article-root :is(
+    p,
+    li,
+    td,
+    th,
+    blockquote,
+    figcaption,
+    time,
+    small,
+    .text-xs,
+    .text-\[10px\],
+    .text-\[11px\],
+    .font-mono
+  ):not([class*="text-white"]):not([class*="bg-sumeru-600"]) {
+    color: #000000 !important;
   }
 </style>
 

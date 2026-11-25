@@ -41,7 +41,9 @@ const productionTools = [
     icon: '/images/tools/blender.png',
   }
 ];
-const allTags = Array.from(new Set(allProjects.flatMap(p => p.data.tags)));
+const tagCounts = new Map<string, number>();
+allProjects.forEach((p) => (p.data.tags || []).forEach((t) => tagCounts.set(t, (tagCounts.get(t) || 0) + 1)));
+const allTags = Array.from(tagCounts.keys()).sort((a, b) => (tagCounts.get(b)! - tagCounts.get(a)!) || a.localeCompare(b));
 ---
 
 <BaseLayout

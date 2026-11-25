@@ -100,7 +100,7 @@ const badge = typeBadgeConfig[type] || typeBadgeConfig.project;
   data-title={title.toLowerCase()}
   data-type={type === 'image' ? 'local work' : type}
   data-platform={platform || (type === 'image' ? 'local work' : 'none')}
-  data-tags={tags.join(' ').toLowerCase()}
+  data-tags={tags.map(t => t.toLowerCase()).join('|')}
   data-media-type={type}
   data-media-url={url || media || ''}
   data-media-poster={previewImage}

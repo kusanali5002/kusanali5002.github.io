@@ -1,17 +1,17 @@
 ---
 export interface Props {
-  categories: string[];
+  tags: string[];
   totalPosts: number;
 }
 
-const { categories, totalPosts } = Astro.props;
+const { tags, totalPosts } = Astro.props;
 ---
 
-<div class="mb-10 space-y-6">
+<div class="mb-10 space-y-4">
   <!-- Search Input Bar -->
   <div class="relative max-w-xl mx-auto">
-    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-sumeru-500 dark:text-nahida-mint/60">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+    <div class="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none text-sumeru-500 dark:text-nahida-mint/60">
+      <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
         <circle cx="11" cy="11" r="8"></circle>
         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
       </svg>
@@ -21,7 +21,7 @@ const { categories, totalPosts } = Astro.props;
       id="activities-search-input"
       placeholder="Search articles by title, tag, or topic..."
       data-i18n-placeholder="act-search-placeholder"
-      class="w-full pl-12 pr-10 py-3.5 rounded-[11px] bg-white/80 dark:bg-black/40 border border-sumeru-200/80 dark:border-white/10 text-sm text-sumeru-950 dark:text-white placeholder-sumeru-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sumeru-500/50 dark:focus:ring-nahida-mint/50 backdrop-blur-md transition-all duration-200 shadow-sm"
+      class="w-full pl-9 sm:pl-12 pr-8 sm:pr-10 py-2.5 sm:py-3.5 rounded-[11px] bg-white/80 dark:bg-black/40 border border-sumeru-200/80 dark:border-white/10 text-xs sm:text-sm placeholder:text-[11px] sm:placeholder:text-sm text-sumeru-950 dark:text-white placeholder-sumeru-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sumeru-500/50 dark:focus:ring-nahida-mint/50 backdrop-blur-md transition-all duration-200 shadow-sm"
       autocomplete="off"
     />
     <button
@@ -37,51 +37,145 @@ const { categories, totalPosts } = Astro.props;
     </button>
   </div>
 
-  <!-- Category Filter Chips -->
-  <div class="flex items-center justify-center flex-wrap gap-2 pt-1" id="category-chips-container">
-    <button
-      type="button"
-      data-category="all"
-      data-i18n="act-filter-all"
-      data-count={totalPosts}
-      class="category-chip active px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-200 bg-sumeru-600 dark:bg-nahida-mint text-white dark:text-sumeru-950 shadow-sm"
-    >
-      All ({totalPosts})
-    </button>
-    {categories.map((cat) => (
+  <!-- Tag Filter Control -->
+  <div class="max-w-3xl mx-auto">
+    <div class="flex items-center justify-center flex-wrap gap-2">
       <button
+        id="act-tag-filter-toggle"
         type="button"
-        data-category={cat.toLowerCase()}
-        data-i18n={`act-cat-${cat.toLowerCase()}`}
-        class="category-chip px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-200 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 text-sumeru-800 dark:text-nahida-light/80 border border-transparent hover:border-sumeru-300 dark:hover:border-nahida-mint/30"
+        aria-expanded="false"
+        aria-controls="act-tag-filter-panel"
+        class="inline-flex items-center gap-2 px-4 py-2 rounded-[11px] text-xs font-semibold uppercase tracking-wider bg-white/80 dark:bg-black/40 text-sumeru-900 dark:text-nahida-light border border-sumeru-200/80 dark:border-white/10 hover:border-sumeru-400 dark:hover:border-nahida-mint/40 backdrop-blur-md shadow-sm transition-all duration-200 cursor-pointer"
       >
-        {cat}
+        <svg class="w-3.5 h-3.5 text-sumeru-600 dark:text-nahida-mint" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+        </svg>
+        <span>Filter by Tags</span>
+        <span id="act-tag-count-badge" class="hidden px-1.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-sumeru-600 dark:bg-nahida-mint text-white dark:text-sumeru-950 leading-none">0</span>
+        <svg id="act-tag-chevron" class="w-3.5 h-3.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
       </button>
-    ))}
+
+      <!-- Active Tag Pills (shown inline when selected) -->
+      <div id="act-active-tags" class="hidden items-center flex-wrap justify-center gap-1.5"></div>
+
+      <button
+        id="act-tag-clear-btn"
+        type="button"
+        class="hidden px-3 py-1.5 rounded-[11px] text-[11px] font-mono uppercase tracking-wider text-sumeru-700 dark:text-nahida-mint hover:bg-black/5 dark:hover:bg-white/10 transition-colors cursor-pointer"
+      >
+        Reset
+      </button>
+    </div>
+
+    <!-- Collapsible Tag Picker Panel -->
+    <div
+      id="act-tag-filter-panel"
+      class="hidden mt-3 p-4 rounded-[11px] glass-panel border border-sumeru-200/80 dark:border-white/10 shadow-lg"
+    >
+      <div class="flex items-center justify-between mb-3 pb-2 border-b border-sumeru-200/50 dark:border-white/[0.08]">
+        <span class="text-[11px] font-mono uppercase tracking-wider text-sumeru-700 dark:text-nahida-mint/80">
+          Select one or more tags ({tags.length})
+        </span>
+        <button
+          id="act-tag-all-btn"
+          type="button"
+          class="text-[11px] font-mono uppercase tracking-wider text-sumeru-700 dark:text-nahida-mint hover:underline cursor-pointer"
+        >
+          Show All ({totalPosts})
+        </button>
+      </div>
+      <div class="flex flex-wrap gap-2" id="act-tag-chips-container">
+        {tags.map((tag) => (
+          <button
+            type="button"
+            data-tag={tag.toLowerCase()}
+            data-label={tag}
+            class="act-tag-chip px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 text-sumeru-900 dark:text-nahida-light/85 border border-sumeru-200/50 dark:border-white/10 cursor-pointer"
+          >
+            #{tag}
+          </button>
+        ))}
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
   function setupSearchFilter() {
-    const input = document.getElementById('activities-search-input') as HTMLInputElement;
+    const input = document.getElementById('activities-search-input') as HTMLInputElement | null;
     const clearBtn = document.getElementById('search-clear-btn');
-    const chips = document.querySelectorAll('.category-chip');
+    const toggleBtn = document.getElementById('act-tag-filter-toggle');
+    const panel = document.getElementById('act-tag-filter-panel');
+    const chevron = document.getElementById('act-tag-chevron');
+    const countBadge = document.getElementById('act-tag-count-badge');
+    const activeTagsWrap = document.getElementById('act-active-tags');
+    const clearTagsBtn = document.getElementById('act-tag-clear-btn');
+    const showAllBtn = document.getElementById('act-tag-all-btn');
+    const tagChips = document.querySelectorAll<HTMLButtonElement>('.act-tag-chip');
     const cards = document.querySelectorAll('#activities-grid article');
     const emptyState = document.getElementById('activities-empty-state');
     const countDisplay = document.getElementById('activities-count-display');
 
     if (!input || !cards.length) return;
 
-    let selectedCategory = 'all';
+    const selectedTags = new Set<string>();
+
+    function syncTagUI() {
+      tagChips.forEach((chip) => {
+        const tag = chip.getAttribute('data-tag') || '';
+        const isActive = selectedTags.has(tag);
+        chip.classList.toggle('bg-sumeru-600', isActive);
+        chip.classList.toggle('dark:bg-nahida-mint', isActive);
+        chip.classList.toggle('text-white', isActive);
+        chip.classList.toggle('dark:text-sumeru-950', isActive);
+        chip.classList.toggle('border-transparent', isActive);
+        chip.classList.toggle('shadow-sm', isActive);
+        chip.classList.toggle('bg-black/5', !isActive);
+        chip.classList.toggle('dark:bg-white/5', !isActive);
+        chip.classList.toggle('text-sumeru-900', !isActive);
+        chip.classList.toggle('dark:text-nahida-light/85', !isActive);
+      });
+
+      const count = selectedTags.size;
+      if (countBadge) {
+        countBadge.textContent = String(count);
+        countBadge.classList.toggle('hidden', count === 0);
+      }
+      if (clearTagsBtn) {
+        clearTagsBtn.classList.toggle('hidden', count === 0);
+      }
+      if (activeTagsWrap) {
+        activeTagsWrap.innerHTML = '';
+        if (count > 0) {
+          activeTagsWrap.classList.remove('hidden');
+          activeTagsWrap.classList.add('flex');
+          selectedTags.forEach((tagVal) => {
+            const matchingChip = document.querySelector<HTMLButtonElement>(`.act-tag-chip[data-tag="${CSS.escape(tagVal)}"]`);
+            const label = matchingChip?.getAttribute('data-label') || tagVal;
+            const pill = document.createElement('button');
+            pill.type = 'button';
+            pill.className = 'inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-sumeru-600 dark:bg-nahida-mint text-white dark:text-sumeru-950 shadow-sm cursor-pointer hover:opacity-90 transition-opacity';
+            pill.innerHTML = `<span>#${label}</span><span aria-hidden="true">×</span>`;
+            pill.addEventListener('click', () => {
+              selectedTags.delete(tagVal);
+              syncTagUI();
+              filterCards();
+            });
+            activeTagsWrap.appendChild(pill);
+          });
+        } else {
+          activeTagsWrap.classList.add('hidden');
+          activeTagsWrap.classList.remove('flex');
+        }
+      }
+    }
 
     function filterCards() {
-      const query = input.value.toLowerCase().trim();
+      const query = input!.value.toLowerCase().trim();
       if (clearBtn) {
-        if (query.length > 0) {
-          clearBtn.classList.remove('hidden');
-        } else {
-          clearBtn.classList.add('hidden');
-        }
+        clearBtn.classList.toggle('hidden', query.length === 0);
       }
 
       let visibleCount = 0;
@@ -90,33 +184,35 @@ const { categories, totalPosts } = Astro.props;
         const title = card.getAttribute('data-title') || '';
         const desc = card.getAttribute('data-description') || '';
         const cat = card.getAttribute('data-category') || '';
-        const tags = card.getAttribute('data-tags') || '';
+        const rawTags = card.getAttribute('data-tags') || '';
+        const cardTags = rawTags.split('|').filter(Boolean);
 
-        const matchesCategory = (selectedCategory === 'all') || (cat === selectedCategory);
-        const matchesQuery = query === '' || 
-          title.includes(query) || 
-          desc.includes(query) || 
-          tags.includes(query) || 
+        const matchesTags =
+          selectedTags.size === 0 ||
+          Array.from(selectedTags).every((t) => cardTags.includes(t));
+
+        const matchesQuery =
+          query === '' ||
+          title.includes(query) ||
+          desc.includes(query) ||
+          rawTags.includes(query) ||
           cat.includes(query);
 
-        if (matchesCategory && matchesQuery) {
-          (card as HTMLElement).style.display = '';
+        const wrapper = (card.closest('.reveal-on-scroll') as HTMLElement) || (card as HTMLElement);
+        if (matchesTags && matchesQuery) {
+          wrapper.style.display = '';
           visibleCount++;
         } else {
-          (card as HTMLElement).style.display = 'none';
+          wrapper.style.display = 'none';
         }
       });
 
       if (emptyState) {
-        if (visibleCount === 0) {
-          emptyState.classList.remove('hidden');
-        } else {
-          emptyState.classList.add('hidden');
-        }
+        emptyState.classList.toggle('hidden', visibleCount > 0);
       }
 
       if (countDisplay) {
-        countDisplay.textContent = `${visibleCount} article${visibleCount === 1 ? '' : 's'}`;
+        countDisplay.textContent = `Showing ${visibleCount} article${visibleCount === 1 ? '' : 's'}`;
       }
     }
 
@@ -128,20 +224,35 @@ const { categories, totalPosts } = Astro.props;
       input.focus();
     });
 
-    chips.forEach(chip => {
+    toggleBtn?.addEventListener('click', () => {
+      const isOpen = panel && !panel.classList.contains('hidden');
+      panel?.classList.toggle('hidden', !!isOpen);
+      toggleBtn.setAttribute('aria-expanded', String(!isOpen));
+      chevron?.classList.toggle('rotate-180', !isOpen);
+    });
+
+    tagChips.forEach((chip) => {
       chip.addEventListener('click', () => {
-        chips.forEach(c => {
-          c.classList.remove('active', 'bg-sumeru-600', 'dark:bg-nahida-mint', 'text-white', 'dark:text-sumeru-950', 'shadow-sm');
-          c.classList.add('bg-black/5', 'dark:bg-white/5', 'text-sumeru-800', 'dark:text-nahida-light/80');
-        });
-
-        chip.classList.add('active', 'bg-sumeru-600', 'dark:bg-nahida-mint', 'text-white', 'dark:text-sumeru-950', 'shadow-sm');
-        chip.classList.remove('bg-black/5', 'dark:bg-white/5', 'text-sumeru-800', 'dark:text-nahida-light/80');
-
-        selectedCategory = chip.getAttribute('data-category') || 'all';
+        const tag = chip.getAttribute('data-tag') || '';
+        if (!tag) return;
+        if (selectedTags.has(tag)) {
+          selectedTags.delete(tag);
+        } else {
+          selectedTags.add(tag);
+        }
+        syncTagUI();
         filterCards();
       });
     });
+
+    const resetTags = () => {
+      selectedTags.clear();
+      syncTagUI();
+      filterCards();
+    };
+
+    clearTagsBtn?.addEventListener('click', resetTags);
+    showAllBtn?.addEventListener('click', resetTags);
   }
 
   setupSearchFilter();
