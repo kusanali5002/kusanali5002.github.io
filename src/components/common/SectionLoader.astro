@@ -1,0 +1,111 @@
+---
+---
+<div
+  id="nahida-section-loader"
+  class="fixed inset-0 z-[9990] flex items-center justify-center bg-sumeru-50/40 dark:bg-[#09110d]/55 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-250"
+  aria-hidden="true"
+>
+  <div class="w-[260px] sm:w-[320px] flex flex-col items-center gap-4">
+    <!-- High-Res Animated Nahida -->
+    <div class="w-28 h-28 sm:w-32 sm:h-32 flex items-center justify-center">
+      <img
+        src="/images/MYDWCT_Nahida_Sleep.webp"
+        alt="Nahida Loading"
+        width="128"
+        height="128"
+        class="w-full h-full object-contain drop-shadow-[0_8px_24px_rgba(45,107,69,0.28)] dark:drop-shadow-[0_8px_28px_rgba(168,230,207,0.25)]"
+        decoding="async"
+      />
+    </div>
+
+    <!-- Sleek Glowing Progress Bar -->
+    <div class="w-full space-y-2">
+      <div class="w-full h-2 rounded-full bg-black/10 dark:bg-white/15 overflow-hidden backdrop-blur-sm">
+        <div
+          id="nahida-loader-bar"
+          class="h-full w-0 rounded-full bg-gradient-to-r from-sumeru-700 via-sumeru-500 to-nahida-mint shadow-[0_0_14px_rgba(74,160,104,0.75)]"
+        ></div>
+      </div>
+
+      <div class="flex items-center justify-between text-[11px] font-mono font-semibold tracking-wider uppercase text-sumeru-950 dark:text-nahida-mint drop-shadow-sm">
+        <span id="nahida-loader-label">Loading...</span>
+        <span id="nahida-loader-percent">0%</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function setupSectionLoader() {
+    if ((window as any).__sectionLoaderInit) return;
+    (window as any).__sectionLoaderInit = true;
+
+    let rafId = 0;
+
+    function startLoader(durationMs = 1850, targetLabel = 'Loading...') {
+      const overlay = document.getElementById('nahida-section-loader');
+      const bar = document.getElementById('nahida-loader-bar');
+      const pct = document.getElementById('nahida-loader-percent');
+      const label = document.getElementById('nahida-loader-label');
+      if (!overlay || !bar || !pct) return;
+
+      cancelAnimationFrame(rafId);
+      document.documentElement.classList.add('is-nav-loading');
+      (window as any).__syncNahidaCursorState?.();
+
+      if (label) label.textContent = targetLabel;
+      bar.style.width = '0%';
+      pct.textContent = '0%';
+
+      overlay.classList.remove('opacity-0', 'pointer-events-none');
+      overlay.classList.add('opacity-100');
+
+      const startTime = performance.now();
+      function tick(now: number) {
+        const t = Math.min(1, (now - startTime) / durationMs);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const value = Math.min(100, Math.round(eased * 100));
+        bar!.style.width = `${value}%`;
+        pct!.textContent = `${value}%`;
+        if (t < 1) {
+          rafId = requestAnimationFrame(tick);
+        }
+      }
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function finishLoader() {
+      const overlay = document.getElementById('nahida-section-loader');
+      const bar = document.getElementById('nahida-loader-bar');
+      const pct = document.getElementById('nahida-loader-percent');
+      cancelAnimationFrame(rafId);
+
+      if (bar) bar.style.width = '100%';
+      if (pct) pct.textContent = '100%';
+
+      setTimeout(() => {
+        if (overlay) {
+          overlay.classList.add('opacity-0', 'pointer-events-none');
+          overlay.classList.remove('opacity-100');
+        }
+        document.documentElement.classList.remove('is-nav-loading');
+        (window as any).__syncNahidaCursorState?.();
+      }, 140);
+    }
+
+    (window as any).__startSectionLoader = startLoader;
+    (window as any).__finishSectionLoader = finishLoader;
+
+    document.addEventListener('astro:page-load', () => {
+      if (document.documentElement.classList.contains('is-nav-loading')) {
+        finishLoader();
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupSectionLoader);
+  } else {
+    setupSectionLoader();
+  }
+</script>

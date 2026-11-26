@@ -4,7 +4,7 @@ description: "A first look at the core components Dun is planning for his upcomi
 date: "2026-11-25"
 tags: ["PC Build", "Setup", "Life"]
 category: "Life"
-cover: "/images/pc_gpu.png"
+cover: "/images/pc_gpu.jpg"
 author: "Ha Manh Dung (Dun)"
 featured: true
 wideLayout: true
@@ -124,7 +124,7 @@ So, let's take a look at the components he's planning to use for his upcoming PC
 <div class="grid grid-cols-1 md:grid-cols-12 gap-5 items-start">
 <div class="md:col-span-5 rounded-[11px] glass-panel p-4 border border-sumeru-200/60 dark:border-white/[0.08] flex flex-col items-center justify-center">
 <div class="w-full rounded-[8px] bg-white/90 p-3 flex items-center justify-center">
-<img src="/images/pc_gpu.png" alt="Colorful iGame GeForce RTX 5060 Ultra W OC 8GB-V" class="w-full max-h-64 object-contain" loading="lazy" decoding="async" />
+<img src="/images/pc_gpu.jpg" alt="Colorful iGame GeForce RTX 5060 Ultra W OC 8GB-V" class="w-full max-h-64 object-contain" loading="lazy" decoding="async" />
 </div>
 <span class="mt-3 text-xs font-mono text-black dark:text-nahida-mint/85 text-center">iGame RTX 5060 Ultra W OC • 8GB GDDR7</span>
 </div>

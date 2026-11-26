@@ -2,6 +2,7 @@
 import SEO from '../components/common/SEO.astro';
 import DynamicGradient from '../components/common/DynamicGradient.astro';
 import CustomCursor from '../components/common/CustomCursor.astro';
+import SectionLoader from '../components/common/SectionLoader.astro';
 import Navbar from '../components/common/Navbar.astro';
 import MobileNav from '../components/common/MobileNav.astro';
 import Footer from '../components/common/Footer.astro';
@@ -30,7 +31,7 @@ const {
 ---
 
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
   <head>
     <SEO
       title={title}
@@ -82,6 +83,8 @@ const {
           localStorage.setItem('site-lang', 'en');
         }
 
+        const navLabels = ['Home', 'Activities', 'Workspace', 'Nahida', 'About Me', 'Contact'];
+
         document.addEventListener('astro:before-preparation', (event) => {
           const fromIdx = getNavIndex(event.from.pathname);
           const toIdx = getNavIndex(event.to.pathname);
@@ -93,6 +96,21 @@ const {
             } else {
               // Navigating to the right tab in the header bar
               document.documentElement.dataset.slideDirection = 'right';
+            }
+
+            // Trigger ~2s Nahida section loading animation when switching sections
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+              const targetLabel = `Loading ${navLabels[toIdx] || ''}...`;
+              if (typeof window.__startSectionLoader === 'function') {
+                window.__startSectionLoader(1850, targetLabel);
+              }
+              const originalLoader = event.loader;
+              event.loader = async () => {
+                await Promise.all([
+                  originalLoader(),
+                  new Promise((resolve) => setTimeout(resolve, 1850)),
+                ]);
+              };
             }
           } else {
             document.documentElement.dataset.slideDirection = 'fade';
@@ -128,6 +146,12 @@ const {
           } else {
             event.newDocument.documentElement.classList.remove('dark');
           }
+          if (document.documentElement.classList.contains('nahida-cursor-active')) {
+            event.newDocument.documentElement.classList.add('nahida-cursor-active');
+          }
+          if (document.documentElement.classList.contains('is-nav-loading')) {
+            event.newDocument.documentElement.classList.add('is-nav-loading');
+          }
 
           const toPath = (window.location.pathname || '').replace(/\/$/, '') || '/';
           const isVN = localStorage.getItem('site-lang') === 'vn';
@@ -140,9 +164,24 @@ const {
         });
         document.addEventListener('astro:after-swap', () => {
           syncTheme();
+          if (!window.location.hash) {
+            window.scrollTo(0, 0);
+          }
           const current = (window.location.pathname || '').replace(/\/$/, '') || '/';
           if (isPageTranslated(current)) {
             document.documentElement.classList.remove('hide-page-content');
+          }
+        });
+
+        // Smooth scroll only for explicit in-page #anchor links (never during page navigation)
+        document.addEventListener('click', (e) => {
+          const link = e.target && e.target.closest ? e.target.closest('a[href^="#"]') : null;
+          if (!link) return;
+          const id = (link.getAttribute('href') || '').slice(1);
+          const target = id ? document.getElementById(id) : null;
+          if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth' });
           }
         });
       })();
@@ -157,6 +196,11 @@ const {
     <!-- Desktop Custom Cursor -->
     <div transition:persist="custom-cursor">
       <CustomCursor />
+    </div>
+
+    <!-- Section Navigation Loading Overlay (~2s progress bar + Nahida loading cursor) -->
+    <div transition:persist="section-loader">
+      <SectionLoader />
     </div>
 
     <!-- Navigation Header (Completely static and persistent) -->
@@ -490,8 +534,8 @@ const {
           'intro-ws-title':    'Workspace',
           'intro-ws-desc':     'The creative workshop. Motion graphics reels, TikTok clips and GFX arts.',
           'intro-ws-link':     'Explore The Workspace',
-          'latest-label':      'Knowledge Archive',
-          'latest-title':      'Latest Inquiries & Reflections',
+          'latest-label':      'Archive',
+          'latest-title':      'Featured posts',
           'latest-viewall':    'View All Activities ({n})',
           'ws-label':          'Creative Workspace',
           'ws-title':          'All Social & Local Works',

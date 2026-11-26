@@ -8,17 +8,17 @@ export interface Props {
 }
 
 const { posts } = Astro.props;
-const featuredPosts = posts.slice(0, 3);
+const featuredPosts = posts.slice(0, 5);
 ---
 
 <section class="pt-8 sm:pt-10 lg:pt-12 border-t border-sumeru-200/40 dark:border-white/[0.05]" data-carousel-section>
   <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-5 sm:mb-7 gap-3">
     <div>
       <span class="text-[10px] sm:text-xs font-mono font-semibold uppercase tracking-widest text-sumeru-600 dark:text-nahida-mint mb-1 sm:mb-2 block" data-i18n="latest-label">
-        Knowledge Archive
+        Archive
       </span>
       <h2 class="font-display font-bold text-xl sm:text-3xl lg:text-3xl text-sumeru-950 dark:text-white leading-tight" data-i18n="latest-title">
-        Latest Inquiries & Reflections
+        Featured posts
       </h2>
     </div>
 
